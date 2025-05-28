@@ -1,0 +1,9 @@
+# DeleteMediaResponse
+
+
+## Fields
+
+| Field                                                                       | Type                                                                        | Required                                                                    | Description                                                                 | Example                                                                     |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `HttpMeta`                                                                  | [HTTPMetadata](../../Models/Components/HTTPMetadata.md)                     | :heavy_check_mark:                                                          | N/A                                                                         |                                                                             |
+| `Object`                                                                    | [DeleteMediaResponseBody](../../Models/Requests/DeleteMediaResponseBody.md) | :heavy_minus_sign:                                                          | Delete a video media                                                        | {<br/>"success": true<br/>}                                                 |

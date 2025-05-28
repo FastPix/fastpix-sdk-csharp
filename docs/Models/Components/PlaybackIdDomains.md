@@ -1,0 +1,12 @@
+# PlaybackIdDomains
+
+Restrictions based on the originating domain of a request (e.g., whether requests from certain websites should be allowed or blocked).
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 | Example                                                                                     |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `DefaultPolicy`                                                                             | [PlaybackIdDomainsDefaultPolicy](../../Models/Components/PlaybackIdDomainsDefaultPolicy.md) | :heavy_minus_sign:                                                                          | This sets the default behavior for domain access (either "allow" or "deny").                | allow                                                                                       |
+| `Allow`                                                                                     | List<*string*>                                                                              | :heavy_minus_sign:                                                                          | A list of domains that are explicitly allowed access.                                       |                                                                                             |
+| `Deny`                                                                                      | List<*string*>                                                                              | :heavy_minus_sign:                                                                          | A list of domains that are explicitly blocked from accessing the resource.                  |                                                                                             |
