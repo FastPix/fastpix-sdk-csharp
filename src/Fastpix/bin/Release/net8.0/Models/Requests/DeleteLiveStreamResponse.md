@@ -1,0 +1,9 @@
+# DeleteLiveStreamResponse
+
+
+## Fields
+
+| Field                                                                           | Type                                                                            | Required                                                                        | Description                                                                     | Example                                                                         |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `HttpMeta`                                                                      | [HTTPMetadata](../../Models/Components/HTTPMetadata.md)                         | :heavy_check_mark:                                                              | N/A                                                                             |                                                                                 |
+| `LiveStreamDeleteResponse`                                                      | [LiveStreamDeleteResponse](../../Models/Components/LiveStreamDeleteResponse.md) | :heavy_minus_sign:                                                              | Stream deleted successfully                                                     | {<br/>"success": true<br/>}                                                     |

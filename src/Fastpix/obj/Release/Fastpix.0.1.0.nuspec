@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Fastpix</id>
+    <version>0.1.0</version>
+    <authors>FastPix</authors>
+    <readme>README.md</readme>
+    <description>LIVE STREAMING API: The Live Stream APIs in FastPix simplifies the process of creating,managing, and distributing live content. This set of API endpoints is designed to help developers initiate live broadcasts, configure stream settings, and extend streams to external platforms (via simulcasting). By integrating FastPix's live streaming capabilities into your applications, you can provide users with seamless and high-quality live video experiences, whether for events, webinars, gaming, or live content creation. &lt;br /&gt;&lt;br /&gt;
+  Live streams can be customized with various parameters, such as stream metadata, privacy settings, and playback configurations. Additionally, the API supports real-time interaction with streams, including updating stream details, managing playback IDs, and extending the reach of a stream through simulcasting to platforms like YouTube or Facebook. &lt;br /&gt;&lt;br /&gt;
+&amp;lt;h3&amp;gt;Use case scenarios&amp;lt;/h3&amp;gt;&lt;br /&gt;&lt;br /&gt;
+  **Event Broadcasting**: A developer integrates FastPix live streaming APIs into an event management platform. By leveraging these APIs, the platform can enable event organizers to set up live streams for conferences, concerts, or webinars, allowing viewers to tune in from multiple platforms simultaneously via simulcasting. &lt;br /&gt;&lt;br /&gt;
+  **Live Content Platforms**: Developers working on a live content platform for creators can use the live stream APIs to allow users to broadcast gaming, vlogs, or tutorials. Creators can manage their streams in real time, control playback options, and extend their reach by simulcasting to popular platforms like Twitch or YouTube. &lt;br /&gt;&lt;br /&gt;
+  **Corporate Streaming Services**: A corporate communication tool can integrate live streaming functionality for internal town halls or global employee meetings. The live streams can be made accessible to different employee groups through privacy settings and playback control, ensuring secure and efficient internal communication.</description>
+    <copyright>Copyright (c) FastPix 2025</copyright>
+    <repository type="git" commit="f5e916b126015470b1ce812b5191f30d0a99396c" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="DotNetEnv" version="2.5.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.NET.Test.Sdk" version="17.9.0" exclude="Build,Analyzers" />
+        <dependency id="newtonsoft.json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="nodatime" version="3.1.9" exclude="Build,Analyzers" />
+        <dependency id="xunit" version="2.6.6" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/bin/Release/net8.0/Fastpix.runtimeconfig.json" target="lib/net8.0/Fastpix.runtimeconfig.json" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/bin/Release/net8.0/Fastpix.dll" target="lib/net8.0/Fastpix.dll" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/bin/Release/net8.0/Fastpix.xml" target="lib/net8.0/Fastpix.xml" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/README.md" target="/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/AudioInput.md" target="/docs/Models/Components/AudioInput.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/AudioInputType.md" target="/docs/Models/Components/AudioInputType.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateLiveStreamRequest.md" target="/docs/Models/Components/CreateLiveStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateLiveStreamRequestMaxResolution.md" target="/docs/Models/Components/CreateLiveStreamRequestMaxResolution.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateLiveStreamRequestMetadata.md" target="/docs/Models/Components/CreateLiveStreamRequestMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequest.md" target="/docs/Models/Components/CreateMediaRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestAccessPolicy.md" target="/docs/Models/Components/CreateMediaRequestAccessPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestAccessRestrictions.md" target="/docs/Models/Components/CreateMediaRequestAccessRestrictions.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestDomains.md" target="/docs/Models/Components/CreateMediaRequestDomains.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestDomainsDefaultPolicy.md" target="/docs/Models/Components/CreateMediaRequestDomainsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestLanguageCode.md" target="/docs/Models/Components/CreateMediaRequestLanguageCode.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestMaxResolution.md" target="/docs/Models/Components/CreateMediaRequestMaxResolution.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestMetadata.md" target="/docs/Models/Components/CreateMediaRequestMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestMp4Support.md" target="/docs/Models/Components/CreateMediaRequestMp4Support.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestType.md" target="/docs/Models/Components/CreateMediaRequestType.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestUserAgents.md" target="/docs/Models/Components/CreateMediaRequestUserAgents.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaRequestUserAgentsDefaultPolicy.md" target="/docs/Models/Components/CreateMediaRequestUserAgentsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaResponse.md" target="/docs/Models/Components/CreateMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaResponseMaxResolution.md" target="/docs/Models/Components/CreateMediaResponseMaxResolution.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/CreateMediaResponseMetadata.md" target="/docs/Models/Components/CreateMediaResponseMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/DirectUpload.md" target="/docs/Models/Components/DirectUpload.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/DirectUploadResponse.md" target="/docs/Models/Components/DirectUploadResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/DirectUploadResponseMetadata.md" target="/docs/Models/Components/DirectUploadResponseMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/GetCreateLiveStreamResponseDTO.md" target="/docs/Models/Components/GetCreateLiveStreamResponseDTO.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/GetCreateLiveStreamResponseDTOMetadata.md" target="/docs/Models/Components/GetCreateLiveStreamResponseDTOMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/GetCreateLiveStreamResponseDTOSrtPlaybackResponse.md" target="/docs/Models/Components/GetCreateLiveStreamResponseDTOSrtPlaybackResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/GetStreamsResponse.md" target="/docs/Models/Components/GetStreamsResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/HTTPMetadata.md" target="/docs/Models/Components/HTTPMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/ImposeTrack.md" target="/docs/Models/Components/ImposeTrack.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Input.md" target="/docs/Models/Components/Input.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/InputMediaSettings.md" target="/docs/Models/Components/InputMediaSettings.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/LiveStreamDeleteResponse.md" target="/docs/Models/Components/LiveStreamDeleteResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/LivestreamgetResponse.md" target="/docs/Models/Components/LivestreamgetResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/LiveStreamResponseDTO.md" target="/docs/Models/Components/LiveStreamResponseDTO.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Media.md" target="/docs/Models/Components/Media.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/MediaMaxResolution.md" target="/docs/Models/Components/MediaMaxResolution.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/MediaMetadata.md" target="/docs/Models/Components/MediaMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/MediaMp4Support.md" target="/docs/Models/Components/MediaMp4Support.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/MediaPolicy.md" target="/docs/Models/Components/MediaPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Moderation.md" target="/docs/Models/Components/Moderation.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Pagination.md" target="/docs/Models/Components/Pagination.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PatchLiveStreamRequest.md" target="/docs/Models/Components/PatchLiveStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PatchLiveStreamRequestMetadata.md" target="/docs/Models/Components/PatchLiveStreamRequestMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PatchResponseData.md" target="/docs/Models/Components/PatchResponseData.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PatchResponseDataMetadata.md" target="/docs/Models/Components/PatchResponseDataMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PatchResponseDataSrtPlaybackResponse.md" target="/docs/Models/Components/PatchResponseDataSrtPlaybackResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PatchResponseDTO.md" target="/docs/Models/Components/PatchResponseDTO.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Placement.md" target="/docs/Models/Components/Placement.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackId.md" target="/docs/Models/Components/PlaybackId.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdAccessPolicy.md" target="/docs/Models/Components/PlaybackIdAccessPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdAccessRestrictions.md" target="/docs/Models/Components/PlaybackIdAccessRestrictions.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdDomains.md" target="/docs/Models/Components/PlaybackIdDomains.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdDomainsDefaultPolicy.md" target="/docs/Models/Components/PlaybackIdDomainsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdRequest.md" target="/docs/Models/Components/PlaybackIdRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdRequestAccessPolicy.md" target="/docs/Models/Components/PlaybackIdRequestAccessPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdResponse.md" target="/docs/Models/Components/PlaybackIdResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdResponseData.md" target="/docs/Models/Components/PlaybackIdResponseData.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIds.md" target="/docs/Models/Components/PlaybackIds.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdUserAgents.md" target="/docs/Models/Components/PlaybackIdUserAgents.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackIdUserAgentsDefaultPolicy.md" target="/docs/Models/Components/PlaybackIdUserAgentsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackSettings.md" target="/docs/Models/Components/PlaybackSettings.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/PlaybackSettingsAccessPolicy.md" target="/docs/Models/Components/PlaybackSettingsAccessPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Security.md" target="/docs/Models/Components/Security.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Segment1.md" target="/docs/Models/Components/Segment1.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Segment2.md" target="/docs/Models/Components/Segment2.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SegmentUnion.md" target="/docs/Models/Components/SegmentUnion.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastdeleteResponse.md" target="/docs/Models/Components/SimulcastdeleteResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastRequest.md" target="/docs/Models/Components/SimulcastRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastResponse.md" target="/docs/Models/Components/SimulcastResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastResponseData.md" target="/docs/Models/Components/SimulcastResponseData.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastResponseMetadata.md" target="/docs/Models/Components/SimulcastResponseMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastUpdateRequest.md" target="/docs/Models/Components/SimulcastUpdateRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastUpdateRequestMetadata.md" target="/docs/Models/Components/SimulcastUpdateRequestMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastUpdateResponse.md" target="/docs/Models/Components/SimulcastUpdateResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastUpdateResponseData.md" target="/docs/Models/Components/SimulcastUpdateResponseData.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SimulcastUpdateResponseMetadata.md" target="/docs/Models/Components/SimulcastUpdateResponseMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SourceResolution.md" target="/docs/Models/Components/SourceResolution.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Subtitle.md" target="/docs/Models/Components/Subtitle.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SubtitleInput.md" target="/docs/Models/Components/SubtitleInput.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SubtitleInputLanguageCode.md" target="/docs/Models/Components/SubtitleInputLanguageCode.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/SubtitleMetadata.md" target="/docs/Models/Components/SubtitleMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Summary.md" target="/docs/Models/Components/Summary.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/Track.md" target="/docs/Models/Components/Track.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/VideoInput.md" target="/docs/Models/Components/VideoInput.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/WatermarkInput.md" target="/docs/Models/Components/WatermarkInput.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/WatermarkInputType.md" target="/docs/Models/Components/WatermarkInputType.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/XAlign.md" target="/docs/Models/Components/XAlign.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Components/YAlign.md" target="/docs/Models/Components/YAlign.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/BadRequestError.md" target="/docs/Models/Errors/BadRequestError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/BadRequestException.md" target="/docs/Models/Errors/BadRequestException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/Field.md" target="/docs/Models/Errors/Field.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/ForbiddenError.md" target="/docs/Models/Errors/ForbiddenError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/ForbiddenException.md" target="/docs/Models/Errors/ForbiddenException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/InvalidPermissionError.md" target="/docs/Models/Errors/InvalidPermissionError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/InvalidPermissionException.md" target="/docs/Models/Errors/InvalidPermissionException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/MediaNotFoundError.md" target="/docs/Models/Errors/MediaNotFoundError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/MediaNotFoundException.md" target="/docs/Models/Errors/MediaNotFoundException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/MediaOrPlaybackNotFoundError.md" target="/docs/Models/Errors/MediaOrPlaybackNotFoundError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/MediaOrPlaybackNotFoundException.md" target="/docs/Models/Errors/MediaOrPlaybackNotFoundException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/NotFoundError.md" target="/docs/Models/Errors/NotFoundError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/NotFoundErrorError.md" target="/docs/Models/Errors/NotFoundErrorError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/NotFoundErrorPlaybackId.md" target="/docs/Models/Errors/NotFoundErrorPlaybackId.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/NotFoundErrorPlaybackIdError.md" target="/docs/Models/Errors/NotFoundErrorPlaybackIdError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/NotFoundErrorSimulcast.md" target="/docs/Models/Errors/NotFoundErrorSimulcast.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/NotFoundErrorSimulcastError.md" target="/docs/Models/Errors/NotFoundErrorSimulcastError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/SimulcastUnavailableError.md" target="/docs/Models/Errors/SimulcastUnavailableError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/SimulcastUnavailableException.md" target="/docs/Models/Errors/SimulcastUnavailableException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/UnauthorizedError.md" target="/docs/Models/Errors/UnauthorizedError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/UnauthorizedException.md" target="/docs/Models/Errors/UnauthorizedException.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/ValidationErrorResponse.md" target="/docs/Models/Errors/ValidationErrorResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Errors/ValidationErrorResponseError.md" target="/docs/Models/Errors/ValidationErrorResponseError.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdAccessPolicy.md" target="/docs/Models/Requests/CreateMediaPlaybackIdAccessPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdAccessRestrictions.md" target="/docs/Models/Requests/CreateMediaPlaybackIdAccessRestrictions.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdDomains.md" target="/docs/Models/Requests/CreateMediaPlaybackIdDomains.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdDomainsDefaultPolicy.md" target="/docs/Models/Requests/CreateMediaPlaybackIdDomainsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdRequest.md" target="/docs/Models/Requests/CreateMediaPlaybackIdRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdRequestBody.md" target="/docs/Models/Requests/CreateMediaPlaybackIdRequestBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdResponse.md" target="/docs/Models/Requests/CreateMediaPlaybackIdResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdResponseBody.md" target="/docs/Models/Requests/CreateMediaPlaybackIdResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdUserAgents.md" target="/docs/Models/Requests/CreateMediaPlaybackIdUserAgents.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaPlaybackIdUserAgentsDefaultPolicy.md" target="/docs/Models/Requests/CreateMediaPlaybackIdUserAgentsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaResponse.md" target="/docs/Models/Requests/CreateMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateMediaResponseBody.md" target="/docs/Models/Requests/CreateMediaResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateNewStreamResponse.md" target="/docs/Models/Requests/CreateNewStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreatePlaybackIdOfStreamRequest.md" target="/docs/Models/Requests/CreatePlaybackIdOfStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreatePlaybackIdOfStreamResponse.md" target="/docs/Models/Requests/CreatePlaybackIdOfStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateSimulcastOfStreamRequest.md" target="/docs/Models/Requests/CreateSimulcastOfStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/CreateSimulcastOfStreamResponse.md" target="/docs/Models/Requests/CreateSimulcastOfStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Data.md" target="/docs/Models/Requests/Data.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteLiveStreamRequest.md" target="/docs/Models/Requests/DeleteLiveStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteLiveStreamResponse.md" target="/docs/Models/Requests/DeleteLiveStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteMediaPlaybackIdRequest.md" target="/docs/Models/Requests/DeleteMediaPlaybackIdRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteMediaPlaybackIdResponse.md" target="/docs/Models/Requests/DeleteMediaPlaybackIdResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteMediaPlaybackIdResponseBody.md" target="/docs/Models/Requests/DeleteMediaPlaybackIdResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteMediaRequest.md" target="/docs/Models/Requests/DeleteMediaRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteMediaResponse.md" target="/docs/Models/Requests/DeleteMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteMediaResponseBody.md" target="/docs/Models/Requests/DeleteMediaResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeletePlaybackIdOfStreamRequest.md" target="/docs/Models/Requests/DeletePlaybackIdOfStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeletePlaybackIdOfStreamResponse.md" target="/docs/Models/Requests/DeletePlaybackIdOfStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteSimulcastOfStreamRequest.md" target="/docs/Models/Requests/DeleteSimulcastOfStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DeleteSimulcastOfStreamResponse.md" target="/docs/Models/Requests/DeleteSimulcastOfStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaAccessPolicy.md" target="/docs/Models/Requests/DirectUploadVideoMediaAccessPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaAccessRestrictions.md" target="/docs/Models/Requests/DirectUploadVideoMediaAccessRestrictions.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaDomains.md" target="/docs/Models/Requests/DirectUploadVideoMediaDomains.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaDomainsDefaultPolicy.md" target="/docs/Models/Requests/DirectUploadVideoMediaDomainsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaMetadata.md" target="/docs/Models/Requests/DirectUploadVideoMediaMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaRequest.md" target="/docs/Models/Requests/DirectUploadVideoMediaRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaResponse.md" target="/docs/Models/Requests/DirectUploadVideoMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaResponseBody.md" target="/docs/Models/Requests/DirectUploadVideoMediaResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaUserAgents.md" target="/docs/Models/Requests/DirectUploadVideoMediaUserAgents.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/DirectUploadVideoMediaUserAgentsDefaultPolicy.md" target="/docs/Models/Requests/DirectUploadVideoMediaUserAgentsDefaultPolicy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetAllStreamsOrderBy.md" target="/docs/Models/Requests/GetAllStreamsOrderBy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetAllStreamsRequest.md" target="/docs/Models/Requests/GetAllStreamsRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetAllStreamsResponse.md" target="/docs/Models/Requests/GetAllStreamsResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetLiveStreamByIdRequest.md" target="/docs/Models/Requests/GetLiveStreamByIdRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetLiveStreamByIdResponse.md" target="/docs/Models/Requests/GetLiveStreamByIdResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetLiveStreamPlaybackIdRequest.md" target="/docs/Models/Requests/GetLiveStreamPlaybackIdRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetLiveStreamPlaybackIdResponse.md" target="/docs/Models/Requests/GetLiveStreamPlaybackIdResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetMediaRequest.md" target="/docs/Models/Requests/GetMediaRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetMediaResponse.md" target="/docs/Models/Requests/GetMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetMediaResponseBody.md" target="/docs/Models/Requests/GetMediaResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetSpecificSimulcastOfStreamRequest.md" target="/docs/Models/Requests/GetSpecificSimulcastOfStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/GetSpecificSimulcastOfStreamResponse.md" target="/docs/Models/Requests/GetSpecificSimulcastOfStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Input.md" target="/docs/Models/Requests/Input.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/LanguageCode.md" target="/docs/Models/Requests/LanguageCode.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/ListMediaOrderBy.md" target="/docs/Models/Requests/ListMediaOrderBy.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/ListMediaRequest.md" target="/docs/Models/Requests/ListMediaRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/ListMediaResponse.md" target="/docs/Models/Requests/ListMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/ListMediaResponseBody.md" target="/docs/Models/Requests/ListMediaResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/MaxResolution.md" target="/docs/Models/Requests/MaxResolution.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Moderation.md" target="/docs/Models/Requests/Moderation.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Mp4Support.md" target="/docs/Models/Requests/Mp4Support.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/PushMediaSettings.md" target="/docs/Models/Requests/PushMediaSettings.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/RetrieveMediaInputInfoRequest.md" target="/docs/Models/Requests/RetrieveMediaInputInfoRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/RetrieveMediaInputInfoResponse.md" target="/docs/Models/Requests/RetrieveMediaInputInfoResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/RetrieveMediaInputInfoResponseBody.md" target="/docs/Models/Requests/RetrieveMediaInputInfoResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Subtitles.md" target="/docs/Models/Requests/Subtitles.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/SubtitlesMetadata.md" target="/docs/Models/Requests/SubtitlesMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Summary.md" target="/docs/Models/Requests/Summary.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/Type.md" target="/docs/Models/Requests/Type.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdatedMediaMetadata.md" target="/docs/Models/Requests/UpdatedMediaMetadata.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdatedMediaRequest.md" target="/docs/Models/Requests/UpdatedMediaRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdatedMediaRequestBody.md" target="/docs/Models/Requests/UpdatedMediaRequestBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdatedMediaResponse.md" target="/docs/Models/Requests/UpdatedMediaResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdatedMediaResponseBody.md" target="/docs/Models/Requests/UpdatedMediaResponseBody.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdateLiveStreamRequest.md" target="/docs/Models/Requests/UpdateLiveStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdateLiveStreamResponse.md" target="/docs/Models/Requests/UpdateLiveStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdateSpecificSimulcastOfStreamRequest.md" target="/docs/Models/Requests/UpdateSpecificSimulcastOfStreamRequest.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/Models/Requests/UpdateSpecificSimulcastOfStreamResponse.md" target="/docs/Models/Requests/UpdateSpecificSimulcastOfStreamResponse.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/fastpix/README.md" target="/docs/sdks/fastpix/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/inputvideo/README.md" target="/docs/sdks/inputvideo/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/managelivestream/README.md" target="/docs/sdks/managelivestream/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/managevideos/README.md" target="/docs/sdks/managevideos/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/playback/README.md" target="/docs/sdks/playback/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/simulcaststream/README.md" target="/docs/sdks/simulcaststream/README.md" />
+    <file src="/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/docs/sdks/startlivestream/README.md" target="/docs/sdks/startlivestream/README.md" />
+  </files>
+</package>

@@ -1,0 +1,94 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj": {}
+  },
+  "projects": {
+    "/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj": {
+      "version": "0.1.0",
+      "restore": {
+        "projectUniqueName": "/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj",
+        "projectName": "Fastpix",
+        "projectPath": "/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj",
+        "packagesPath": "/Users/sravanimaramreddy/.nuget/packages/",
+        "outputPath": "/Users/sravanimaramreddy/Documents/csharp-github/fastpix-sdk-csharp/src/Fastpix/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/sravanimaramreddy/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[2.5.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.9.0, )"
+            },
+            "newtonsoft.json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "nodatime": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.6.6, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.5.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.410/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

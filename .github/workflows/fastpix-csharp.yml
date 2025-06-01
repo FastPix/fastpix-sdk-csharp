@@ -1,0 +1,39 @@
+name: Build and Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'   # Triggers on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: nuget
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore src/Fastpix/Fastpix.csproj
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore src/Fastpix/Fastpix.csproj
+
+      - name: Pack
+        run: dotnet pack --configuration Release --no-build --output ./nupkg src/Fastpix/Fastpix.csproj
+
+      - name: Publish to NuGet
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: ./nupkg
+
+      - name: Push to NuGet
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

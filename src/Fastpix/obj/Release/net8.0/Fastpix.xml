@@ -1,0 +1,3117 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fastpix</name>
+    </assembly>
+    <members>
+        <member name="T:Fastpix.IFastPix">
+            <summary>
+            LIVE STREAMING API: The Live Stream APIs in FastPix simplifies the process of creating,managing, and distributing live content. This set of API endpoints is designed to help developers initiate live broadcasts, configure stream settings, and extend streams to external platforms (via simulcasting). By integrating FastPix's live streaming capabilities into your applications, you can provide users with seamless and high-quality live video experiences, whether for events, webinars, gaming, or live content creation. <br/>
+            
+            <remarks>
+            <br/>
+              Live streams can be customized with various parameters, such as stream metadata, privacy settings, and playback configurations. Additionally, the API supports real-time interaction with streams, including updating stream details, managing playback IDs, and extending the reach of a stream through simulcasting to platforms like YouTube or Facebook. <br/>
+            <br/>
+            &lt;h3&gt;Use case scenarios&lt;/h3&gt;<br/>
+            <br/>
+              **Event Broadcasting**: A developer integrates FastPix live streaming APIs into an event management platform. By leveraging these APIs, the platform can enable event organizers to set up live streams for conferences, concerts, or webinars, allowing viewers to tune in from multiple platforms simultaneously via simulcasting. <br/>
+            <br/>
+              **Live Content Platforms**: Developers working on a live content platform for creators can use the live stream APIs to allow users to broadcast gaming, vlogs, or tutorials. Creators can manage their streams in real time, control playback options, and extend their reach by simulcasting to popular platforms like Twitch or YouTube. <br/>
+            <br/>
+              **Corporate Streaming Services**: A corporate communication tool can integrate live streaming functionality for internal town halls or global employee meetings. The live streams can be made accessible to different employee groups through privacy settings and playback control, ensuring secure and efficient internal communication. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:Fastpix.SDKConfig.ServerList">
+            <summary>
+            List of server URLs available to the SDK.
+            </summary>
+        </member>
+        <member name="T:Fastpix.FastPix">
+            <summary>
+            LIVE STREAMING API: The Live Stream APIs in FastPix simplifies the process of creating,managing, and distributing live content. This set of API endpoints is designed to help developers initiate live broadcasts, configure stream settings, and extend streams to external platforms (via simulcasting). By integrating FastPix's live streaming capabilities into your applications, you can provide users with seamless and high-quality live video experiences, whether for events, webinars, gaming, or live content creation. <br/>
+            
+            <remarks>
+            <br/>
+              Live streams can be customized with various parameters, such as stream metadata, privacy settings, and playback configurations. Additionally, the API supports real-time interaction with streams, including updating stream details, managing playback IDs, and extending the reach of a stream through simulcasting to platforms like YouTube or Facebook. <br/>
+            <br/>
+            &lt;h3&gt;Use case scenarios&lt;/h3&gt;<br/>
+            <br/>
+              **Event Broadcasting**: A developer integrates FastPix live streaming APIs into an event management platform. By leveraging these APIs, the platform can enable event organizers to set up live streams for conferences, concerts, or webinars, allowing viewers to tune in from multiple platforms simultaneously via simulcasting. <br/>
+            <br/>
+              **Live Content Platforms**: Developers working on a live content platform for creators can use the live stream APIs to allow users to broadcast gaming, vlogs, or tutorials. Creators can manage their streams in real time, control playback options, and extend their reach by simulcasting to popular platforms like Twitch or YouTube. <br/>
+            <br/>
+              **Corporate Streaming Services**: A corporate communication tool can integrate live streaming functionality for internal town halls or global employee meetings. The live streams can be made accessible to different employee groups through privacy settings and playback control, ensuring secure and efficient internal communication. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Hooks.ISDKInitHook">
+            <summary>
+            SDKInit hook is called when the SDK is initializing.
+            The hook can modify and return a new baseUrl and HTTP client to be used by the SDK.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Hooks.IBeforeRequestHook">
+            <summary>
+            BeforeRequestAsync hook is called before the SDK sends a request.
+            The hook can modify the request before it is sent or throw an exception to stop the request from being sent.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Hooks.IAfterSuccessHook">
+            <summary>
+            AfterSuccessAsync is called after the SDK receives a response.
+            The hook can modify the response before it is handled or throw an exception to stop the response from being handled.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Hooks.IAfterErrorHook">
+            <summary>
+            AfterErrorAsync is called after the SDK encounters an error, or a non-successful response.
+            The hook can modify the response, if available, otherwise modify the error.
+            All hooks are called sequentially. If an error is returned, it will be passed to the subsequent hook implementing IAfterErrorHook.
+            If you want to prevent other AfterError hooks from being run, you can throw an FailEarlyException instead.
+            </summary>
+        </member>
+        <member name="M:Fastpix.IInputVideo.CreateMediaAsync(Fastpix.Models.Components.CreateMediaRequest)">
+            <summary>
+            Create media from URL
+            
+            <remarks>
+            This endpoint allows developers or users to create a new video or audio media in FastPix using a publicly accessible URL. FastPix will fetch the media from the provided URL, process it, and store it on the platform for use. <br/>
+            <br/>
+            <br/>
+            <br/>
+            #### Public URL requirement:<br/>
+            <br/>
+            <br/>
+              The provided URL must be publicly accessible and should point to a video stored in one of the following supported formats: .m4v, .ogv, .mpeg, .mov, .3gp, .f4v, .rm, .ts, .wtv, .avi, .mp4, .wmv, .webm, .mts, .vob, .mxf, asf, m2ts <br/>
+            <br/>
+            <br/>
+            <br/>
+            #### Supported storage types:<br/>
+            <br/>
+            The URL can originate from various cloud storage services or content delivery networks (CDNs) such as: <br/>
+            <br/>
+            <br/>
+            * **Amazon S3:** URLs from Amazon&apos;s Simple Storage Service. <br/>
+            <br/>
+            * **Google Cloud Storage:** URLs from Google Cloud&apos;s storage solution. <br/>
+            <br/>
+            * **Azure Blob Storage:** URLs from Microsoft&apos;s Azure storage. <br/>
+            <br/>
+            * **Public CDNs:** URLs from public content delivery networks that host video files. <br/>
+            <br/>
+            Upon successful creation, the API returns an id that should be retained for future operations related to this media. <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            <br/>
+            1. Send a POST request to the /on-demand endpoint with the media URL (typically a video or audio file) and optional media settings. <br/>
+            <br/>
+            2. FastPix uploads the video from the provided URL to its storage. <br/>
+            <br/>
+            3. Receive a response containing the unique id for the newly created media item. <br/>
+            <br/>
+            4. Use the id in subsequent API calls, such as checking the status of the media with the **Get Media by ID** endpoint to determine when the media is ready for playback. <br/>
+            <br/>
+            FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, once the media file is created (but not yet processed or encoded), we'll shoot a POST message to the address you give us with the webhook event video.media.created. <br/>
+            <br/>
+            <br/>
+            Once processing is done you can look for the events video.media.ready and video.media.failed to see the status of your new media file.<br/>
+            <br/>
+            #### Use case scenario<br/>
+            <br/>
+            <br/>
+            * **Use case:** A developer wants to integrate a user-generated content platform where users can upload links to their videos hosted on third-party platforms like AWS or Google Cloud Storage. This endpoint is used to create media directly from those URLs. <br/>
+            <br/>
+            <br/>
+            * **Detailed example:** <br/>
+            Say you're building an online learning platform where instructors upload video URLs hosted on their private cloud servers. By providing the video URL to this endpoint, the platform processes and adds it to your media library, ready for playback. <br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IInputVideo.DirectUploadVideoMediaAsync(Fastpix.Models.Requests.DirectUploadVideoMediaRequest)">
+            <summary>
+            Upload media from device
+            
+            <remarks>
+            This endpoint enables you to upload a video file directly from your local device to FastPix for processing, storage. When you invoke this API with your preferred media settings, the response returns an uploadId and a pre-signed URL, providing a streamlined experience for uploading.<br/>
+            <br/>
+            <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            1. Send a POST request to the /on-demand/uploads endpoint with optional media settings.  <br/>
+            <br/>
+            2. The response includes an **uploadId** and a pre-signed URL for direct video file upload.<br/>
+            <br/>
+            3. Upload your video file to the provided **URL** by making **PUT** request. The API accepts the media file from the device and uploads it to the FastPix platform. <br/>
+            <br/>
+            4. Once uploaded, the media undergoes processing and is assigned a unique ID for tracking. Retain this **uploadId** for any future operations related to this upload. <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            After uploading, you can use the **Get Media by ID** endpoint to check the status of the uploaded media asset and see if it has transitioned to a &quot;ready&quot; status for playback. <br/>
+            <br/>
+            To notify your application about the status of this API request check for the webhooks for Upload related events.  <br/>
+            <br/>
+            <br/>
+            #### Use case scenario <br/>
+            <br/>
+            **Use case:** A social media platform allows users to upload video content directly from their phones or computers. This endpoint facilitates the upload process. For example, if you are developing a video-sharing app where users can upload short clips from their mobile devices, this endpoint enables them to select a video, upload it to the platform.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageLiveStream.GetAllStreamsAsync(System.String,System.String,System.Nullable{Fastpix.Models.Requests.GetAllStreamsOrderBy})">
+            <summary>
+            Get all live streams
+            
+            <remarks>
+            Retrieves a list of all live streams associated with the user's account (workspace). It provides an overview of both current and past live streams, including details like streamId, title, status, and creation time. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageLiveStream.GetLiveStreamByIdAsync(System.String)">
+            <summary>
+            Get stream by ID
+            
+            <remarks>
+            This endpoint retrieves detailed information about a specific live stream by its unique streamId. It includes data such as the stream's status (idle, preparing, active, disabled), metadata (title, description), and more. <br/>
+            <br/>
+              **Practical example:** Suppose a news agency is broadcasting a live event and wants to track the configurations set for the live stream while also checking the stream&apos;s status.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageLiveStream.DeleteLiveStreamAsync(System.String)">
+            <summary>
+            Delete a stream
+            
+            <remarks>
+            Permanently removes a specified live stream from the workspace. If the stream is still active, the encoder will be disconnected, and the ingestion will stop. This action cannot be undone, and any future playback attempts will fail. <br/>
+            <br/>
+              By providing the streamId, the API will terminate any active connections to the stream and remove it from the list of available live streams. You can further look for video.live_stream.deleted webhook to notify your system about the status. <br/>
+            <br/>
+              **Example:** For an online concert platform, a trial stream was mistakenly made public. The event manager deletes the stream before the concert begins to avoid confusion among viewers. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageLiveStream.UpdateLiveStreamAsync(System.String,Fastpix.Models.Components.PatchLiveStreamRequest)">
+            <summary>
+            Update a stream
+            
+            <remarks>
+            This endpoint allows users to modify the parameters of an existing live stream, such as its metadata (title, description) or the reconnect window. It's useful for making changes to a stream that has already been created but not yet ended. Once the live stream is disabled, you cannot update a stream. <br/>
+            <br/>
+            <br/>
+              The updated stream parameters and the streamId needs to be shared in the request, and FastPix will return the updated stream details. Once updated, video.live_stream.updated webhook event notifies your system. <br/>
+            <br/>
+              **Practical example:** A host realizes they need to extend the reconnect window for their live stream in case they lose connection temporarily during the event. Or suppose during a multi-day online conference, the event organizers need to update the stream title to reflect the next day&apos;s session while keeping the same stream ID for continuity. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageVideos.ListMediaAsync(System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Fastpix.Models.Requests.ListMediaOrderBy})">
+            <summary>
+            Get list of all media
+            
+            <remarks>
+            This endpoint returns a list of all media files created from a URL or uploaded as file objects within your organization. Each media entry contains metadata such as the media ID, creation date, status, and type. It allows you to retrieve a comprehensive overview of your media assets, making it easier to manage and review them. <br/>
+            <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            When called, the API provides a paginated response containing the media items in the organization&apos;s library. This is helpful for retrieving a large volume of media and managing content in bulk. <br/>
+            <br/>
+            <br/>
+            <br/>
+            #### Use case scenario <br/>
+            <br/>
+            * **Use case:** A content manager at a video-on-demand platform wants to see all uploaded media to assess the quality and status of videos. <br/>
+            <br/>
+            <br/>
+            <br/>
+            * **Detailed example:** <br/>
+            You&apos;re managing a video platform and need to check all the uploaded media in your library to ensure no outdated or low-quality content is being served. Using this endpoint, you can retrieve a complete list of media, allowing you to filter, sort, or update items as needed. <br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageVideos.GetMediaAsync(System.String)">
+            <summary>
+            Get a media by ID
+            
+            <remarks>
+            By calling this endpoint, you can retrieve detailed information about a specific media item, including its current status and a playbackId. This is particularly useful for retrieving specific media details when managing large content libraries. <br/>
+            <br/>
+            <br/>
+            <br/>
+            #### How it works <br/>
+            <br/>
+            <br/>
+            <br/>
+            1. Make a GET request to the ** /on-demand/`&lt;mediaId&gt;`**  endpoint, replacing `&lt;mediaId&gt;` with the **uploadId** received during the upload process or the id obtained when creating media from a URL. <br/>
+            <br/>
+            <br/>
+            2. Receive a response that includes details about the media, including: <br/>
+            <br/>
+            * **status:** Indicates whether the media is still "preparing" or has transitioned to ". <br/>
+            <br/>
+            * **playbackId:** The playbackId is a unique identifier that allows you to stream the media once it is ready. You can construct the stream URL dynamically using the playbackId in the following format: `https://stream.fastpix.io/&lt;playbackId&gt;.m3u8`<br/>
+            <br/>
+            <br/>
+            <br/>
+            **Please note:** Polling this API will let you know the status that whether the upload media has been moved to ready status, so that you can get started with streaming your media. <br/>
+            <br/>
+            #### Use case scenario<br/>
+            <br/>
+            **Use case:** Suppose your platform provides users with an interface where they can manage their uploaded content. A user requests detailed information about a specific video to see if it has been fully processed and is available for playback. Using the media ID, you can fetch the information from FastPix and display it in the user's dashboard. <br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageVideos.UpdatedMediaAsync(System.String,Fastpix.Models.Requests.UpdatedMediaRequestBody)">
+            <summary>
+            Update a media by ID
+            
+            <remarks>
+            This endpoint allows you to update specific parameters of an existing media file. You can modify the key-value pairs of the metadata that were provided in the payload during the creation of media from a URL or when uploading the media as a file object. <br/>
+            <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            1. Make a PATCH request to the ** /on-demand/`&lt;mediaId&gt;`**  endpoint, replacing `&lt;mediaId&gt;` with the uploadId or the id of the media you want to update. <br/>
+            <br/>
+            2. Include the updated parameters in the request body. <br/>
+            <br/>
+            3. Receive a response containing the updated media data, confirming the changes made. <br/>
+            <br/>
+            Once you have made the update request, you can also look for the webhook event **video.media.updated** to notify your system about update status. <br/>
+            <br/>
+            <br/>
+            **Use case:** Imagine a scenario where a user uploads a video and later realizes they need to change the title, add a new description or tags. You can use this endpoint to update the media metadata without having to re-upload the entire video.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageVideos.DeleteMediaAsync(System.String)">
+            <summary>
+            Delete a media by ID
+            
+            <remarks>
+            This endpoint allows you to permanently delete a a specific video or audio media file along with all associated data. If you wish to remove a media file from FastPix storage, use this endpoint with the **mediaId** (either **uploadId** or **id**) received during the media's creation or upload. <br/>
+            <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            <br/>
+            1. Make a DELETE request to the ** /on-demand/`&lt;mediaId&gt;`**  endpoint, replacing `&lt;mediaId&gt;` with the uploadId or the id of the media you want to delete. <br/>
+            <br/>
+            2. Confirm the deletion: Since this action is irreversible, ensure that you no longer need the media before proceeding. Once deleted, the media cannot be retrieved or played back. <br/>
+            <br/>
+            3. Webhook event to look for: **video.media.deleted** <br/>
+            <br/>
+            **Use case:** A user on a video-sharing platform decides to remove an old video from their profile, or suppose you're running a content moderation system, and one of the videos uploaded by a user violates your platform's policies. Using this endpoint, the media is permanently deleted from your library, ensuring it's no longer accessible or viewable by other users. <br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IManageVideos.RetrieveMediaInputInfoAsync(System.String)">
+            <summary>
+            Get info of media inputs
+            
+            <remarks>
+            Allows you to retrieve detailed information about the media inputs associated with a specific media item. You can use this endpoint to verify the media file's input URL, track creation status, and container format. The mediaId (either uploadId or id) must be provided to fetch the information. <br/>
+            <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            <br/>
+            <br/>
+            Upon making a GET request with the mediaId, FastPix returns a response that includes: <br/>
+            <br/>
+            * **Input-url:** The URL of the uploaded media file. <br/>
+            <br/>
+            * **tracks:** Information about the tracks associated with the media, including both video and audio tracks, indicating whether they have been successfully created. <br/>
+            <br/>
+            * **containerFormat:** The format of the uploaded media file container (e.g., MP4, MKV). <br/>
+            <br/>
+            <br/>
+            <br/>
+            This endpoint is particularly useful for ensuring that all necessary tracks (video and audio) have been correctly associated with the media during the upload or media creation process. <br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.AudioInput.Type">
+            <summary>
+            Type of overlay (currently only supports &apos;audio&apos;).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.AudioInput.SwapTrackUrl">
+            <summary>
+            URL of the audio track to replace the existing audio in the video.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.AudioInput.ImposeTracks">
+            <summary>
+            List of additional audio tracks to overlay on the video.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.AudioInputType">
+            <summary>
+            Type of overlay (currently only supports &apos;audio&apos;).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamRequest.PlaybackSettings">
+            <summary>
+            Displays the result of the playback settings.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamRequest.InputMediaSettings">
+            <summary>
+            Displays the result of the input Media settings.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateLiveStreamRequestMaxResolution">
+            <summary>
+            Max resolution can be used to control the maximum resolution your media is encoded, stored, and streamed at.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateLiveStreamRequestMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.Metadata">
+            <summary>
+            You can search for videos with specific key-value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have a maximum of 255 characters and up to 10 entries are allowed.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.Subtitle">
+            <summary>
+            Generates subtitle files for audio/video files.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.AccessPolicy">
+            <summary>
+            Determines whether access to the streamed content is kept private or available to all.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.Mp4Support">
+            <summary>
+            “capped_4k&quot;: Generates an mp4 video file up to 4k resolution &quot;audioOnly&quot;: Generates an m4a audio file of the media file &quot;audioOnly,capped_4k&quot;: Generates both video and audio media files for offline viewing<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.SourceAccess">
+            <summary>
+            The sourceAccess parameter determines whether the original media file is accessible. Set to true to enable access or false to restrict it
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.OptimizeAudio">
+            <summary>
+            normalize volume of the audio track. This is available for pre-recorded content only.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.MaxResolution">
+            <summary>
+            The maximum resolution tier determines the highest quality your media will be available in.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.Chapters">
+            <summary>
+            Enable or disable the chapters feature for the media. Set to `true` to enable chapters or `false` to disable.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequest.NamedEntities">
+            <summary>
+            Enable or disable named entity extraction. Set to `true` to enable or `false` to disable.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestAccessPolicy">
+            <summary>
+            Determines whether access to the streamed content is kept private or available to all.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequestDomains.DefaultPolicy">
+            <summary>
+            Specifies the default access policy for domains. <br/>
+            
+            <remarks>
+            If set to `allow`, all domains are allowed access unless otherwise specified in the `deny` lists. <br/>
+            If set to `deny`, all domains are denied access unless otherwise specified in the `allow` lists.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequestDomains.Allow">
+            <summary>
+            A list of domain names or patterns that are explicitly allowed access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `deny`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequestDomains.Deny">
+            <summary>
+            A list of domain names or patterns that are explicitly denied access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `allow`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestDomainsDefaultPolicy">
+            <summary>
+            Specifies the default access policy for domains. <br/>
+            
+            <remarks>
+            If set to `allow`, all domains are allowed access unless otherwise specified in the `deny` lists. <br/>
+            If set to `deny`, all domains are denied access unless otherwise specified in the `allow` lists.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestLanguageCode">
+            <summary>
+            Language codes are concise, standardized symbols that denote languages, utilizing either two or three characters for identification. The language code must be compliant with the BCP 47 standard to ensure compatibility. (for text only).<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestMaxResolution">
+            <summary>
+            The maximum resolution tier determines the highest quality your media will be available in.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestMetadata">
+            <summary>
+            You can search for videos with specific key-value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have a maximum of 255 characters and up to 10 entries are allowed.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestMp4Support">
+            <summary>
+            “capped_4k&quot;: Generates an mp4 video file up to 4k resolution &quot;audioOnly&quot;: Generates an m4a audio file of the media file &quot;audioOnly,capped_4k&quot;: Generates both video and audio media files for offline viewing<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestType">
+            <summary>
+            Defines the type of input. Possible values include video, audio, av.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequestUserAgents.DefaultPolicy">
+            <summary>
+            Specifies the default access policy for user agents (browsers, bots, etc.).<br/>
+            
+            <remarks>
+            If set to `allow`, all user agents are allowed access unless otherwise specified in the `deny` lists. <br/>
+            If set to `deny`, all user agents are denied access unless otherwise specified in the `allow` lists.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequestUserAgents.Allow">
+            <summary>
+            A list of user agents (identified by string names or patterns) that are explicitly allowed access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `deny`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaRequestUserAgents.Deny">
+            <summary>
+            A list of user agents (identified by string names or patterns) that are explicitly denied access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `allow`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaRequestUserAgentsDefaultPolicy">
+            <summary>
+            Specifies the default access policy for user agents (browsers, bots, etc.).<br/>
+            
+            <remarks>
+            If set to `allow`, all user agents are allowed access unless otherwise specified in the `deny` lists. <br/>
+            If set to `deny`, all user agents are denied access unless otherwise specified in the `allow` lists.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.Id">
+            <summary>
+            The Media is assigned a universal unique identifier, which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.Trial">
+            <summary>
+            FastPix allows for a free trial. Create as many media files as you like during the trial period. Remember, each clip can only be 10 seconds long and will be deleted after 24 hours. Also, all trial content will have the FastPix logo watermark.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.Status">
+            <summary>
+            Determines the media&apos;s status, which can be one of the possible values.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.CreatedAt">
+            <summary>
+            Time the media was created, defined as a localDateTime (UTC Time).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.UpdatedAt">
+            <summary>
+            Time the media was updated, defined as a localDateTime (UTC Time).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.PlaybackIds">
+            <summary>
+            A collection of Playback ID objects utilized for crafting HLS playback URLs.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.CreateMediaResponse.MaxResolution">
+            <summary>
+            The maximum resolution tier determines the highest quality your media will be available in.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaResponseMaxResolution">
+            <summary>
+            The maximum resolution tier determines the highest quality your media will be available in.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.CreateMediaResponseMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.DirectUpload">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUpload.Id">
+            <summary>
+            When creating the upload, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUpload.MediaId">
+            <summary>
+            When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUpload.Status">
+            <summary>
+            Determines the media&apos;s status, which can be one of the possible values.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUpload.Url">
+            <summary>
+            The url hosts the media file for FastPix, which needs to be download to use further.  It supports formats like MP3, MP4, MOV, MKV, or TS, and includes text tracks for subtitles/CC (SRT file/VTT file). While FastPix can handle various audio and video formats and codecs, using standard inputs can help with optimal processing speed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUpload.Timeout">
+            <summary>
+            The duration set for the validity of the upload URL. If the upload isn&apos;t completed within this timeframe, it&apos;s marked as timed out.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUpload.CorsOrigin">
+            <summary>
+            Upload media directly from a device using the url name or enter &apos;*&apos; to allow all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DirectUploadResponse.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.DirectUploadResponseMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.StreamKey">
+            <summary>
+            A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.SrtSecret">
+            <summary>
+            A secret used for securing the SRT stream. This ensures that only authorized users can access the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.Trial">
+            <summary>
+            FastPix allows for a to trial the live stream for free. The duration of trial streams is five minutes. After five minutes of activity, the trial stream is turned off, and the recorded asset is removed after a day.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.Status">
+            <summary>
+            The current live stream status can be one of four values:Idle, Preparing, Active or Disabled.The Idle status signifies that there isn&apos;t a broadcast in progress.The preparing status indicates that the stream is getting prepared. while, the Active status indicates that a broadcast is currently in progress. The Disabled status means that no more RTMP streams can be published.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MaxResolution">
+            <summary>
+            Max resolution can be used to control the maximum resolution your media is encoded, stored, and streamed at.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MaxDuration">
+            <summary>
+            The maximum duration in seconds that a live stream can have before it ends the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.CreatedAt">
+            <summary>
+            It is the moment when the stream was created Time the media was generated, defined as a localDateTime (UTC Time).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.ReconnectWindow">
+            <summary>
+            In case the software streaming the live, get disrupted for any reason and get disconnect from FastPix, the reconnect window specifies the waiting time span of FastPix will wait before ending the stream. Before starting the stream, you can set the reconnect window time set which is up to 1800 seconds.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.EnableRecording">
+            <summary>
+            When set to true, the livestream will be recorded and stored for later viewing purposes. If set to false, the livestream will not be recorded.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MediaPolicy">
+            <summary>
+            Determines whether the recorded stream should be publicly accessible or private in Live to VOD (Video on Demand).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.PlaybackId">
+            <summary>
+            A collection of Playback ID objects utilized for crafting HLS playback urls.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.SrtPlaybackResponse">
+            <summary>
+            This object contains the livestream playback response details for SRT Protocol.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.GetCreateLiveStreamResponseDTOMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.GetCreateLiveStreamResponseDTOSrtPlaybackResponse">
+            <summary>
+            This object contains the livestream playback response details for SRT Protocol.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTOSrtPlaybackResponse.SrtPlaybackStreamId">
+            <summary>
+            A unique identifier for the SRT playback stream. This ID is used to distinguish between different playback streams.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTOSrtPlaybackResponse.SrtPlaybackSecret">
+            <summary>
+            A playback secret used for securing the SRT playback stream. This ensures that only authorized users can access the playback.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.GetStreamsResponse">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetStreamsResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetStreamsResponse.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.GetStreamsResponse.Pagination">
+            <summary>
+            Pagination organizes content into pages for better readability and navigation.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.HTTPMetadata.Response">
+            <summary>
+            Raw HTTP response; suitable for custom response parsing
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.HTTPMetadata.Request">
+            <summary>
+            Raw HTTP request; suitable for debugging
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.ImposeTrack.Url">
+            <summary>
+            URL of the audio track to impose on the video.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.ImposeTrack.StartTime">
+            <summary>
+            Start time (in seconds) of the imposed audio in the video.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.ImposeTrack.EndTime">
+            <summary>
+            End time (in seconds) of the imposed audio in the video.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.ImposeTrack.FadeInLevel">
+            <summary>
+            Level of fade-in effect (in seconds) at the start of the imposed audio.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.ImposeTrack.FadeOutLevel">
+            <summary>
+            Level of fade-out effect (in seconds) at the end of the imposed audio.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.InputMediaSettings">
+            <summary>
+            Displays the result of the input Media settings.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.InputMediaSettings.MaxResolution">
+            <summary>
+            Max resolution can be used to control the maximum resolution your media is encoded, stored, and streamed at.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.InputMediaSettings.ReconnectWindow">
+            <summary>
+            In case the software streaming the live, get disrupted for any reason and get disconnect from FastPix, the reconnect window specifies the waiting time span of FastPix will wait before ending the stream. Before starting the stream, you can set the reconnect window time set which is up to 1800 seconds.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.InputMediaSettings.MediaPolicy">
+            <summary>
+            Determines whether the recorded stream should be publicly accessible or private in Live to VOD (Video on Demand).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.InputMediaSettings.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.LiveStreamDeleteResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.LivestreamgetResponse">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.LivestreamgetResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.LivestreamgetResponse.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.LiveStreamResponseDTO">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.LiveStreamResponseDTO.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.LiveStreamResponseDTO.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Thumbnail">
+            <summary>
+            A video thumbnail is a still image that acts as the preview image for your video.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Id">
+            <summary>
+            When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.WorkspaceId">
+            <summary>
+            A unique identifier is generated by FastPix for the workspace.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.MaxResolution">
+            <summary>
+            The maximum resolution specified by the user for the media.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.SourceResolution">
+            <summary>
+            The actual resolution of the uploaded media. This represents the native quality of the source media.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Status">
+            <summary>
+            Determines the media&apos;s status, which can be one of the possible values.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Mp4Support">
+            <summary>
+            Determines the type of MP4 support for the media.   - **none**: Disables MP4 support.   - **capped_4k**: Enables MP4 downloads with resolutions up to 4K.   - **audioOnly**: Provides an MP4 stream containing only the audio.   - **audioOnly,capped_4k**: Enables both MP4 video downloads (up to 4K) and an audio-only stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.SourceAccess">
+            <summary>
+            The sourceAccess parameter determines whether the original media file is accessible. Set to true to enable access or false to restrict it
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.PlaybackIds">
+            <summary>
+            A collection of Playback ID objects utilized for crafting HLS playback URLs.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Tracks">
+            <summary>
+            A media consists of different media tracks, like video, audio, and subtitle, all combined.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.Duration">
+            <summary>
+            The time span of the media, measured in seconds with a maximum allowable duration of 12 hours per individual media.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.FrameRate">
+            <summary>
+            Frame rate quantifies the speed at which frames are displayed per second. It represents the range of frames available for a specific track. If the frame rate of the input file is indeterminable, it will be indicated by a value of -1.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.AspectRatio">
+            <summary>
+            The aspect ratio of a video is a value that describes the relative shape of a video based on its width and height.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.CreatedAt">
+            <summary>
+            Time the media was created, defined as a localDateTime (UTC Time).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Media.UpdatedAt">
+            <summary>
+            Time the media was updated, defined as a localDateTime (UTC Time).
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.MediaMaxResolution">
+            <summary>
+            The maximum resolution specified by the user for the media.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.MediaMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.MediaMp4Support">
+            <summary>
+            Determines the type of MP4 support for the media.   - **none**: Disables MP4 support.   - **capped_4k**: Enables MP4 downloads with resolutions up to 4K.   - **audioOnly**: Provides an MP4 stream containing only the audio.   - **audioOnly,capped_4k**: Enables both MP4 video downloads (up to 4K) and an audio-only stream.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.MediaPolicy">
+            <summary>
+            Determines whether the recorded stream should be publicly accessible or private in Live to VOD (Video on Demand).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Moderation.Type">
+            <summary>
+            Defines the type of input. Possible values include video, audio, av.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.Pagination">
+            <summary>
+            Pagination organizes content into pages for better readability and navigation.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Pagination.TotalRecords">
+            <summary>
+            It gives the total number of media assets that are accessible overall.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Pagination.CurrentOffset">
+            <summary>
+            Determines the current point for data retrieval within a paginated list.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Pagination.OffsetCount">
+            <summary>
+            The offset count is expressed as total records by limit.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchLiveStreamRequest.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchLiveStreamRequest.ReconnectWindow">
+            <summary>
+            In case the software streaming the live, get disrupted for any reason and get disconnect from FastPix, the reconnect window specifies the waiting time span of FastPix will wait before ending the stream. Before starting the stream, you can set the reconnect window time set which is up to 1800 seconds.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PatchLiveStreamRequestMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PatchResponseData">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.StreamKey">
+            <summary>
+            A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.SrtSecret">
+            <summary>
+            A secret used for securing the SRT stream. This ensures that only authorized users can access the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.Trial">
+            <summary>
+            FastPix allows for a to trial the live stream for free. The duration of trial streams is five minutes. After five minutes of activity, the trial stream is turned off, and the recorded asset is removed after a day.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.Status">
+            <summary>
+            The current live stream status can be one of four values:Idle, Preparing, Active or Disabled.The Idle status signifies that there isn&apos;t a broadcast in progress.The preparing status indicates that the stream is getting prepared. while, the Active status indicates that a broadcast is currently in progress. The Disabled status means that no more RTMP streams can be published.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.MaxResolution">
+            <summary>
+            Max resolution can be used to control the maximum resolution your media is encoded, stored, and streamed at.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.MaxDuration">
+            <summary>
+            The maximum duration in seconds that a live stream can have before it ends the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.CreatedAt">
+            <summary>
+            It is the moment when the stream was created Time the media was generated, defined as a localDateTime (UTC Time).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.ReconnectWindow">
+            <summary>
+            In case the software streaming the live, get disrupted for any reason and get disconnect from FastPix, the reconnect window specifies the waiting time span of FastPix will wait before ending the stream. Before starting the stream, you can set the reconnect window time set which is up to 1800 seconds.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.EnableRecording">
+            <summary>
+            When set to true, the livestream will be recorded and stored for later viewing purposes. If set to false, the livestream will not be recorded.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.MediaPolicy">
+            <summary>
+            Determines whether the recorded stream should be publicly accessible or private in Live to VOD (Video on Demand).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseData.SrtPlaybackResponse">
+            <summary>
+            This object contains the livestream playback response details for SRT Protocol.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PatchResponseDataMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PatchResponseDataSrtPlaybackResponse">
+            <summary>
+            This object contains the livestream playback response details for SRT Protocol.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseDataSrtPlaybackResponse.SrtPlaybackStreamId">
+            <summary>
+            A unique identifier for the SRT playback stream. This ID is used to distinguish between different playback streams.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseDataSrtPlaybackResponse.SrtPlaybackSecret">
+            <summary>
+            A playback secret used for securing the SRT playback stream. This ensures that only authorized users can access the playback.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PatchResponseDTO">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseDTO.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PatchResponseDTO.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Placement.XAlign">
+            <summary>
+            Horizontal alignment of the watermark.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Placement.XMargin">
+            <summary>
+            Horizontal margin from the edge of the video.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Placement.YAlign">
+            <summary>
+            Vertical alignment of the watermark.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Placement.YMargin">
+            <summary>
+            Vertical margin from the edge of the video.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackId">
+            <summary>
+            A collection of Playback ID objects utilized for crafting HLS playback urls.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackId.Id">
+            <summary>
+            A unique identifier is generated by FastPix for the playbacks.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackId.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackId.AccessRestrictions">
+            <summary>
+            Controls access based on domains and user agents. Defines a default policy (either &quot;allow&quot; or &quot;deny&quot;) and provides lists for explicitly allowed or denied domains and user agents.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdAccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdAccessRestrictions">
+            <summary>
+            Controls access based on domains and user agents. Defines a default policy (either &quot;allow&quot; or &quot;deny&quot;) and provides lists for explicitly allowed or denied domains and user agents.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdAccessRestrictions.Domains">
+            <summary>
+            Restrictions based on the originating domain of a request (e.g., whether requests from certain websites should be allowed or blocked).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdAccessRestrictions.UserAgents">
+            <summary>
+            Restrictions based on the user agent (which is typically a string sent by browsers or bots identifying themselves).
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdDomains">
+            <summary>
+            Restrictions based on the originating domain of a request (e.g., whether requests from certain websites should be allowed or blocked).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdDomains.DefaultPolicy">
+            <summary>
+            This sets the default behavior for domain access (either &quot;allow&quot; or &quot;deny&quot;).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdDomains.Allow">
+            <summary>
+            A list of domains that are explicitly allowed access.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdDomains.Deny">
+            <summary>
+            A list of domains that are explicitly blocked from accessing the resource.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdDomainsDefaultPolicy">
+            <summary>
+            This sets the default behavior for domain access (either &quot;allow&quot; or &quot;deny&quot;).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdRequest.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdRequestAccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdResponse">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdResponseData.Id">
+            <summary>
+            Unique identifier for the playbackId
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdResponseData.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIds">
+            <summary>
+            A collection of Playback ID objects utilized for crafting HLS playback urls.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIds.Id">
+            <summary>
+            Unique identifier for the playbackId
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIds.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdUserAgents">
+            <summary>
+            Restrictions based on the user agent (which is typically a string sent by browsers or bots identifying themselves).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdUserAgents.DefaultPolicy">
+            <summary>
+            This sets the default behavior for user agent access (either &quot;allow&quot; or &quot;deny&quot;).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdUserAgents.Allow">
+            <summary>
+            A list of specific user agents that are allowed to access the resource.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackIdUserAgents.Deny">
+            <summary>
+            A list of specific user agents that are blocked.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackIdUserAgentsDefaultPolicy">
+            <summary>
+            This sets the default behavior for user agent access (either &quot;allow&quot; or &quot;deny&quot;).
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackSettings">
+            <summary>
+            Displays the result of the playback settings.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.PlaybackSettings.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.PlaybackSettingsAccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Segment1.Url">
+            <summary>
+            URL of the segment to be added.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Segment1.InsertAt">
+            <summary>
+            The timestamp at which the segment should be inserted.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Segment2.Url">
+            <summary>
+            URL of the segment to be added.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Segment2.InsertAtEnd">
+            <summary>
+            Flag indicating the segment should be inserted at the end.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastdeleteResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastRequest.Url">
+            <summary>
+            The RTMP hostname, combined with the application name, is crucial for connecting to third-party live streaming services and transmitting the live stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastRequest.StreamKey">
+            <summary>
+            A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastResponse">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponse.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastResponseData">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponseData.SimulcastId">
+            <summary>
+            When you create the new simulcast, FastPix assign a universal unique identifier which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponseData.Url">
+            <summary>
+            The RTMP hostname, combined with the application name, is crucial for connecting to third-party live streaming services and transmitting the live stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponseData.StreamKey">
+            <summary>
+            A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponseData.IsEnabled">
+            <summary>
+            When the value is true, the simulcast will be enabled for the given stream
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastResponseData.Metadata">
+            <summary>
+            Arbitrary user-supplied metadata that will be included in the simulcast details. Can be used to store your own ID for a video along with the simulcast. Max:255 characters, Upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastResponseMetadata">
+            <summary>
+            Arbitrary user-supplied metadata that will be included in the simulcast details. Can be used to store your own ID for a video along with the simulcast. Max:255 characters, Upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateRequest.IsEnabled">
+            <summary>
+            When the value is set to false, the simulcast will be disabled for the given stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateRequest.Metadata">
+            <summary>
+            Arbitrary user-supplied metadata that will be included in the simulcast details. Can be used to store your own ID for a video along with the simulcast. Max:255 characters, Upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastUpdateRequestMetadata">
+            <summary>
+            Arbitrary user-supplied metadata that will be included in the simulcast details. Can be used to store your own ID for a video along with the simulcast. Max:255 characters, Upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastUpdateResponse">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponse.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastUpdateResponseData">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponseData.SimulcastId">
+            <summary>
+            When you create the new simulcast, FastPix assign a universal unique identifier which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponseData.Url">
+            <summary>
+            The RTMP hostname, combined with the application name, is crucial for connecting to third-party live streaming services and transmitting the live stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponseData.StreamKey">
+            <summary>
+            A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponseData.IsEnabled">
+            <summary>
+            When the value is set to false, the simulcast will be disabled for the given stream
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SimulcastUpdateResponseData.Metadata">
+            <summary>
+            Arbitrary user-supplied metadata that will be included in the simulcast details. Can be used to store your own ID for a video along with the simulcast. Max:255 characters, Upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SimulcastUpdateResponseMetadata">
+            <summary>
+            Arbitrary user-supplied metadata that will be included in the simulcast details. Can be used to store your own ID for a video along with the simulcast. Max:255 characters, Upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SourceResolution">
+            <summary>
+            The actual resolution of the uploaded media. This represents the native quality of the source media.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.Subtitle">
+            <summary>
+            Generates subtitle files for audio/video files.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Subtitle.LanguageName">
+            <summary>
+            Name of the language in which the subtitles will be generated.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Subtitle.Metadata">
+            <summary>
+            You can search for videos with specific key-value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have a maximum of 255 characters and up to 10 entries are allowed.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Subtitle.LanguageCode">
+            <summary>
+            Language codes are concise, standardized symbols that denote languages, utilizing either two or three characters for identification. The language code must be compliant with the BCP 47 standard to ensure compatibility. (for text only).<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SubtitleInput">
+            <summary>
+            Generates subtitle files for audio/video files.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SubtitleInput.Type">
+            <summary>
+            Defines the type of input.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SubtitleInput.Url">
+            <summary>
+            The direct URL of the subtitle file.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SubtitleInput.LanguageName">
+            <summary>
+            Name of the language in which the subtitles will be generated.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.SubtitleInput.LanguageCode">
+            <summary>
+            The BCP 47 language code representing the language of the generated track.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SubtitleInputLanguageCode">
+            <summary>
+            The BCP 47 language code representing the language of the generated track.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.SubtitleMetadata">
+            <summary>
+            You can search for videos with specific key-value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have a maximum of 255 characters and up to 10 entries are allowed.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Summary.Generate">
+            <summary>
+            Enable or disable the summary feature for the media. Set to true to enable summary or false to disable.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Summary.SummaryLength">
+            <summary>
+            Specifies the desired word count for the generated summary. <br/>
+            
+            <remarks>
+            - The value must be between **30** and **250** words.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.Track">
+            <summary>
+            A media consists of different media tracks, like video, audio, and subtitle, all combined.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Track.Id">
+            <summary>
+            FastPix generates a unique identifier for each track.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Track.Type">
+            <summary>
+            Defines the type of input. This option is mandatory.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Track.Width">
+            <summary>
+            Track width denotes the range of widths applicable to a specific track. Currently, this setting can be modified only for video tracks
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Track.Height">
+            <summary>
+            Track height denotes the range of height applicable to a specific track. Currently, this setting can be modified only for video tracks.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Track.FrameRate">
+            <summary>
+            Frame rate quantifies the speed at which frames are displayed per second. It represents the range of frames available for a specific track. If the frame rate of the input file is indeterminable, it will be indicated by a value of -1.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.Track.ClosedCaptions">
+            <summary>
+            Indicates if the track contains closed captions.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.Type">
+            <summary>
+            Defines the type of input.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.Url">
+            <summary>
+            The url hosts the media file for FastPix, which needs to be downloaded to use further. It supports formats like MP3, MP4, MOV, MKV, or TS, and includes text tracks for subtitles/CC (SRT file/VTT file). While FastPix can handle various audio and video formats and codecs, using standard inputs can help with optimal processing speed.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.StartTime">
+            <summary>
+            Start time indicates where encoding should begin within the video file. For example, if you want to encode a segment from 3 minutes (180 seconds) to 6 minutes (360 seconds) in a 10-minute (600 seconds) video, the start time is 3 minutes (180 seconds). Note: Start time is always mentioned in seconds.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.EndTime">
+            <summary>
+            End time indicates where encoding should end within the video file. For example, if you want to encode a segment from 3 minutes (180 seconds) to 6 minutes (360 seconds) in a 10-minute (600 seconds) video, the end time is 6 minutes (360 seconds). Note: End time is always mentioned in seconds.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.IntroUrl">
+            <summary>
+            The url of the intro video which is to be added at the start of the video.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.OutroUrl">
+            <summary>
+            The url of the outro video which is to be added at the end of the video.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.ExpungeSegments">
+            <summary>
+            The list of the startTime-endTime of the segments to be removed from the actual video.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.VideoInput.Segments">
+            <summary>
+            A list of media segments to be added or processed. Each segment includes details such as the URL of the media file and instructions on where it should be inserted in the final media composition. A segment can either specify an exact timestamp  (`insertAt`) or indicate that it should be added at the end (`insertAtEnd`).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.WatermarkInput.Type">
+            <summary>
+            Type of overlay (currently only supports &apos;watermark&apos;).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.WatermarkInput.Url">
+            <summary>
+            URL of the watermark image.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.WatermarkInput.Width">
+            <summary>
+            Width of the watermark in percentage or pixels.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.WatermarkInput.Height">
+            <summary>
+            Height of the watermark in percentage or pixels.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.WatermarkInput.Opacity">
+            <summary>
+            Opacity of the watermark in percentage.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.WatermarkInputType">
+            <summary>
+            Type of overlay (currently only supports &apos;watermark&apos;).
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.XAlign">
+            <summary>
+            Horizontal alignment of the watermark.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Components.YAlign">
+            <summary>
+            Vertical alignment of the watermark.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.BadRequestError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.BadRequestError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.BadRequestError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.BadRequestError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.BadRequestException.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.BadRequestException.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.Field.FieldValue">
+            <summary>
+            Displays the specific field associated with the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.Field.Message">
+            <summary>
+            A descriptive message providing more details for the error
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.ForbiddenError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ForbiddenError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ForbiddenError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ForbiddenError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ForbiddenException.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ForbiddenException.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.InvalidPermissionError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.InvalidPermissionError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.InvalidPermissionError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.InvalidPermissionError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.InvalidPermissionException.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.InvalidPermissionException.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.MediaNotFoundError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaNotFoundError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaNotFoundError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaNotFoundError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaNotFoundException.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaNotFoundException.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.MediaOrPlaybackNotFoundError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaOrPlaybackNotFoundError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaOrPlaybackNotFoundError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaOrPlaybackNotFoundError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaOrPlaybackNotFoundException.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.MediaOrPlaybackNotFoundException.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundError.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundError.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.NotFoundErrorError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorPlaybackId.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorPlaybackId.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.NotFoundErrorPlaybackIdError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorPlaybackIdError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorPlaybackIdError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorPlaybackIdError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorSimulcast.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorSimulcast.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.NotFoundErrorSimulcastError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorSimulcastError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorSimulcastError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.NotFoundErrorSimulcastError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.SimulcastUnavailableError">
+            <summary>
+            Returns the problem that has occured.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.SimulcastUnavailableError.Code">
+            <summary>
+            An error code indicating the type of the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.SimulcastUnavailableError.Message">
+            <summary>
+            A descriptive message providing more details for the error<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.SimulcastUnavailableError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.SimulcastUnavailableException.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.SimulcastUnavailableException.Error">
+            <summary>
+            Returns the problem that has occured.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.UnauthorizedError">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.UnauthorizedError.Code">
+            <summary>
+            Displays the error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.UnauthorizedError.Message">
+            <summary>
+            A descriptive message providing more details for the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.UnauthorizedError.Description">
+            <summary>
+            A detailed explanation of the possible causes for the error.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.UnauthorizedException.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.UnauthorizedException.Error">
+            <summary>
+            Displays details about the reasons behind the request&apos;s failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ValidationErrorResponse.Success">
+            <summary>
+            It demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ValidationErrorResponse.Error">
+            <summary>
+            Returns the problem that has occured
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Errors.ValidationErrorResponseError">
+            <summary>
+            Returns the problem that has occured
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ValidationErrorResponseError.Code">
+            <summary>
+            An error code indicating the type of the error.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ValidationErrorResponseError.Message">
+            <summary>
+            A descriptive message providing more details for the error
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Errors.ValidationErrorResponseError.Fields">
+            <summary>
+            It is an array of objects, where each object contains information about a specific field and a corresponding error message.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.CreateMediaPlaybackIdAccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdDomains.DefaultPolicy">
+            <summary>
+            Specifies the default access policy for domains. <br/>
+            
+            <remarks>
+            If set to `allow`, all domains are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all domains are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdDomains.Allow">
+            <summary>
+            A list of domain names or patterns that are explicitly allowed access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `deny`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdDomains.Deny">
+            <summary>
+            A list of domain names or patterns that are explicitly denied access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `allow`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.CreateMediaPlaybackIdDomainsDefaultPolicy">
+            <summary>
+            Specifies the default access policy for domains. <br/>
+            
+            <remarks>
+            If set to `allow`, all domains are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all domains are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdRequest.MediaId">
+            <summary>
+            When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdRequest.RequestBody">
+            <summary>
+            Request body for creating playback id for an media
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.CreateMediaPlaybackIdRequestBody">
+            <summary>
+            Request body for creating playback id for an media
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdRequestBody.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdResponse.Object">
+            <summary>
+            Playback id for an media
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.CreateMediaPlaybackIdResponseBody">
+            <summary>
+            Playback id for an media
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdResponseBody.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdUserAgents.DefaultPolicy">
+            <summary>
+            Specifies the default access policy for user agents (browsers, bots, etc.). <br/>
+            
+            <remarks>
+            If set to `allow`, all user agents are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all user agents are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdUserAgents.Allow">
+            <summary>
+            A list of user agents (identified by string names or patterns) that are explicitly allowed access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `deny`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdUserAgents.Deny">
+            <summary>
+            A list of user agents (identified by string names or patterns) that are explicitly denied access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `allow`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.CreateMediaPlaybackIdUserAgentsDefaultPolicy">
+            <summary>
+            Specifies the default access policy for user agents (browsers, bots, etc.). <br/>
+            
+            <remarks>
+            If set to `allow`, all user agents are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all user agents are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaResponse.Object">
+            <summary>
+            Media is created successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.CreateMediaResponseBody">
+            <summary>
+            Media is created successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateMediaResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateNewStreamResponse.LiveStreamResponseDTO">
+            <summary>
+            Stream created successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreatePlaybackIdOfStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreatePlaybackIdOfStreamResponse.PlaybackIdResponse">
+            <summary>
+            New PlaybackId created successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateSimulcastOfStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.CreateSimulcastOfStreamResponse.SimulcastResponse">
+            <summary>
+            New Simulcast created successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Data.PlaybackIds">
+            <summary>
+            A collection of Playback ID objects utilized for crafting HLS playback URLs.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteLiveStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteLiveStreamResponse.LiveStreamDeleteResponse">
+            <summary>
+            Stream deleted successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaPlaybackIdRequest.MediaId">
+            <summary>
+            Return the universal unique identifier for media which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaPlaybackIdRequest.PlaybackId">
+            <summary>
+            Return the universal unique identifier for playbacks  which can contain a maximum of 255 characters. 
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaPlaybackIdResponse.Object">
+            <summary>
+            Deleted a Playback Id successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DeleteMediaPlaybackIdResponseBody">
+            <summary>
+            Deleted a Playback Id successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaPlaybackIdResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaRequest.MediaId">
+            <summary>
+            When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaResponse.Object">
+            <summary>
+            Delete a video media
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DeleteMediaResponseBody">
+            <summary>
+            Delete a video media
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteMediaResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeletePlaybackIdOfStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeletePlaybackIdOfStreamRequest.PlaybackId">
+            <summary>
+            Unique identifier for the playbackId
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeletePlaybackIdOfStreamResponse.LiveStreamDeleteResponse">
+            <summary>
+            Stream&apos;s playbackId deleted successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteSimulcastOfStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteSimulcastOfStreamRequest.SimulcastId">
+            <summary>
+            When you create the new simulcast, FastPix assign a universal unique identifier which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DeleteSimulcastOfStreamResponse.SimulcastdeleteResponse">
+            <summary>
+            Stream&apos;s simulcast deleted successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaAccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaDomains.DefaultPolicy">
+            <summary>
+            Specifies the default access policy for domains. <br/>
+            
+            <remarks>
+            If set to `allow`, all domains are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all domains are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaDomains.Allow">
+            <summary>
+            A list of domain names or patterns that are explicitly allowed access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `deny`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaDomains.Deny">
+            <summary>
+            A list of domain names or patterns that are explicitly denied access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `allow`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaDomainsDefaultPolicy">
+            <summary>
+            Specifies the default access policy for domains. <br/>
+            
+            <remarks>
+            If set to `allow`, all domains are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all domains are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaMetadata">
+            <summary>
+            Tag a video in &quot;key&quot; : &quot;value&quot; pairs for searchable metadata. Maximum 10 entries, 255 characters each.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaRequest">
+            <summary>
+            Request body for direct upload
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaRequest.CorsOrigin">
+            <summary>
+            Upload media directly from a device using the URL name or enter &apos;*&apos; to allow all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaRequest.PushMediaSettings">
+            <summary>
+            Configuration settings for media upload.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaResponse.Object">
+            <summary>
+            Direct upload created successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaResponseBody">
+            <summary>
+            Direct upload created successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaResponseBody.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaUserAgents.DefaultPolicy">
+            <summary>
+            Specifies the default access policy for user agents (browsers, bots, etc.). <br/>
+            
+            <remarks>
+            If set to `allow`, all user agents are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all user agents are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaUserAgents.Allow">
+            <summary>
+            A list of user agents (identified by string names or patterns) that are explicitly allowed access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `deny`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaUserAgents.Deny">
+            <summary>
+            A list of user agents (identified by string names or patterns) that are explicitly denied access. <br/>
+            
+            <remarks>
+            This list is only effective when the `defaultPolicy` is set to `allow`.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaUserAgentsDefaultPolicy">
+            <summary>
+            Specifies the default access policy for user agents (browsers, bots, etc.). <br/>
+            
+            <remarks>
+            If set to `allow`, all user agents are allowed access unless otherwise specified in the `deny` list. <br/>
+            If set to `deny`, all user agents are denied access unless otherwise specified in the `allow` list.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.GetAllStreamsOrderBy">
+            <summary>
+            The list of value can be order in two ways DESC (Descending) or ASC (Ascending). In case not specified, by default it will be DESC.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetAllStreamsRequest.Limit">
+            <summary>
+            Limit specifies the maximum number of items to display per page.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetAllStreamsRequest.Offset">
+            <summary>
+            Offset determines the starting point for data retrieval within a paginated list.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetAllStreamsRequest.OrderBy">
+            <summary>
+            The list of value can be order in two ways DESC (Descending) or ASC (Ascending). In case not specified, by default it will be DESC.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetAllStreamsResponse.GetStreamsResponse">
+            <summary>
+            All streams retrieved sucessfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetLiveStreamByIdRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetLiveStreamByIdResponse.LivestreamgetResponse">
+            <summary>
+            Stream details retrieved successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetLiveStreamPlaybackIdRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetLiveStreamPlaybackIdRequest.PlaybackId">
+            <summary>
+            Upon creating a new playbackId, FastPix assigns a unique identifier to the playback.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetLiveStreamPlaybackIdResponse.PlaybackIdResponse">
+            <summary>
+            Stream details retrieved successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetMediaRequest.MediaId">
+            <summary>
+            The Media Id is assigned a universal unique identifier, which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetMediaResponse.Object">
+            <summary>
+            Get a video media by id
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.GetMediaResponseBody">
+            <summary>
+            Get a video media by id
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetMediaResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetSpecificSimulcastOfStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetSpecificSimulcastOfStreamRequest.SimulcastId">
+            <summary>
+            When you create the new simulcast, FastPix assign a universal unique identifier which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.GetSpecificSimulcastOfStreamResponse.SimulcastResponse">
+            <summary>
+            Stream&apos;s simulcast details fetched successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.LanguageCode">
+            <summary>
+            Language codes (BCP 47 compliant) used for text files.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.ListMediaOrderBy">
+            <summary>
+            The values in the list can be arranged in two ways: DESC (Descending) or ASC (Ascending).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaRequest.Limit">
+            <summary>
+            Limit specifies the maximum number of items to display per page.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaRequest.Offset">
+            <summary>
+            Offset determines the starting point for data retrieval within a paginated list.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaRequest.OrderBy">
+            <summary>
+            The values in the list can be arranged in two ways: DESC (Descending) or ASC (Ascending).
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaResponse.Object">
+            <summary>
+            List of video media
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.ListMediaResponseBody">
+            <summary>
+            List of video media
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaResponseBody.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.ListMediaResponseBody.Pagination">
+            <summary>
+            Pagination organizes content into pages for better readability and navigation.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.MaxResolution">
+            <summary>
+            Determines the highest quality resolution available.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Moderation.Type">
+            <summary>
+            Defines the type of input. Possible values include video, audio, av.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.Mp4Support">
+            <summary>
+            Generates MP4 video up to 4K (&quot;capped_4k&quot;), m4a audio only (&quot;audioOnly&quot;), or both for offline viewing.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.PushMediaSettings">
+            <summary>
+            Configuration settings for media upload.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.AccessPolicy">
+            <summary>
+            Determines if access to the streamed content is kept private or available to all.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.StartTime">
+            <summary>
+            Start time indicates where encoding should begin within the video file, in seconds.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.EndTime">
+            <summary>
+            End time indicates where encoding should end within the video file, in seconds.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.Metadata">
+            <summary>
+            Tag a video in &quot;key&quot; : &quot;value&quot; pairs for searchable metadata. Maximum 10 entries, 255 characters each.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.Subtitles">
+            <summary>
+            Generates subtitle files for audio/video files.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.OptimizeAudio">
+            <summary>
+            Enhance the quality and volume of the audio track. This is available for pre-recorded content only.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.MaxResolution">
+            <summary>
+            Determines the highest quality resolution available.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.SourceAccess">
+            <summary>
+            The sourceAccess parameter determines whether the original media file is accessible. Set to true to enable access or false to restrict it
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.Mp4Support">
+            <summary>
+            Generates MP4 video up to 4K (&quot;capped_4k&quot;), m4a audio only (&quot;audioOnly&quot;), or both for offline viewing.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.Chapters">
+            <summary>
+            Enable or disable the chapters feature for the media. Set to `true` to enable chapters or `false` to disable.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.PushMediaSettings.NamedEntities">
+            <summary>
+            Enable or disable named entity extraction. Set to `true` to enable or `false` to disable.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.RetrieveMediaInputInfoRequest.MediaId">
+            <summary>
+            Pass the list of the input objects used to create the media, along with applied settings.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.RetrieveMediaInputInfoResponse.Object">
+            <summary>
+            Get video media input information
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.RetrieveMediaInputInfoResponseBody">
+            <summary>
+            Get video media input information
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.RetrieveMediaInputInfoResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.RetrieveMediaInputInfoResponseBody.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.Subtitles">
+            <summary>
+            Generates subtitle files for audio/video files.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Subtitles.LanguageName">
+            <summary>
+            Name of the language for the subtitles.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Subtitles.Metadata">
+            <summary>
+            Searchable metadata tags for the video in key-value pairs.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Subtitles.LanguageCode">
+            <summary>
+            Language codes (BCP 47 compliant) used for text files.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.SubtitlesMetadata">
+            <summary>
+            Searchable metadata tags for the video in key-value pairs.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Summary.Generate">
+            <summary>
+            Enable or disable the summary feature for the media. Set to true to enable summary or false to disable.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.Summary.SummaryLength">
+            <summary>
+            Specifies the desired word count for the generated summary. <br/>
+            
+            <remarks>
+            - The value must be between **30** and **250** words.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.Type">
+            <summary>
+            Defines the type of input. Possible values include video, audio, av.<br/>
+            
+            <remarks>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.UpdatedMediaMetadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdatedMediaRequest.MediaId">
+            <summary>
+            When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdatedMediaRequestBody.Metadata">
+            <summary>
+            You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot; : &quot;value&quot; pairs. Dynamic Metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdatedMediaResponse.Object">
+            <summary>
+            Media details updated successfully
+            </summary>
+        </member>
+        <member name="T:Fastpix.Models.Requests.UpdatedMediaResponseBody">
+            <summary>
+            Media details updated successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdatedMediaResponseBody.Success">
+            <summary>
+            Demonstrates whether the request is successful or not.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdateLiveStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdateLiveStreamResponse.PatchResponseDTO">
+            <summary>
+            Stream details updated successfully
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdateSpecificSimulcastOfStreamRequest.StreamId">
+            <summary>
+            Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdateSpecificSimulcastOfStreamRequest.SimulcastId">
+            <summary>
+            When you create the new simulcast, FastPix assign a universal unique identifier which can contain a maximum of 255 characters.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Requests.UpdateSpecificSimulcastOfStreamResponse.SimulcastUpdateResponse">
+            <summary>
+            Stream&apos;s simulcast details fetched successfully
+            </summary>
+        </member>
+        <member name="M:Fastpix.IPlayback.CreatePlaybackIdOfStreamAsync(System.String,Fastpix.Models.Components.PlaybackIdRequest)">
+            <summary>
+            Create a playbackId
+            
+            <remarks>
+            Generates a new playback ID for the live stream, allowing viewers to access the stream through this ID. The playback ID can be shared with viewers for direct access to the live broadcast. <br/>
+            <br/>
+              By calling this endpoint with the streamId, FastPix returns a unique playbackId, which can be used to stream the live content. <br/>
+            <br/>
+              **Use case:** A media platform needs to distribute a unique playback ID to users for an exclusive live concert. The platform can also embed the stream on various partner websites. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IPlayback.DeletePlaybackIdOfStreamAsync(System.String,System.String)">
+            <summary>
+            Delete a playbackId
+            
+            <remarks>
+            Deletes a previously created playback ID for a live stream. This will prevent any new viewers from accessing the stream through the playback ID, though current viewers will be able to continue watching for a limited time before being disconnected. By providing the playbackId, FastPix deletes the ID and ensures new playback requests will fail. <br/>
+            <br/>
+              **Use case:** A streaming service wants to prevent new users from joining a live stream that is nearing its end. The host can delete the playback ID to ensure no one can join the stream or replay it once it ends. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IPlayback.GetLiveStreamPlaybackIdAsync(System.String,System.String)">
+            <summary>
+            Get stream&apos;s playbackId
+            
+            <remarks>
+            Retrieves details about a previously created playback ID. If you provide the distinct playback ID that was given back to you in the previous stream or playbackId create request, FastPix will provide the relevant playback details such as the access policy. <br/>
+            <br/>
+              **Use case:** A developer needs to confirm the playback ID details to ensure the right stream is being accessed by viewers. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IPlayback.CreateMediaPlaybackIdAsync(System.String,Fastpix.Models.Requests.CreateMediaPlaybackIdRequestBody)">
+            <summary>
+            Create a playback ID
+            
+            <remarks>
+            You can create a new playback ID for a specific media asset. If you have already retrieved an existing playbackId using the &quot;Get Media by ID&quot; endpoint for a media asset, you can use this endpoint to generate a new playback ID with a specified access policy. <br/>
+            <br/>
+            <br/>
+            <br/>
+            If you want to create a private playback ID for a media asset that already has a public playback ID, this endpoint also allows you to do so by specifying the desired access policy. <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            1. **Make a POST request** to the ** /on-demand/`&lt;mediaId&gt;`/playback-ids** endpoint, replacing `&lt;mediaId&gt;` with the uploadId or id of the media asset. <br/>
+            <br/>
+            2. Include the **access policy** in the request body to indicate whether the new playback ID should be private or public. <br/>
+            <br/>
+            3. Receive a response containing the newly created playback ID with the requested access level. <br/>
+            <br/>
+            <br/>
+            **Use case:** A video streaming service generates playback IDs for each media file when users request to view specific content. The playback ID is then used by the video player to stream the video.<br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IPlayback.DeleteMediaPlaybackIdAsync(System.String,System.String)">
+            <summary>
+            Delete a playback ID
+            
+            <remarks>
+            This endpoint allows you to remove a specific playback ID associated with a media asset. Deleting a playbackId will revoke access to the media content linked to that ID. <br/>
+            <br/>
+            <br/>
+            #### How it works<br/>
+            <br/>
+            1. Make a DELETE request to the ** /on-demand/`&lt;mediaId&gt;`/playback-ids** endpoint, replacing `&lt;mediaId&gt;` with the uploadId or id of the media asset from which you want to delete the playback ID. <br/>
+            <br/>
+            2. Specify the playback ID you wish to delete in the request body. <br/>
+            <br/>
+            **Use case:** Your platform offers limited-time access to premium content. When the subscription expires, you can revoke access to the content by deleting the associated playback ID, preventing users from streaming the video further. <br/>
+            
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.ISimulcastStream.CreateSimulcastOfStreamAsync(System.String,Fastpix.Models.Components.SimulcastRequest)">
+            <summary>
+            Create a simulcast
+            
+            <remarks>
+            Lets you to create a simulcast for a parent live stream. A simulcast enables you to broadcast the live stream to multiple platforms simultaneously (e.g., YouTube, Facebook, or Twitch). This feature is useful for expanding your audience reach across different platforms. However, a simulcast can only be created when the parent live stream is in an idle state (i.e., not currently live or disabled). Additionally, only one simulcast target can be created per API call. <br/>
+            <br/>
+              &lt;h4&gt;How it works&lt;/h4&gt; <br/>
+            <br/>
+            <br/>
+              Upon calling this endpoint, you need to provide the parent streamId and the details of the simulcast target (platform and credentials). The system will generate a unique simulcastId, which can be used to manage the simulcast later. <br/>
+            <br/>
+            <br/>
+            <br/>
+            To notify your application about the status of simulcast related events check for the webhooks for simulcast target events. <br/>
+            <br/>
+            **Practical example:** An event manager sets up a live stream for a virtual conference and wants to simulcast the stream on YouTube and Facebook Live. They first create the primary live stream in FastPix, ensuring it&apos;s in the idle state. Then, they use the API to create a simulcast target for YouTube. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.ISimulcastStream.DeleteSimulcastOfStreamAsync(System.String,System.String)">
+            <summary>
+            Delete a simulcast
+            
+            <remarks>
+            Allows you to delete a simulcast using its unique simulcastId, which was returned during the simulcast creation process. Deleting a simulcast stops the broadcast to the associated platform, but the parent stream will continue to run if it is live. This action is irreversible, and a new simulcast would need to be created if you want to resume streaming to the same platform. <br/>
+            <br/>
+              **Use case:** A broadcaster needs to stop simulcasting to one platform due to technical difficulties while keeping the stream active on others. For example, a tech company is simulcasting a product launch on multiple platforms. Midway through the event, they decide to stop the simulcast on Facebook due to performance issues, but keep it running on YouTube. They call this API to delete the Facebook simulcast target. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.ISimulcastStream.GetSpecificSimulcastOfStreamAsync(System.String,System.String)">
+            <summary>
+            Get a specific simulcast of a stream
+            
+            <remarks>
+            Retrieves the details of a specific simulcast associated with a parent live stream. By providing both the streamId of the parent stream and the simulcastId, FastPix returns detailed information about the simulcast, such as the stream URL, the status of the simulcast (active or idle), and metadata. <br/>
+            <br/>
+              **Use case:** This endpoint can be used to verify the status of the simulcast on external platforms before the live stream begins. For instance, before starting a live gaming event, the organizer wants to ensure that the simulcast to Twitch is set up correctly. They retrieve the simulcast information to confirm that everything is properly configured. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.ISimulcastStream.UpdateSpecificSimulcastOfStreamAsync(System.String,System.String,Fastpix.Models.Components.SimulcastUpdateRequest)">
+            <summary>
+            Update a specific simulcast of a stream
+            
+            <remarks>
+            Allows you to enable or disable a specific simulcast associated with a parent live stream. The status of the simulcast can be updated at any point, whether the live stream is active or idle. However, once the live stream is disabled, the simulcast can no longer be modified. <br/>
+            <br/>
+              **Use case:** When a PATCH request is made to this endpoint, the API updates the status of the simulcast. This can be useful for pausing or resuming a simulcast on a particular platform without stopping the parent live stream. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.IStartLiveStream.CreateNewStreamAsync(Fastpix.Models.Components.CreateLiveStreamRequest)">
+            <summary>
+            Create a new stream
+            
+            <remarks>
+            Allows you to initiate a new RTMP or SRT live stream on FastPix. Upon creating a stream, FastPix generates a unique stream key and SRT secret, which can be used with any broadcasting software (like OBS) to connect to FastPix&apos;s RTMP or SRT servers. Users can configure the stream settings, including metadata (such as stream name and description), reconnect window (in case of disconnection), privacy options (public or private), and advanced features like enabling DVR mode.<br/>
+            Leverage SRT for live streaming in environments with unstable networks, taking advantage of its error correction and encryption features for a resilient and secure broadcast. <br/>
+            <br/>
+            &lt;h4&gt;How it works&lt;/h4&gt; <br/>
+            <br/>
+            When a user sends a POST request to this endpoint, FastPix returns the stream details for both RTMP and SRT configurations. These keys and IDs from the stream details are essential for connecting the broadcasting software to FastPix's servers and transmitting the live stream to viewers.<br/>
+            FastPix uses &lt;a href=https://docs.fastpix.io/docs/webhooks-for-status#/&gt;webhooks&lt;/a&gt; to tell your application about things that happen in the background, outside of the API regular request flow. For instance, once the live stream is created, we'll shoot a POST message to the address you give us with the webhook event &lt;a href=https://docs.fastpix.io/docs/video-live_stream-created#/&gt;video.live_stream.created&lt;/a&gt;. Here're &lt;a href=https://docs.fastpix.io/docs/webhooks-for-status#/live-stream-related-events&gt;other live stream event related&lt;/a&gt; webhooks you would want to look for. <br/>
+            <br/>
+            **Use case:** A gaming content creator initiates a live stream through the API, specifying a 1080p resolution and public access. They receive the stream key, RTMP and SRT details in the response. Using the SRT connection, they broadcast a high-action gaming session with reduced latency, offering viewers a seamless experience. <br/>
+            <br/>
+            <br/>
+            **Detailed example:** <br/>
+              Imagine a gaming platform that allows users to live stream gameplay directly from their dashboard. The API creates a new stream, provides the necessary stream key, and sets it to &quot;private&quot; so that only specific viewers can access it. 
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Fastpix.Utils.Retries.BackoffStrategy.#ctor(System.Int64,System.Int64,System.Int64,System.Double,System.Double)">
+            <summary>
+            Configures the exponential backoff strategy.
+            </summary>
+            <remarks>
+            The duration between consecutive attempts is calculated as follows:
+                intervalMs = min(maxIntervalMs, initialIntervalMs*(baseFactor^attempts) +/- r)
+            where baseFactor (also referred to as "exponent") is the multiplicative factor
+            and r a random value between 0 and jitterFactor*intervalMs.
+            </remarks>
+            <param name="initialIntervalMs">The initial interval in milliseconds.</param>
+            <param name="maxIntervalMs">The maximum interval in milliseconds.</param>
+            <param name="maxElapsedTimeMs">The maximum elapsed time in milliseconds.</param>
+            <param name="exponent">The base factor used to compute the exponential interval</param>
+            <param name="jitterFactor">The jitter factor used to randomize the backoff interval</param>
+        </member>
+        <member name="M:Fastpix.Utils.Retries.RetryConfig.#ctor(Fastpix.Utils.Retries.RetryConfig.RetryStrategy,Fastpix.Utils.Retries.BackoffStrategy,System.Boolean)">
+            <summary>
+            Selects the retry strategy.
+            </summary>
+            <param name="strategy">The retry strategy.</param>
+            <param name="backoff">The backoff strategy configuration (if applicable)</param>
+            <param name="retryConnectionErrors">Whether to retry on connection errors.</param>
+            <remarks>
+            The backoff strategy is only required if the retry strategy is set to BACKOFF.
+            To disable retries, set the strategy to NONE.
+            </remarks>
+        </member>
+        <member name="M:Fastpix.Utils.ISpeakeasyHttpClient.SendAsync(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Sends an HTTP request asynchronously.
+            </summary>
+            <param name="request">The HTTP request message to send.</param>
+            <returns>The value of the TResult parameter contains the HTTP response message.</returns>
+        </member>
+        <member name="M:Fastpix.Utils.ISpeakeasyHttpClient.CloneAsync(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Clones an HTTP request asynchronously.
+            </summary>
+            <remarks>
+            This method is used in the context of Retries. It creates a new HttpRequestMessage instance
+            as a deep copy of the original request, including its method, URI, content, headers and options.
+            </remarks>
+            <param name="request">The HTTP request message to clone.</param>
+            <returns>The value of the TResult parameter contains the cloned HTTP request message.</returns>
+        </member>
+    </members>
+</doc>
