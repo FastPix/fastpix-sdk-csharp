@@ -59,48 +59,44 @@ var res = await sdk.StartLiveStream.CreateNewStreamAsync(req);
 
 ## Available Resources and Operations
 
-<details open>
-<summary>Available methods</summary>
+### [InputVideo](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/inputvideo/README.md)
 
+* [CreateMedia](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/inputvideo/README.md#createmedia) - Create media from URL
+* [DirectUploadVideoMedia](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/inputvideo/README.md#directuploadvideomedia) - Upload media from device
 
-### [InputVideo](docs/sdks/inputvideo/README.md)
+### [ManageLiveStream](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/docs/sdks/managelivestream)
 
-* [CreateMedia](docs/sdks/inputvideo/README.md#createmedia) - Create media from URL
-* [DirectUploadVideoMedia](docs/sdks/inputvideo/README.md#directuploadvideomedia) - Upload media from device
+* [GetAllStreams](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/docs/sdks/managelivestream#getallstreams) - Get all live streams
+* [GetLiveStreamById](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/docs/sdks/managelivestream#getlivestreambyid) - Get stream by ID
+* [DeleteLiveStream](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/docs/sdks/managelivestream#deletelivestream) - Delete a stream
+* [UpdateLiveStream](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/docs/sdks/managelivestream#updatelivestream) - Update a stream
 
-### [ManageLiveStream](docs/sdks/managelivestream/README.md)
+### [ManageVideos](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md)
 
-* [GetAllStreams](docs/sdks/managelivestream/README.md#getallstreams) - Get all live streams
-* [GetLiveStreamById](docs/sdks/managelivestream/README.md#getlivestreambyid) - Get stream by ID
-* [DeleteLiveStream](docs/sdks/managelivestream/README.md#deletelivestream) - Delete a stream
-* [UpdateLiveStream](docs/sdks/managelivestream/README.md#updatelivestream) - Update a stream
+* [ListMedia](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#listmedia) - Get list of all media
+* [GetMedia](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#getmedia) - Get a media by ID
+* [UpdatedMedia](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#updatedmedia) - Update a media by ID
+* [DeleteMedia](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#deletemedia) - Delete a media by ID
+* [RetrieveMediaInputInfo](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#retrievemediainputinfo) - Get info of media inputs
 
-### [ManageVideos](docs/sdks/managevideos/README.md)
+### [Playback](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/playback/README.md)
 
-* [ListMedia](docs/sdks/managevideos/README.md#listmedia) - Get list of all media
-* [GetMedia](docs/sdks/managevideos/README.md#getmedia) - Get a media by ID
-* [UpdatedMedia](docs/sdks/managevideos/README.md#updatedmedia) - Update a media by ID
-* [DeleteMedia](docs/sdks/managevideos/README.md#deletemedia) - Delete a media by ID
-* [RetrieveMediaInputInfo](docs/sdks/managevideos/README.md#retrievemediainputinfo) - Get info of media inputs
+* [CreatePlaybackIdOfStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/playback/README.md#createplaybackidofstream) - Create a playbackId
+* [DeletePlaybackIdOfStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/playback/README.md#deleteplaybackidofstream) - Delete a playbackId
+* [GetLiveStreamPlaybackId](dhttps://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/playback/README.md#getlivestreamplaybackid) - Get stream's playbackId
+* [CreateMediaPlaybackId](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/playback/README.md#createmediaplaybackid) - Create a playback ID
+* [DeleteMediaPlaybackId](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/playback/README.md#deletemediaplaybackid) - Delete a playback ID
 
-### [Playback](docs/sdks/playback/README.md)
+### [SimulcastStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/simulcaststream/README.md)
 
-* [CreatePlaybackIdOfStream](docs/sdks/playback/README.md#createplaybackidofstream) - Create a playbackId
-* [DeletePlaybackIdOfStream](docs/sdks/playback/README.md#deleteplaybackidofstream) - Delete a playbackId
-* [GetLiveStreamPlaybackId](docs/sdks/playback/README.md#getlivestreamplaybackid) - Get stream's playbackId
-* [CreateMediaPlaybackId](docs/sdks/playback/README.md#createmediaplaybackid) - Create a playback ID
-* [DeleteMediaPlaybackId](docs/sdks/playback/README.md#deletemediaplaybackid) - Delete a playback ID
+* [CreateSimulcastOfStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/simulcaststream/README.md#createsimulcastofstream) - Create a simulcast
+* [DeleteSimulcastOfStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/simulcaststream/README.md#deletesimulcastofstream) - Delete a simulcast
+* [GetSpecificSimulcastOfStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/simulcaststream/README.md#getspecificsimulcastofstream) - Get a specific simulcast of a stream
+* [UpdateSpecificSimulcastOfStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/simulcaststream/README.md#updatespecificsimulcastofstream) - Update a specific simulcast of a stream
 
-### [SimulcastStream](docs/sdks/simulcaststream/README.md)
+### [StartLiveStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/startlivestream/README.md)
 
-* [CreateSimulcastOfStream](docs/sdks/simulcaststream/README.md#createsimulcastofstream) - Create a simulcast
-* [DeleteSimulcastOfStream](docs/sdks/simulcaststream/README.md#deletesimulcastofstream) - Delete a simulcast
-* [GetSpecificSimulcastOfStream](docs/sdks/simulcaststream/README.md#getspecificsimulcastofstream) - Get a specific simulcast of a stream
-* [UpdateSpecificSimulcastOfStream](docs/sdks/simulcaststream/README.md#updatespecificsimulcastofstream) - Update a specific simulcast of a stream
-
-### [StartLiveStream](docs/sdks/startlivestream/README.md)
-
-* [CreateNewStream](docs/sdks/startlivestream/README.md#createnewstream) - Create a new stream
+* [CreateNewStream](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/startlivestream/README.md#createnewstream) - Create a new stream
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
