@@ -123,7 +123,7 @@ namespace Fastpix
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private static readocsharpnly string _sdkVersion = SdkInfo.Version;
+        private static readonly string _sdkVersion = SdkInfo.Version;
         private const string _sdkGenVersion = "2.599.0";
         private const string _openapiDocVersion = "1.0.0";
         private static readonly string _userAgent = $"speakeasy-sdk/csharp {SdkInfo.Version} 2.599.0 1.0.0 Fastpix";
