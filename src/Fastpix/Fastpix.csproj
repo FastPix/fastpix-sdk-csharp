@@ -3,7 +3,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Fastpix</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>FastPix</Authors>
     <Copyright>Copyright (c) FastPix 2025</Copyright>

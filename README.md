@@ -38,8 +38,8 @@ using Fastpix;
 using Fastpix.Models.Components;
 
 var sdk = new FastPix(security: new Security() {
-    .username("your-access-token-id")
-    .password("your-secret-key")
+    username("your-access-token-id")
+    password("your-secret-key")
 });
 
 CreateLiveStreamRequest req = new CreateLiveStreamRequest() {
@@ -129,7 +129,7 @@ When custom error responses are specified for an operation, the SDK may also thr
 
 ### Example
 
-```C#
+```csharp
 using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Errors;

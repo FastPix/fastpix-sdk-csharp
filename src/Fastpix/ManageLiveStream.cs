@@ -21,6 +21,7 @@ namespace Fastpix
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using System.Reflection;
 
     public interface IManageLiveStream
     {
@@ -34,7 +35,7 @@ namespace Fastpix
         /// </summary>
         Task<GetAllStreamsResponse> GetAllStreamsAsync(string? limit = "10", string? offset = "1", GetAllStreamsOrderBy? orderBy = Fastpix.Models.Requests.GetAllStreamsOrderBy.Desc);
 
-        /// <summary>
+        /// <summary>StartLiveStream.cs 
         /// Get stream by ID
         /// 
         /// <remarks>
@@ -77,10 +78,10 @@ namespace Fastpix
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.1.0";
+        private static readonly string _sdkVersion = SdkInfo.Version;
         private const string _sdkGenVersion = "2.599.0";
         private const string _openapiDocVersion = "1.0.0";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.1.0 2.599.0 1.0.0 Fastpix";
+        private static readonly string _userAgent = $"speakeasy-sdk/csharp {SdkInfo.Version} 2.599.0 1.0.0 Fastpix";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Fastpix.Models.Components.Security>? _securitySource;
@@ -587,5 +588,13 @@ namespace Fastpix
 
             throw new Models.Errors.APIException("Unknown status code received", httpRequest, httpResponse);
         }
+    }
+
+    public static class SdkInfo
+    {
+        public static string Version =>
+            Assembly.GetExecutingAssembly()
+                    .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                    .InformationalVersion ?? "unknown";
     }
 }

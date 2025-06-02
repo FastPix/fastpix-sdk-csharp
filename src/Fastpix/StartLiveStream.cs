@@ -51,10 +51,10 @@ namespace Fastpix
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.1.0";
+        private static readonly string _sdkVersion = SdkInfo.Version;
         private const string _sdkGenVersion = "2.599.0";
         private const string _openapiDocVersion = "1.0.0";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.1.0 2.599.0 1.0.0 Fastpix";
+        private static readonly string _userAgent = $"speakeasy-sdk/csharp {SdkInfo.Version} 2.599.0 1.0.0 Fastpix";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Fastpix.Models.Components.Security>? _securitySource;
