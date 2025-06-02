@@ -1,10 +1,10 @@
-# FastPix csharp SDK
+# FastPix C# SDK
 
-Developer-friendly & type-safe cSharp SDK specifically designed to leverage the FastPix platform API.
+Developer-friendly & type-safe C# SDK specifically designed to leverage the FastPix platform API.
 
 # Introduction
 
-The FastPix csharp SDK simplifies integration with the FastPix platform. This SDK is designed for secure and efficient communication with the FastPix API, enabling easy management of media uploads, live streaming, and simulcasting.
+The FastPix C# SDK simplifies integration with the FastPix platform. This SDK is designed for secure and efficient communication with the FastPix API, enabling easy management of media uploads, live streaming, and simulcasting.
 
 # Key Features
 
@@ -33,7 +33,7 @@ dotnet add reference src/Fastpix/Fastpix.csproj
 
 ### Example
 
-```csharp
+```C#
 using Fastpix;
 using Fastpix.Models.Components;
 
@@ -129,7 +129,7 @@ When custom error responses are specified for an operation, the SDK may also thr
 
 ### Example
 
-```csharp
+```C#
 using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Errors;
@@ -184,7 +184,7 @@ catch (Exception ex)
 ### Override Server URL Per-Client
 
 The default server can be overridden globally by passing a URL to the `serverUrl: string` optional parameter when initializing the SDK client instance. For example:
-```csharp
+```C#
 using Fastpix;
 using Fastpix.Models.Components;
 
