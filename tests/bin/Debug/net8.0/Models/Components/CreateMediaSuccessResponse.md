@@ -1,0 +1,9 @@
+# CreateMediaSuccessResponse
+
+
+## Fields
+
+| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             | Example                                                                                 |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `Success`                                                                               | *bool*                                                                                  | :heavy_check_mark:                                                                      | Demonstrates whether the request is successful or not.                                  | true                                                                                    |
+| `Data`                                                                                  | [Models.Components.CreateMediaResponse](../../Models/Components/CreateMediaResponse.md) | :heavy_check_mark:                                                                      | N/A                                                                                     |                                                                                         |

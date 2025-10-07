@@ -1,9 +1,0 @@
-# ValidationErrorResponse
-
-
-## Fields
-
-| Field                                                                               | Type                                                                                | Required                                                                            | Description                                                                         | Example                                                                             |
-| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `Success`                                                                           | *bool*                                                                              | :heavy_minus_sign:                                                                  | It demonstrates whether the request is successful or not.                           | false                                                                               |
-| `Error`                                                                             | [ValidationErrorResponseError](../../Models/Errors/ValidationErrorResponseError.md) | :heavy_minus_sign:                                                                  | Returns the problem that has occured                                                |                                                                                     |

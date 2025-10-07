@@ -1,0 +1,9 @@
+# ListByTopContentResponse
+
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `HttpMeta`                                                                                 | [HTTPMetadata](../../Models/Components/HTTPMetadata.md)                                    | :heavy_check_mark:                                                                         | N/A                                                                                        |                                                                                            |
+| `Object`                                                                                   | [ListByTopContentResponseBody](../../Models/Requests/ListByTopContentResponseBody.md)      | :heavy_minus_sign:                                                                         | Get the list of Views                                                                      | {<br/>"success": true,<br/>"data": [<br/>{<br/>"videoTitle": "Cycle",<br/>"views": 44,<br/>"uniqueViews": 40<br/>}<br/>]<br/>} |

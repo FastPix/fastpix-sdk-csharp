@@ -1,0 +1,9 @@
+# GetAllSigningKeyResponse
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 | Example                                                                                     |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `Success`                                                                                   | *bool*                                                                                      | :heavy_minus_sign:                                                                          | It demonstrates whether the request is successful or not.                                   | 100                                                                                         |
+| `Data`                                                                                      | List<[GetAllSigningKeyResponseDTO](../../Models/Components/GetAllSigningKeyResponseDTO.md)> | :heavy_minus_sign:                                                                          | Displays the result of the request.                                                         |                                                                                             |

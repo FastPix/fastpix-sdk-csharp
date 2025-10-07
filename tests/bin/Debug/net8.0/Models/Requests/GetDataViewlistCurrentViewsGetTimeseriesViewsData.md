@@ -1,0 +1,10 @@
+# GetDataViewlistCurrentViewsGetTimeseriesViewsData
+
+
+## Fields
+
+| Field                                                                                 | Type                                                                                  | Required                                                                              | Description                                                                           |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `IntervalTime`                                                                        | [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime?view=net-5.0) | :heavy_minus_sign:                                                                    | The timestamp for the interval (ISO 8601 format).                                     |
+| `MetricValue`                                                                         | *long*                                                                                | :heavy_minus_sign:                                                                    | Reserved for future metric values (currently null).                                   |
+| `NumberOfViews`                                                                       | *long*                                                                                | :heavy_minus_sign:                                                                    | Number of concurrent viewers at the given interval.                                   |

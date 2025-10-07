@@ -1,0 +1,160 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/tests/Fastpix.Tests.csproj": {}
+  },
+  "projects": {
+    "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/src/Fastpix/Fastpix.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/src/Fastpix/Fastpix.csproj",
+        "projectName": "Fastpix",
+        "projectPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/src/Fastpix/Fastpix.csproj",
+        "packagesPath": "/Users/tharunbudidha/.nuget/packages/",
+        "outputPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/src/Fastpix/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tharunbudidha/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "newtonsoft.json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "nodatime": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/tests/Fastpix.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/tests/Fastpix.Tests.csproj",
+        "projectName": "Fastpix.Tests",
+        "projectPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/tests/Fastpix.Tests.csproj",
+        "packagesPath": "/Users/tharunbudidha/.nuget/packages/",
+        "outputPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tharunbudidha/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/src/Fastpix/Fastpix.csproj": {
+                "projectPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/src/Fastpix/Fastpix.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.12.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.11.1, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.0, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
