@@ -9,35 +9,17 @@
     <Company>FastPix</Company>
     <Owners>devs@fastpix.io</Owners>
     <Copyright>Copyright (c) FastPix 2025</Copyright>
-    <Description>FASTPIX API&apos;S: FastPix provides a comprehensive set of APIs that enable developers to manage both **on-demand media (video/audio)** and **live streaming experiences**, with built-in security features through **cryptographic signing keys**. These APIs cover the full lifecycle of content creation, management, distribution, playback, and secure access, making them ideal for building scalable video-first applications.<br/>
-### Media APIs (Video &amp; Audio on Demand)<br/>
-The **Media APIs** allow developers to create, retrieve, update, and delete media files, as well as manage metadata, playback settings, and additional tracks such as audio or subtitles. With these endpoints, developers can:<br/>
-- Upload videos directly or create media from URLs.   - Manage playback permissions and configure playback IDs.   - Add multilingual audio or subtitle tracks for global audiences.   - Build robust video-on-demand (VOD) and audio-on-demand (AOD) libraries.  <br/>
-**Use case scenarios**   - **Video-on-Demand Platforms:** Manage large content libraries for streaming services.   - **E-Learning Solutions:** Upload and organize lecture videos, metadata, and playback settings.   - **Multilingual Content Delivery:** Add multiple language tracks or subtitles to serve global users.  <br/>
-### Live Stream APIs<br/>
-The **Live Stream APIs** simplify the process of creating, managing, and distributing live content. Developers can initiate broadcasts, configure stream settings, and extend streams to external platforms through simulcasting. These endpoints also support real-time interaction and customization of live events.<br/>
-- Start and manage live broadcasts programmatically.   - Control stream metadata, privacy, and playback options.   - Simulcast to platforms like YouTube, Facebook, or Twitch.   - Update stream details and manage live playback IDs in real time.  <br/>
-**Use case scenarios**   - **Event Broadcasting:** Enable organizers to set up live streams for conferences, concerts, or webinars.   - **Creator Platforms:** Provide streamers with tools for broadcasting gameplay, tutorials, or vlogs with simulcasting support.   - **Corporate Streaming:** Deliver secure internal town halls or meetings with privacy and playback controls.  <br/>
-### Video Data APIs<br/>
-The **Video Data APIs** Provide insights into viewer interactions, performance metrics, and playback errors to optimize content delivery and user experience.<br/>
-<br/>
- - Track video views, unique viewers, and engagement metrics<br/>
- - Identify top-performing content and usage patterns<br/>
- - Break down data by browser, device, or geography<br/>
- - Detect playback errors and performance issues<br/>
- - Enable data-driven content strategy decisions<br/>
- <br/>
- **Use case scenarios** <br/>
- - Analytics Dashboards: Monitor performance across content libraries<br/>
- - Quality Monitoring: Diagnose and resolve playback issues<br/>
- - Content Strategy Optimization: Identify high-value content<br/>
- - User Behavior Insights: Understand audience interactions<br/>
-<br/>
-### Signing Keys<br/>
-FastPix also provides endpoints for managing **cryptographic signing keys**, which are essential for securely signing and verifying tokens, such as JSON Web Tokens (JWTs). These keys are critical for authenticating and authorizing API requests, as well as for protecting access to media assets.<br/>
-- **Private key:** Used to create digital signatures (kept secret).   - **Public key:** Used to verify digital signatures (shared for verification).  <br/>
-By rotating and managing signing keys regularly, developers can maintain strong security practices and prevent unauthorized access.  <br/>
-**Use case scenarios**   - **Token-based authentication:** Validate user access to premium or subscription-based content.   - **Key rotation:** Regularly rotate keys to reduce risk of compromise.   - **Protect intellectual property:** Prevent unauthorized distribution of valuable media assets.   - **Control usage:** Restrict access to specific users, groups, or contexts.   - **Prevent tampering:** Ensure requested assets have not been modified.   - **Time-bound access:** Enable signed URLs with expiration for controlled viewing windows.  </Description>
+    <Description>FastPix C# SDK: A comprehensive set of APIs for managing on-demand media (video/audio) and live streaming experiences with built-in security through cryptographic signing keys. Covers the full lifecycle of content creation, management, distribution, playback, and secure access for scalable video-first applications.
+
+**Media APIs**: Create, retrieve, update, and delete media files. Manage metadata, playback settings, and multilingual tracks. Upload videos directly or from URLs, configure playback IDs, and build robust VOD/AOD libraries.
+
+**Live Stream APIs**: Create, manage, and distribute live content. Start broadcasts, configure stream settings, simulcast to platforms like YouTube/Facebook/Twitch, and manage live playback IDs in real-time.
+
+**Video Data APIs**: Track viewer interactions, performance metrics, and playback errors. Monitor engagement, identify top content, analyze by device/geography, and enable data-driven decisions.
+
+**Signing Keys**: Manage cryptographic signing keys for secure token-based access. Create/rotate keys, protect intellectual property, control usage, and enable time-bound access with signed URLs.
+
+Use cases: Video-on-demand platforms, e-learning solutions, event broadcasting, creator platforms, corporate streaming, analytics dashboards, and quality monitoring.</Description>
   </PropertyGroup>
 
   <PropertyGroup>
