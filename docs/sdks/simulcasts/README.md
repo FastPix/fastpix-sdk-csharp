@@ -23,6 +23,7 @@ A broadcaster needs to stop simulcasting to one platform due to technical diffic
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -34,7 +35,7 @@ var res = await sdk.Simulcasts.DeleteAsync(
     simulcastId: "9217422d89288ad5958d4a86e9afe2a1"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.SimulcastdeleteResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

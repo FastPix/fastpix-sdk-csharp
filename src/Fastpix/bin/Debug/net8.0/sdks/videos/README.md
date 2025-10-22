@@ -64,6 +64,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/upload-videos-from-url">Upl
 using Fastpix;
 using Fastpix.Models.Components;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -86,8 +87,7 @@ CreateMediaRequest req = new CreateMediaRequest() {
 };
 
 var res = await sdk.Videos.CreateFromUrlAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.CreateMediaSuccessResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -141,15 +141,15 @@ Suppose your platform provides users with an interface where they can manage the
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
     Password = "secret-key",
 });
 
-var res = await sdk.Videos.GetAsync(mediaId: "4fa85f64-5717-4562-b3fc-2c963f66afa6");
-
-// handle response
+var res = await sdk.Videos.GetAsync(mediaId: "paste-your-media-id-here");
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -199,6 +199,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -206,7 +207,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Videos.UpdateAsync(
-    mediaId: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+    mediaId: "paste-your-media-id-here",
     requestBody: new UpdatedMediaRequestBody() {
         Metadata = new Dictionary<string, string>() {
             { "metadata", "{\"user\":\"fastpix_admin\"}" },
@@ -214,7 +215,7 @@ var res = await sdk.Videos.UpdateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -279,6 +280,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -296,8 +298,7 @@ DirectUploadVideoMediaRequest req = new DirectUploadVideoMediaRequest() {
 };
 
 var res = await sdk.Videos.UploadAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

@@ -20,6 +20,7 @@ A developer needs to confirm the access policy of the playback ID to ensure whet
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -31,7 +32,7 @@ var res = await sdk.LivePlaybacks.GetAsync(
     playbackId: "61a264dcc447b63da6fb79ef925cd76d"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaybackIdSuccessResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

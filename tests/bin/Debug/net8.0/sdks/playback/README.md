@@ -36,6 +36,7 @@ A video streaming service generates playback IDs for each media file when users 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -52,7 +53,7 @@ var res = await sdk.Playback.CreateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -98,6 +99,7 @@ Your platform offers limited-time access to premium content. When the subscripti
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -109,7 +111,7 @@ var res = await sdk.Playback.DeleteAsync(
     playbackId: "dbb8a39a-e4a5-4120-9f22-22f603f1446e"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -151,6 +153,7 @@ A media platform might use this endpoint to verify if a playback ID is public or
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -158,11 +161,11 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Playback.GetByIdAsync(
-    mediaId: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
-    playbackId: "4fa85f64-5717-4562-b3fc-2c963f66afa6"
+    mediaId: "paste-your-media-id-here",
+    playbackId: "paste-your-playback-id-here"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

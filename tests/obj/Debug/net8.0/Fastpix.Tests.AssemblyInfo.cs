@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Fastpix.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee978e2b886aff26fb6f3b06dbca06513b262e2c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b027dc90c9d06770bf63ad10210dd7b19e418aa5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fastpix.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fastpix.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

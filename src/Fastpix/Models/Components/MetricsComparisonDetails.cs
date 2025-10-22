@@ -21,7 +21,7 @@ namespace Fastpix.Models.Components
         /// The specific metric value calculated based on the applied filters.
         /// </summary>
         [JsonProperty("value")]
-        public long? Value { get; set; }
+        public double? Value { get; set; }
 
         /// <summary>
         /// value can be score that ranges from 0 to 100
@@ -45,7 +45,15 @@ namespace Fastpix.Models.Components
         [JsonProperty("metric")]
         public string? Metric { get; set; }
 
+        /// <summary>
+        /// value can be avg, sum, count or 95th
+        /// </summary>
+        [JsonProperty("measurement")]
+        public string? Measurement { get; set; }
+
         [JsonProperty("items")]
-        public List<Item>? Items { get; set; }
+        public List<MetricsComparisonDetails>? Items { get; set; }
     }
 }
+
+

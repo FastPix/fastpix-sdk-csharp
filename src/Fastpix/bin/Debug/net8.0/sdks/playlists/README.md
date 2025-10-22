@@ -34,6 +34,7 @@ An e-learning platform creates a new playlist titled "Beginner Python Series" vi
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -60,8 +61,7 @@ CreatePlaylistRequest req = new CreatePlaylistRequest() {
 };
 
 var res = await sdk.Playlists.CreateAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistCreatedResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -101,6 +101,7 @@ This endpoint retrieves all playlists present within a specified workspace. It a
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -112,7 +113,7 @@ var res = await sdk.Playlists.ListAsync(
     offset: 1
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.GetAllPlaylistsResponseValue, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -148,6 +149,7 @@ An e-learning platform deletes an outdated playlist titled "Old Python Tutorials
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -155,8 +157,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Playlists.DeleteAsync(playlistId: "<id>");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.SuccessResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -195,6 +196,7 @@ An e-learning platform adds new video tutorials to the "Beginner Python Series" 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -213,7 +215,7 @@ var res = await sdk.Playlists.AddMediaAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistByIdResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -253,6 +255,7 @@ An e-learning platform rearranges the "Beginner Python Series" playlist by submi
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -271,7 +274,7 @@ var res = await sdk.Playlists.ChangeMediaOrderAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistByIdResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -311,6 +314,7 @@ An e-learning platform removes outdated video tutorials from the "Beginner Pytho
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -329,7 +333,7 @@ var res = await sdk.Playlists.DeleteMediaAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

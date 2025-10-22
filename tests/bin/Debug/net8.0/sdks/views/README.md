@@ -46,6 +46,7 @@ Suppose you're managing a video streaming service and need to analyze how the co
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -63,8 +64,7 @@ ListVideoViewsRequest req = new ListVideoViewsRequest() {
 };
 
 var res = await sdk.Views.ListAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -106,6 +106,7 @@ Related guide: <a href="https://docs.fastpix.io/page/what-video-data-do-we-captu
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -113,8 +114,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Views.GetDetailsAsync(viewId: "<id>");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -162,6 +162,7 @@ Retrieves a list of the top video views that fall within the specified filters a
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -175,7 +176,7 @@ var res = await sdk.Views.ListTopContentAsync(
     limit: 10
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -226,6 +227,7 @@ By calling this endpoint periodically (e.g., every minute), you can plot a live 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -233,8 +235,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Views.GetTimeseriesAsync();
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Response
@@ -280,6 +281,7 @@ By calling this endpoint with `dimension=video_title`, you can immediately see a
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -292,7 +294,7 @@ var res = await sdk.Views.GetConcurrentViewersBreakdownAsync(
     limit: 10
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

@@ -34,7 +34,7 @@ namespace Fastpix.Models.Requests
         /// </remarks>
         /// </summary>
         [JsonProperty("data")]
-        public List<List<MetricsComparisonDetails>>? Data { get; set; }
+        public List<MetricsComparisonDetails>? Data { get; set; }
 
         /// <summary>
         /// The timeframe from and to details displayed in the form of unix epoch timestamps.<br/>

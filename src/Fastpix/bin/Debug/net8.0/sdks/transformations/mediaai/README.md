@@ -35,6 +35,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/generate-video-summary">Vid
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -43,13 +44,13 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.MediaAI.UpdateSummaryAsync(
-    mediaId: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+    mediaId: "paste-your-media-id-here",
     requestBody: new UpdateMediaSummaryRequestBody() {
         Generate = true,
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -57,11 +58,11 @@ var res = await sdk.MediaAI.UpdateSummaryAsync(
 | Parameter                                                                                    | Type                                                                                         | Required                                                                                     | Description                                                                                  | Example                                                                                      |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `MediaId`                                                                                    | *string*                                                                                     | :heavy_check_mark:                                                                           | The unique identifier assigned to the media when created. The value should be a valid UUID.<br/> | 4fa85f64-5717-4562-b3fc-2c963f66afa6                                                         |
-| `RequestBody`                                                                                | [UpdateMediaSummaryRequestBody](../../Models/Requests/UpdateMediaSummaryRequestBody.md)      | :heavy_check_mark:                                                                           | N/A                                                                                          | {<br/>"generate": true,<br/>"summaryLength": 100<br/>}                                       |
+| `RequestBody`                                                                                | [UpdateMediaSummaryRequestBody](../../../Models/Requests/UpdateMediaSummaryRequestBody.md)      | :heavy_check_mark:                                                                           | N/A                                                                                          | {<br/>"generate": true,<br/>"summaryLength": 100<br/>}                                       |
 
 ### Response
 
-**[UpdateMediaSummaryResponse](../../Models/Requests/UpdateMediaSummaryResponse.md)**
+**[UpdateMediaSummaryResponse](../../../Models/Requests/UpdateMediaSummaryResponse.md)**
 
 ### Errors
 
@@ -95,6 +96,7 @@ Related guide: <a href="https://docs.fastpix.io/reference/update-media-chapters"
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -103,13 +105,13 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.MediaAI.UpdateChaptersAsync(
-    mediaId: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+    mediaId: "paste-your-media-id-here",
     requestBody: new UpdateMediaChaptersRequestBody() {
         Chapters = true,
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -117,11 +119,11 @@ var res = await sdk.MediaAI.UpdateChaptersAsync(
 | Parameter                                                                                    | Type                                                                                         | Required                                                                                     | Description                                                                                  | Example                                                                                      |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `MediaId`                                                                                    | *string*                                                                                     | :heavy_check_mark:                                                                           | The unique identifier assigned to the media when created. The value should be a valid UUID.<br/> | 4fa85f64-5717-4562-b3fc-2c963f66afa6                                                         |
-| `RequestBody`                                                                                | [UpdateMediaChaptersRequestBody](../../Models/Requests/UpdateMediaChaptersRequestBody.md)    | :heavy_check_mark:                                                                           | N/A                                                                                          | {<br/>"chapters": true<br/>}                                                                 |
+| `RequestBody`                                                                                | [UpdateMediaChaptersRequestBody](../../../Models/Requests/UpdateMediaChaptersRequestBody.md)    | :heavy_check_mark:                                                                           | N/A                                                                                          | {<br/>"chapters": true<br/>}                                                                 |
 
 ### Response
 
-**[UpdateMediaChaptersResponse](../../Models/Requests/UpdateMediaChaptersResponse.md)**
+**[UpdateMediaChaptersResponse](../../../Models/Requests/UpdateMediaChaptersResponse.md)**
 
 ### Errors
 

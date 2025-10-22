@@ -34,6 +34,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/track-playback-errors">Trou
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -47,7 +48,7 @@ var res = await sdk.Errors.ListAsync(
     limit: 1
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

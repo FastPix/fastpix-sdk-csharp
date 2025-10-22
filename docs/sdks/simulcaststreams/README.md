@@ -21,6 +21,7 @@ This endpoint can be used to verify the status of the simulcast on external plat
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -32,7 +33,7 @@ var res = await sdk.SimulcastStreams.GetSpecificAsync(
     simulcastId: "8717422d89288ad5958d4a86e9afe2a2"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.SimulcastResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -71,6 +72,7 @@ When a `PATCH` request is made to this endpoint, the API updates the status of t
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -89,7 +91,7 @@ var res = await sdk.SimulcastStreams.UpdateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.SimulcastUpdateResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

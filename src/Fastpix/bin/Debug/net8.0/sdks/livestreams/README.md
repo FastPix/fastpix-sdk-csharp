@@ -36,6 +36,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/how-to-livestream">How to l
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -57,8 +58,7 @@ CreateLiveStreamRequest req = new CreateLiveStreamRequest() {
 };
 
 var res = await sdk.LiveStreams.CreateAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamResponseDTO, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -95,6 +95,7 @@ Use the access token and secret key related to the workspace in the request head
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -108,7 +109,7 @@ var res = await sdk.LiveStreams.ListAsync(
     orderBy: OrderBy.Desc
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.GetStreamsResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

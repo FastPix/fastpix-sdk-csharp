@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xIhKZrXzhoI=",
+  "dgSpecHash": "Bteymwo6kDY=",
   "success": true,
-  "projectFilePath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side/tests/Fastpix.Tests.csproj",
+  "projectFilePath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side-azure-cloned/tests/Fastpix.Tests.csproj",
   "expectedPackageFiles": [
     "/Users/tharunbudidha/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/Users/tharunbudidha/.nuget/packages/fluentassertions/6.12.0/fluentassertions.6.12.0.nupkg.sha512",
@@ -23,7 +23,8 @@
     "/Users/tharunbudidha/.nuget/packages/xunit.core/2.9.0/xunit.core.2.9.0.nupkg.sha512",
     "/Users/tharunbudidha/.nuget/packages/xunit.extensibility.core/2.9.0/xunit.extensibility.core.2.9.0.nupkg.sha512",
     "/Users/tharunbudidha/.nuget/packages/xunit.extensibility.execution/2.9.0/xunit.extensibility.execution.2.9.0.nupkg.sha512",
-    "/Users/tharunbudidha/.nuget/packages/xunit.runner.visualstudio/2.8.2/xunit.runner.visualstudio.2.8.2.nupkg.sha512"
+    "/Users/tharunbudidha/.nuget/packages/xunit.runner.visualstudio/2.8.2/xunit.runner.visualstudio.2.8.2.nupkg.sha512",
+    "/Users/tharunbudidha/.nuget/packages/fastpix/1.0.0/fastpix.1.0.0.nupkg.sha512"
   ],
   "logs": []
 }

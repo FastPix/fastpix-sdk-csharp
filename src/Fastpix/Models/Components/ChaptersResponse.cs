@@ -18,7 +18,7 @@ namespace Fastpix.Models.Components
         [JsonProperty("mediaId")]
         public string? MediaId { get; set; }
 
-        [JsonProperty("isGeneratedChapters")]
-        public bool? IsGeneratedChapters { get; set; }
+        [JsonProperty("isChaptersEnabled")]
+        public bool? IsChaptersEnabled { get; set; }
     }
 }

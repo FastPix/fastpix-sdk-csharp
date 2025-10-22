@@ -29,6 +29,7 @@ You're managing a video platform and need to check all the uploaded media in you
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -41,7 +42,7 @@ var res = await sdk.Media.ListAsync(
     orderBy: SortOrder.Desc
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -100,6 +101,7 @@ Related guides: <a href="https://docs.fastpix.io/docs/manage-subtitle-tracks">Ad
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -108,7 +110,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Media.AddTrackAsync(
-    mediaId: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+    mediaId: "paste-your-media-id-here",
     requestBody: new AddMediaTrackRequestBody() {
         Tracks = new AddTrackRequest() {
             Url = "https://static.fastpix.io/music-1.mp3",
@@ -119,7 +121,7 @@ var res = await sdk.Media.AddTrackAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

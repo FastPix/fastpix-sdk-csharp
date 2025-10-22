@@ -26,6 +26,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/manage-streams">Manage stre
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -33,8 +34,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Streams.GetByIdAsync(streamId: "61a264dcc447b63da6fb79ef925cd76d");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LivestreamgetResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -76,6 +76,7 @@ Permanently removes a specified live stream from the workspace. If the stream is
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -83,8 +84,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Streams.DeleteAsync(streamId: "8717422d89288ad5958d4a86e9afe2a2");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -128,6 +128,7 @@ This endpoint allows you to modify the parameters of an existing live stream, su
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -145,7 +146,7 @@ var res = await sdk.Streams.UpdateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PatchResponseDTO, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -189,6 +190,7 @@ Related guide <a href="https://docs.fastpix.io/docs/manage-streams">Manage strea
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -196,8 +198,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Streams.EnableAsync(streamId: "91a264dcc447b63da6fb79ef925cd76d");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

@@ -27,6 +27,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/manage-streams">Manage stre
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -34,8 +35,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.ManageLiveStream.GetViewerCountAsync(streamId: "61a264dcc447b63da6fb79ef925cd76d");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.ViewsCountResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -76,6 +76,7 @@ Related guide <a href="https://docs.fastpix.io/docs/manage-streams">Manage strea
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -83,8 +84,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.ManageLiveStream.DisableAsync(streamId: "91a264dcc447b63da6fb79ef925cd76d");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -128,6 +128,7 @@ Related guide <a href="https://docs.fastpix.io/docs/manage-streams">Manage strea
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -135,8 +136,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.ManageLiveStream.CompleteAsync(streamId: "91a264dcc447b63da6fb79ef925cd76d");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

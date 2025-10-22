@@ -40,6 +40,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/metrics-overview">Understan
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -55,8 +56,7 @@ ListBreakdownValuesRequest req = new ListBreakdownValuesRequest() {
 };
 
 var res = await sdk.Metrics.ListBreakdownAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -115,6 +115,7 @@ Retrieves overall values for a specified metric, providing summary statistics th
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -129,7 +130,7 @@ var res = await sdk.Metrics.ListOverallAsync(
     filterby: "browser_name:Chrome"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -171,6 +172,7 @@ Each data point contains the following fields:
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -185,8 +187,7 @@ GetTimeseriesDataRequest req = new GetTimeseriesDataRequest() {
 };
 
 var res = await sdk.Metrics.GetTimeseriesAsync(req);
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -230,6 +231,7 @@ This endpoint allows you to compare multiple metrics across specified dimensions
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -244,7 +246,7 @@ var res = await sdk.Metrics.ListComparisonValuesAsync(
     valueP: "Chrome"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

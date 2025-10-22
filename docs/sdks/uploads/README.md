@@ -33,6 +33,7 @@ A video management team for a media organization regularly uploads content to th
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -45,7 +46,7 @@ var res = await sdk.Uploads.ListAsync(
     orderBy: SortOrder.Desc
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

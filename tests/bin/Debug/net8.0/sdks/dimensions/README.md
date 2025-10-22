@@ -23,6 +23,7 @@ Related guides: <a href="https://docs.fastpix.io/page/what-video-data-do-we-capt
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -30,8 +31,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Dimensions.ListAsync();
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Response
@@ -68,6 +68,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/understand-dashboard-ui#fil
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using Fastpix.Models.Requests;
 
 var sdk = new FastPix(security: new Security() {
@@ -80,8 +81,7 @@ var res = await sdk.Dimensions.ListFilterValuesAsync(
     timespan: ListFilterValuesForDimensionTimespan.Sevendays,
     filterby: "browser_name:Chrome"
 );
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

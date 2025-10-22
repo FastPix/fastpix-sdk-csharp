@@ -30,6 +30,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">M
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -41,7 +42,7 @@ var res = await sdk.DrmConfigurations.ListAsync(
     limit: 10
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -83,6 +84,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">M
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -90,8 +92,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.DrmConfigurations.GetByIdAsync(drmConfigurationId: "4fa85f64-5717-4562-b3fc-2c963f66afa6");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

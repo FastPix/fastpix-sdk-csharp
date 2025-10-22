@@ -24,6 +24,7 @@ Generates a new playback ID for the live stream, allowing viewers to access the 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -37,7 +38,7 @@ var res = await sdk.LivePlayback.CreateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaybackIdSuccessResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -74,6 +75,7 @@ A streaming service wants to prevent new users from joining a live stream that i
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -85,7 +87,7 @@ var res = await sdk.LivePlayback.DeleteAsync(
     playbackId: "88b7ac0f-2504-4dd5-b7b4-d84ab4fee1bd"
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

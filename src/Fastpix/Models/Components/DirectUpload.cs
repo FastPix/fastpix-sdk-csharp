@@ -22,14 +22,14 @@ namespace Fastpix.Models.Components
         /// <summary>
         /// When creating the upload, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
         /// </summary>
-        [JsonProperty("id")]
-        public string? Id { get; set; }
+        [JsonProperty("uploadId")]
+        public string? UploadId { get; set; }
 
         /// <summary>
-        /// When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters.
+        /// Indicates whether this upload is a trial upload.
         /// </summary>
-        [JsonProperty("mediaId")]
-        public string? MediaId { get; set; }
+        [JsonProperty("trial")]
+        public bool? Trial { get; set; }
 
         /// <summary>
         /// Determines the media&apos;s status, which can be one of the possible values.

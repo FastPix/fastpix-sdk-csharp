@@ -11,6 +11,7 @@ namespace Fastpix.Models.Components
 {
     using Fastpix.Utils;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
     
     public class Item
     {
@@ -19,7 +20,7 @@ namespace Fastpix.Models.Components
         /// The specific metric value calculated based on the applied filters.
         /// </summary>
         [JsonProperty("value")]
-        public long? Value { get; set; }
+        public double? Value { get; set; }
 
         /// <summary>
         /// value can be score that ranges from 0 to 100
@@ -48,5 +49,8 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("measurement")]
         public string? Measurement { get; set; }
+
+        [JsonProperty("items")]
+        public List<Item>? Items { get; set; }
     }
 }

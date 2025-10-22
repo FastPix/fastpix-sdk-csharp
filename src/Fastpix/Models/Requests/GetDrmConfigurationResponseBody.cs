@@ -12,7 +12,6 @@ namespace Fastpix.Models.Requests
     using Fastpix.Models.Components;
     using Fastpix.Utils;
     using Newtonsoft.Json;
-    using System.Collections.Generic;
     
     /// <summary>
     /// DRM configuration(s) retrieved successfully
@@ -24,7 +23,7 @@ namespace Fastpix.Models.Requests
         public bool? Success { get; set; }
 
         [JsonProperty("data")]
-        public List<DrmIdResponse>? Data { get; set; }
+        public DrmIdResponse? Data { get; set; }
 
         /// <summary>
         /// Pagination organizes content into pages for better readability and navigation.

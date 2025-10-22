@@ -36,20 +36,21 @@ Related guide: <a href="https://docs.fastpix.io/docs/generate-named-entities">Na
 using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.InVideoAiFeatures.GenerateNamedEntitiesAsync(
-    mediaId: "0cec3c88-c69d-4232-9b96-f0976327fa2d",
+    mediaId: "your-media-id",
     requestBody: new UpdateMediaNamedEntitiesRequestBody() {
         NamedEntities = true,
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -57,11 +58,11 @@ var res = await sdk.InVideoAiFeatures.GenerateNamedEntitiesAsync(
 | Parameter                                                                                           | Type                                                                                                | Required                                                                                            | Description                                                                                         | Example                                                                                             |
 | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `MediaId`                                                                                           | *string*                                                                                            | :heavy_check_mark:                                                                                  | The unique identifier assigned to the media when created. The value should be a valid UUID.<br/>    | 0cec3c88-c69d-4232-9b96-f0976327fa2d                                                                |
-| `RequestBody`                                                                                       | [UpdateMediaNamedEntitiesRequestBody](../../Models/Requests/UpdateMediaNamedEntitiesRequestBody.md) | :heavy_check_mark:                                                                                  | N/A                                                                                                 | {<br/>"namedEntities": true<br/>}                                                                   |
+| `RequestBody`                                                                                       | [UpdateMediaNamedEntitiesRequestBody](../../../Models/Requests/UpdateMediaNamedEntitiesRequestBody.md) | :heavy_check_mark:                                                                                  | N/A                                                                                                 | {<br/>"namedEntities": true<br/>}                                                                   |
 
 ### Response
 
-**[UpdateMediaNamedEntitiesResponse](../../Models/Requests/UpdateMediaNamedEntitiesResponse.md)**
+**[UpdateMediaNamedEntitiesResponse](../../../Models/Requests/UpdateMediaNamedEntitiesResponse.md)**
 
 ### Errors
 
@@ -96,14 +97,15 @@ Related guide: <a href="https://docs.fastpix.io/docs/using-nsfw-and-profanity-fi
 using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.InVideoAiFeatures.EnableModerationAsync(
-    mediaId: "0cec3c88-c69d-4232-9b96-f0976327fa2d",
+    mediaId: "your-media-id",
     requestBody: new UpdateMediaModerationRequestBody() {
         Moderation = new UpdateMediaModerationModeration() {
             Type = MediaType.Video,
@@ -112,6 +114,7 @@ var res = await sdk.InVideoAiFeatures.EnableModerationAsync(
 );
 
 // handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -119,11 +122,11 @@ var res = await sdk.InVideoAiFeatures.EnableModerationAsync(
 | Parameter                                                                                     | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
 | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `MediaId`                                                                                     | *string*                                                                                      | :heavy_check_mark:                                                                            | The unique identifier assigned to the media when created. The value should be a valid UUID.<br/> | 0cec3c88-c69d-4232-9b96-f0976327fa2d                                                          |
-| `RequestBody`                                                                                 | [UpdateMediaModerationRequestBody](../../Models/Requests/UpdateMediaModerationRequestBody.md) | :heavy_check_mark:                                                                            | N/A                                                                                           | {<br/>"moderation": {<br/>"type": "video"<br/>}<br/>}                                         |
+| `RequestBody`                                                                                 | [UpdateMediaModerationRequestBody](../../../Models/Requests/UpdateMediaModerationRequestBody.md) | :heavy_check_mark:                                                                            | N/A                                                                                           | {<br/>"moderation": {<br/>"type": "video"<br/>}<br/>}                                         |
 
 ### Response
 
-**[UpdateMediaModerationResponse](../../Models/Requests/UpdateMediaModerationResponse.md)**
+**[UpdateMediaModerationResponse](../../../Models/Requests/UpdateMediaModerationResponse.md)**
 
 ### Errors
 

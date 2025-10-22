@@ -18,7 +18,7 @@ namespace Fastpix.Models.Components
         [JsonProperty("mediaId")]
         public string? MediaId { get; set; }
 
-        [JsonProperty("isGeneratedSummary")]
-        public bool? IsGeneratedSummary { get; set; }
+        [JsonProperty("isSummaryEnabled")]
+        public bool? IsSummaryEnabled { get; set; }
     }
 }

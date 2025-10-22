@@ -22,6 +22,7 @@ An e-learning platform requests details for the playlist "Beginner Python Series
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -29,8 +30,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.Playlist.GetByIdAsync(playlistId: "<id>");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistByIdResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -68,6 +68,7 @@ An e-learning platform updates the playlist titled "Beginner Python Series" to r
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -82,7 +83,7 @@ var res = await sdk.Playlist.UpdateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistCreatedResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

@@ -45,6 +45,7 @@ Once the key pair is generated, the private key must be securely stored by the d
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -52,8 +53,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.SigningKeys.CreateAsync();
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.CreateResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Response
@@ -98,6 +98,7 @@ The API returns the list in a paginated format, allowing you to audit and track 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -109,7 +110,7 @@ var res = await sdk.SigningKeys.ListAsync(
     offset: 1D
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.GetAllSigningKeyResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -160,6 +161,7 @@ By specifying the key id, the API removes the signing key from the system. After
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -167,8 +169,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.SigningKeys.DeleteAsync(signingKeyId: "3ta85f64-5717-4562-b3fc-2c963f66afa6");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.DeleteSigningKeyResponseValue, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
@@ -247,6 +248,7 @@ In the response, you will receive the workspaceId and publicKey associated with 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 
 var sdk = new FastPix(security: new Security() {
     Username = "your-access-token",
@@ -254,8 +256,7 @@ var sdk = new FastPix(security: new Security() {
 });
 
 var res = await sdk.SigningKeys.GetByIdAsync(signingKeyId: "5ta85f64-5717-4562-b3fc-2c963f66afa6");
-
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.GetPublicPemUsingSigningKeyIdResponseDTO, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters

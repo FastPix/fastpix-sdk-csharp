@@ -13,62 +13,19 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FastPix")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright (c) FastPix 2025")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute("FASTPIX API\'S: FastPix provides a comprehensive set of APIs that enable developer" +
-    "s to manage both **on-demand media (video/audio)** and **live streaming experien" +
-    "ces**, with built-in security features through **cryptographic signing keys**. T" +
-    "hese APIs cover the full lifecycle of content creation, management, distribution" +
-    ", playback, and secure access, making them ideal for building scalable video-fir" +
-    "st applications.<br />\n### Media APIs (Video &amp; Audio on Demand)<br />\nThe **" +
-    "Media APIs** allow developers to create, retrieve, update, and delete media file" +
-    "s, as well as manage metadata, playback settings, and additional tracks such as " +
-    "audio or subtitles. With these endpoints, developers can:<br />\n- Upload videos " +
-    "directly or create media from URLs.   - Manage playback permissions and configur" +
-    "e playback IDs.   - Add multilingual audio or subtitle tracks for global audienc" +
-    "es.   - Build robust video-on-demand (VOD) and audio-on-demand (AOD) libraries. " +
-    " <br />\n**Use case scenarios**   - **Video-on-Demand Platforms:** Manage large c" +
-    "ontent libraries for streaming services.   - **E-Learning Solutions:** Upload an" +
-    "d organize lecture videos, metadata, and playback settings.   - **Multilingual C" +
-    "ontent Delivery:** Add multiple language tracks or subtitles to serve global use" +
-    "rs.  <br />\n### Live Stream APIs<br />\nThe **Live Stream APIs** simplify the pro" +
-    "cess of creating, managing, and distributing live content. Developers can initia" +
-    "te broadcasts, configure stream settings, and extend streams to external platfor" +
-    "ms through simulcasting. These endpoints also support real-time interaction and " +
-    "customization of live events.<br />\n- Start and manage live broadcasts programma" +
-    "tically.   - Control stream metadata, privacy, and playback options.   - Simulca" +
-    "st to platforms like YouTube, Facebook, or Twitch.   - Update stream details and" +
-    " manage live playback IDs in real time.  <br />\n**Use case scenarios**   - **Eve" +
-    "nt Broadcasting:** Enable organizers to set up live streams for conferences, con" +
-    "certs, or webinars.   - **Creator Platforms:** Provide streamers with tools for " +
-    "broadcasting gameplay, tutorials, or vlogs with simulcasting support.   - **Corp" +
-    "orate Streaming:** Deliver secure internal town halls or meetings with privacy a" +
-    "nd playback controls.  <br />\n### Video Data APIs<br />\nThe **Video Data APIs** " +
-    "Provide insights into viewer interactions, performance metrics, and playback err" +
-    "ors to optimize content delivery and user experience.<br /><br />\n - Track video" +
-    " views, unique viewers, and engagement metrics<br />\n - Identify top-performing " +
-    "content and usage patterns<br />\n - Break down data by browser, device, or geogr" +
-    "aphy<br />\n - Detect playback errors and performance issues<br />\n - Enable data" +
-    "-driven content strategy decisions<br /><br />\n **Use case scenarios** <br />\n -" +
-    " Analytics Dashboards: Monitor performance across content libraries<br />\n - Qua" +
-    "lity Monitoring: Diagnose and resolve playback issues<br />\n - Content Strategy " +
-    "Optimization: Identify high-value content<br />\n - User Behavior Insights: Under" +
-    "stand audience interactions<br /><br />\n### Signing Keys<br />\nFastPix also prov" +
-    "ides endpoints for managing **cryptographic signing keys**, which are essential " +
-    "for securely signing and verifying tokens, such as JSON Web Tokens (JWTs). These" +
-    " keys are critical for authenticating and authorizing API requests, as well as f" +
-    "or protecting access to media assets.<br />\n- **Private key:** Used to create di" +
-    "gital signatures (kept secret).   - **Public key:** Used to verify digital signa" +
-    "tures (shared for verification).  <br />\nBy rotating and managing signing keys r" +
-    "egularly, developers can maintain strong security practices and prevent unauthor" +
-    "ized access.  <br />\n**Use case scenarios**   - **Token-based authentication:** " +
-    "Validate user access to premium or subscription-based content.   - **Key rotatio" +
-    "n:** Regularly rotate keys to reduce risk of compromise.   - **Protect intellect" +
-    "ual property:** Prevent unauthorized distribution of valuable media assets.   - " +
-    "**Control usage:** Restrict access to specific users, groups, or contexts.   - *" +
-    "*Prevent tampering:** Ensure requested assets have not been modified.   - **Time" +
-    "-bound access:** Enable signed URLs with expiration for controlled viewing windo" +
-    "ws.  ")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute(@"FastPix C# SDK: A comprehensive set of APIs for managing on-demand media (video/audio) and live streaming experiences with built-in security through cryptographic signing keys. Covers the full lifecycle of content creation, management, distribution, playback, and secure access for scalable video-first applications.
+
+**Media APIs**: Create, retrieve, update, and delete media files. Manage metadata, playback settings, and multilingual tracks. Upload videos directly or from URLs, configure playback IDs, and build robust VOD/AOD libraries.
+
+**Live Stream APIs**: Create, manage, and distribute live content. Start broadcasts, configure stream settings, simulcast to platforms like YouTube/Facebook/Twitch, and manage live playback IDs in real-time.
+
+**Video Data APIs**: Track viewer interactions, performance metrics, and playback errors. Monitor engagement, identify top content, analyze by device/geography, and enable data-driven decisions.
+
+**Signing Keys**: Manage cryptographic signing keys for secure token-based access. Create/rotate keys, protect intellectual property, control usage, and enable time-bound access with signed URLs.
+
+Use cases: Video-on-demand platforms, e-learning solutions, event broadcasting, creator platforms, corporate streaming, analytics dashboards, and quality monitoring.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee978e2b886aff26fb6f3b06dbca06513b262e2c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b027dc90c9d06770bf63ad10210dd7b19e418aa5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fastpix")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fastpix")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -18,7 +18,7 @@ namespace Fastpix.Models.Components
         [JsonProperty("mediaId")]
         public string? MediaId { get; set; }
 
-        [JsonProperty("isGeneratedNamedEntities")]
-        public bool? IsGeneratedNamedEntities { get; set; }
+        [JsonProperty("isNamedEntitiesEnabled")]
+        public bool? IsNamedEntitiesEnabled { get; set; }
     }
 }

@@ -27,6 +27,7 @@ Related guide: <a href="https://docs.fastpix.io/docs/simulcast-to-3rd-party-plat
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastPix(security: new Security() {
@@ -45,7 +46,7 @@ var res = await sdk.SimulcastStream.CreateAsync(
     }
 );
 
-// handle response
+Console.WriteLine(JsonConvert.SerializeObject(res.SimulcastResponse, Formatting.Indented) ?? "null");
 ```
 
 ### Parameters
