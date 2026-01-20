@@ -4,27 +4,23 @@ using Fastpix;
 using Fastpix.Models.Components;
 using System.Collections.Generic;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 CreateMediaRequest req = new CreateMediaRequest() {
     Inputs = new List<Fastpix.Models.Components.Input>() {
-        Fastpix.Models.Components.Input.CreateVideoInput(
-            new VideoInput() {
-                Type = "video",
-                Url = "https://static.fastpix.io/sample.mp4",
-            }
+        Fastpix.Models.Components.Input.CreatePullVideoInput(
+            new PullVideoInput() {}
         ),
     },
     Metadata = new Dictionary<string, string>() {
-        { "key1", "value1" },
+        { "<key>", "<value>" },
     },
-    AccessPolicy = CreateMediaRequestAccessPolicy.Public,
 };
 
-var res = await sdk.Videos.CreateFromUrlAsync(req);
+var res = await sdk.InputVideo.CreateMediaAsync(req);
 
 // handle response
 ```

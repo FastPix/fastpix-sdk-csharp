@@ -1,12 +1,12 @@
 # LivePlayback
-(*LivePlayback*)
 
 ## Overview
 
 ### Available Operations
 
 * [Create](#create) - Create a playbackId
-* [Delete](#delete) - Delete a playbackId
+* [DeletePlaybackId](#deleteplaybackid) - Delete a playbackId
+* [GetPlaybackDetails](#getplaybackdetails) - Get playbackId details
 
 ## Create
 
@@ -24,29 +24,35 @@ Generates a new playback ID for the live stream, allowing viewers to access the 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.LivePlayback.CreateAsync(
-    streamId: "8717422d89288ad5958d4a86e9afe2a2",
-    playbackIdRequest: new PlaybackIdRequest() {
-        AccessPolicy = BasicAccessPolicy.Public,
-    }
+    streamId: "<streamId>",
+    body: new PlaybackIdRequest() {}
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.PlaybackIdSuccessResponse, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.PlaybackIdSuccessResponse,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                           | Type                                                                                | Required                                                                            | Description                                                                         | Example                                                                             |
-| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `StreamId`                                                                          | *string*                                                                            | :heavy_check_mark:                                                                  | Upon creating a new live stream, FastPix assigns a unique identifier to the stream. | 8717422d89288ad5958d4a86e9afe2a2                                                    |
-| `PlaybackIdRequest`                                                                 | [PlaybackIdRequest](../../Models/Components/PlaybackIdRequest.md)                   | :heavy_check_mark:                                                                  | N/A                                                                                 | {<br/>"accessPolicy": "public"<br/>}                                                |
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          | Example                                                                              |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `StreamId`                                                                           | *string*                                                                             | :heavy_check_mark:                                                                   | After creating a new live stream, FastPix assigns a unique identifier to the stream. | <streamId>                                                     |
+| `Body`                                                                               | [PlaybackIdRequest](../../Models/Components/PlaybackIdRequest.md)                    | :heavy_check_mark:                                                                   | N/A                                                                                  | {<br/>"accessPolicy": "public"<br/>}                                                 |
 
 ### Response
 
@@ -54,17 +60,13 @@ Console.WriteLine(JsonConvert.SerializeObject(res.PlaybackIdSuccessResponse, For
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.UnauthorizedException      | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.InvalidPermissionException | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.LiveNotFoundError          | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
-## Delete
+## DeletePlaybackId
 
-Deletes a previously created playback ID for a live stream. This will prevent any new viewers from accessing the stream through the playback ID, though current viewers will be able to continue watching for a limited time before being disconnected. By providing the `playbackId`, FastPix deletes the ID and ensures new playback requests will fail. 
+Deletes a previously created playback ID for a live stream.This prevents new viewers from accessing the stream using the playback ID, while current viewers can continue watching for a short period before the connection ends. FastPix deletes the ID and ensures the new playback request fails.
 
 #### Example
 A streaming service wants to prevent new users from joining a live stream that is nearing its end. The host can delete the playback ID to ensure no one can join the stream or replay it once it ends.
@@ -75,27 +77,35 @@ A streaming service wants to prevent new users from joining a live stream that i
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.LivePlayback.DeleteAsync(
-    streamId: "8717422d89288ad5958d4a86e9afe2a2",
-    playbackId: "88b7ac0f-2504-4dd5-b7b4-d84ab4fee1bd"
+var res = await sdk.LivePlayback.DeletePlaybackIdAsync(
+    streamId: "<streamId>",
+    playbackId: "<playbackId>"
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.LiveStreamDeleteResponse,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
 | Parameter                                                                           | Type                                                                                | Required                                                                            | Description                                                                         | Example                                                                             |
 | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `StreamId`                                                                          | *string*                                                                            | :heavy_check_mark:                                                                  | Upon creating a new live stream, FastPix assigns a unique identifier to the stream. | 8717422d89288ad5958d4a86e9afe2a2                                                    |
-| `PlaybackId`                                                                        | *string*                                                                            | :heavy_check_mark:                                                                  | Unique identifier for the playbackId                                                | 88b7ac0f-2504-4dd5-b7b4-d84ab4fee1bd                                                |
+| `StreamId`                                                                          | *string*                                                                            | :heavy_check_mark:                                                                  | Upon creating a new live stream, FastPix assigns a unique identifier to the stream. | <streamId>                                                    |
+| `PlaybackId`                                                                        | *string*                                                                            | :heavy_check_mark:                                                                  | Unique identifier for the playbackId                                                | <playbackId>                                                |
 
 ### Response
 
@@ -103,10 +113,59 @@ Console.WriteLine(JsonConvert.SerializeObject(res.LiveStreamDeleteResponse, Form
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.UnauthorizedException      | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.InvalidPermissionException | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.NotFoundErrorPlaybackId    | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## GetPlaybackDetails
+
+Retrieves details for an existing playback ID. When you provide the playbackId returned from a previous stream or playback creation request, FastPix returns the associated playback information, including the access policy.
+
+#### Example
+A developer needs to confirm the access policy of the playback ID to ensure whether the stream is public or private for viewers.
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="get-live-stream-playback-id" method="get" path="/live/streams/{streamId}/playback-ids/{playbackId}" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.LivePlayback.GetPlaybackDetailsAsync(
+    streamId: "<streamId>",
+    playbackId: "<playbackId>"
+);
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.PlaybackIdSuccessResponse,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
+```
+
+### Parameters
+
+| Parameter                                                                             | Type                                                                                  | Required                                                                              | Description                                                                           | Example                                                                               |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `StreamId`                                                                            | *string*                                                                              | :heavy_check_mark:                                                                    | After creating a new live stream, FastPix assigns a unique identifier to the stream.  | <streamId> or <playbackId>                                                      |
+| `PlaybackId`                                                                          | *string*                                                                              | :heavy_check_mark:                                                                    | After creating a new playbackId, FastPix assigns a unique identifier to the playback. | <streamId> or <playbackId>                                                      |
+
+### Response
+
+**[GetLiveStreamPlaybackIdResponse](../../Models/Requests/GetLiveStreamPlaybackIdResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |

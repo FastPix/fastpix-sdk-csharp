@@ -13,4 +13,3 @@ Determines the highest quality resolution available.
 | `OneThousandAndEightyp`           | 1080p                             |
 | `SevenHundredAndTwentyp`          | 720p                              |
 | `FourHundredAndEightyp`           | 480p                              |
-| `ThreeHundredAndSixtyp`           | 360p                              |

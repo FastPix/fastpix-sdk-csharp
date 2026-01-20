@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VUAIqMPfNNA=",
+  "dgSpecHash": "f2UBG2c1osU=",
   "success": true,
-  "projectFilePath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side-azure-cloned/src/Fastpix/Fastpix.csproj",
+  "projectFilePath": "/Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/Fastpix.csproj",
   "expectedPackageFiles": [
     "/Users/tharunbudidha/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/tharunbudidha/.nuget/packages/nodatime/3.1.9/nodatime.3.1.9.nupkg.sha512",

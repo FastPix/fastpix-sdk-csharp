@@ -1,13 +1,16 @@
 # Playback
-(*Playback*)
 
 ## Overview
+
+Operations for video playback management
 
 ### Available Operations
 
 * [Create](#create) - Create a playback ID
+* [List](#list) - Get all playback IDs details for a media
 * [Delete](#delete) - Delete a playback ID
-* [GetById](#getbyid) - Get a playback ID
+* [UpdateDomainRestrictions](#updatedomainrestrictions) - Update domain restrictions for a playback ID
+* [UpdateUserAgentRestrictions](#updateuseragentrestrictions) - Update user-agent restrictions for a playback ID
 
 ## Create
 
@@ -23,11 +26,11 @@ If you want to create a private playback ID for a media asset that already has a
 
 2. Include the `accessPolicy` in the request body with `private` or `public` as the value. 
 
-3. Receive a response containing the newly created playback ID with the requested access level. 
+3. You receive a response containing the newly created playback ID with the specified access level.
 
 
 #### Example
-A video streaming service generates playback IDs for each media file when users request to view specific content. The playback ID is then used by the video player to stream the video.
+A video streaming service generates playback IDs for each media file when users request to view specific content. The video player then uses the playback ID to stream the video.
 
 
 ### Example Usage
@@ -36,32 +39,40 @@ A video streaming service generates playback IDs for each media file when users 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Newtonsoft.Json;
 using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.Playback.CreateAsync(
-    mediaId: "dbb8a39a-e4a5-4120-9f22-22f603f1446e",
-    requestBody: new CreateMediaPlaybackIdRequestBody() {
+    mediaId: "<mediaId>",
+    body: new CreateMediaPlaybackIdRequestBody() {
         AccessPolicy = AccessPolicy.Public,
-        DrmConfigurationId = "123e4567-e89b-12d3-a456-426614174000",
-        Resolution = Resolution.OneThousandAndEightyp,
+        DrmConfigurationId = "<drmConfigurationId>",
+        Resolution = Fastpix.Models.Requests.Resolution.OneThousandAndEightyp,
     }
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                                                         | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       | Example                                                                                                           |
-| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `MediaId`                                                                                                         | *string*                                                                                                          | :heavy_check_mark:                                                                                                | When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters. | dbb8a39a-e4a5-4120-9f22-22f603f1446e                                                                              |
-| `RequestBody`                                                                                                     | [CreateMediaPlaybackIdRequestBody](../../Models/Requests/CreateMediaPlaybackIdRequestBody.md)                     | :heavy_minus_sign:                                                                                                | Request body for creating playback id for an media                                                                |                                                                                                                   |
+| Parameter                                                                                     | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `MediaId`                                                                                     | *string*                                                                                      | :heavy_check_mark:                                                                            | The unique identifier assigned to the media when created. The value must be a valid UUID.     | <mediaId> or <playbackId>                                                          |
+| `Body`                                                                                        | [CreateMediaPlaybackIdRequestBody](../../Models/Requests/CreateMediaPlaybackIdRequestBody.md) | :heavy_minus_sign:                                                                            | Request body for creating playback id for an media                                            |                                                                                               |
 
 ### Response
 
@@ -69,24 +80,74 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.MediaNotFoundException     | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## List
+
+Retrieves all playback IDs associated with a given media asset, including each playback ID’s access policy and detailed access restrictions such as allowed or denied domains and user agents.
+
+**How it works:**
+1. Send a `GET` request to this endpoint with the target `mediaId`.
+2. The response includes an array of playback ID records with their respective access controls.
+
+**Use case:**
+Useful for validating and managing playback permissions programmatically, reviewing restriction settings, or powering an access control dashboard.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="list-playback-ids" method="get" path="/on-demand/{mediaId}/playback-ids" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.Playback.ListAsync(mediaId: "<mediaId>");
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
+```
+
+### Parameters
+
+| Parameter                            | Type                                 | Required                             | Description                          | Example                              |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `MediaId`                            | *string*                             | :heavy_check_mark:                   | N/A                                  | <mediaId> |
+
+### Response
+
+**[ListPlaybackIdsResponse](../../Models/Requests/ListPlaybackIdsResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
 ## Delete
 
-This endpoint allows you to remove a specific playback ID associated with a media asset. Deleting a `playbackId` will revoke access to the media content linked to that ID. 
+This endpoint deletes a specific playback ID associated with a media asset. Deleting a `playback ID` revokes access to the media content linked to that ID.
 
 
 #### How it works
 
 1. Make a `DELETE` request to this endpoint, replacing `<mediaId>` with the unique ID of the media asset from which you want to delete the playback ID. 
 
-2. Specify the `playbackId` you wish to delete in the request body. 
+2. Include the `playbackId` you want to delete in the request body.
 
 #### Example
 
@@ -99,27 +160,35 @@ Your platform offers limited-time access to premium content. When the subscripti
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.Playback.DeleteAsync(
-    mediaId: "dbb8a39a-e4a5-4120-9f22-22f603f1446e",
-    playbackId: "dbb8a39a-e4a5-4120-9f22-22f603f1446e"
+    mediaId: "<mediaId>",
+    playbackId: "<playbackId>"
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
 | Parameter                                                                                             | Type                                                                                                  | Required                                                                                              | Description                                                                                           | Example                                                                                               |
 | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `MediaId`                                                                                             | *string*                                                                                              | :heavy_check_mark:                                                                                    | Return the universal unique identifier for media which can contain a maximum of 255 characters.       | dbb8a39a-e4a5-4120-9f22-22f603f1446e                                                                  |
-| `PlaybackId`                                                                                          | *string*                                                                                              | :heavy_check_mark:                                                                                    | Return the universal unique identifier for playbacks  which can contain a maximum of 255 characters.  | dbb8a39a-e4a5-4120-9f22-22f603f1446e                                                                  |
+| `MediaId`                                                                                             | *string*                                                                                              | :heavy_check_mark:                                                                                    | The unique identifier assigned to the media when created. The value must be a valid UUID.             | <mediaId> or <playbackId>                                                                  |
+| `PlaybackId`                                                                                          | *string*                                                                                              | :heavy_check_mark:                                                                                    | Return the universal unique identifier for playbacks  which can contain a maximum of 255 characters.  | <mediaId> or <playbackId>                                                                  |
 
 ### Response
 
@@ -127,64 +196,149 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                             | Status Code                                            | Content Type                                           |
-| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException       | 401                                                    | application/json                                       |
-| Fastpix.Models.Errors.ForbiddenException               | 403                                                    | application/json                                       |
-| Fastpix.Models.Errors.MediaOrPlaybackNotFoundException | 404                                                    | application/json                                       |
-| Fastpix.Models.Errors.ValidationErrorResponse          | 422                                                    | application/json                                       |
-| Fastpix.Models.Errors.APIException                     | 4XX, 5XX                                               | \*/\*                                                  |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
-## GetById
+## UpdateDomainRestrictions
 
-This endpoint retrieves details about a specific playback ID associated with a media asset. This endpoint is commonly used to check the access policy (e.g., public or private) with the specific playback ID.
+This endpoint updates domain-level restrictions for a specific playback ID associated with a media asset.
+It allows you to restrict playback to specific domains or block known unauthorized domains.
 
 **How it works:**
-1. Make a GET request to the endpoint, replacing `{mediaId}` with the `id` of the media, and `{playbackId}` with the specific playback ID.
-2. Useful for auditing or validation before granting playback access in your application.
+1. Make a `PATCH` request to this endpoint with your desired domain access configuration.
+2. Set a default policy (`allow` or `deny`) and specify domain names in the `allow` or `deny` lists.
+3. This is commonly used to restrict video playback to your website or approved client domains.
 
 **Example:**
-A media platform might use this endpoint to verify if a playback ID is public or private before embedding the video in a frontend player or allowing access to a restricted group.
+A streaming service can allow playback only from `example.com` and deny all others by setting: `"defaultPolicy": "deny"` and `"allow": ["example.com"]`.
 
 
 ### Example Usage
 
-<!-- UsageSnippet language="csharp" operationID="get-playback-id" method="get" path="/on-demand/{mediaId}/playback-ids/{playbackId}" -->
+<!-- UsageSnippet language="csharp" operationID="update-domain-restrictions" method="patch" path="/on-demand/{mediaId}/playback-ids/{playbackId}/domains" -->
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Models.Requests;
+using Fastpix.Utils;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.Playback.GetByIdAsync(
-    mediaId: "paste-your-media-id-here",
-    playbackId: "paste-your-playback-id-here"
+var res = await sdk.Playback.UpdateDomainRestrictionsAsync(
+    mediaId: "<mediaId>",
+    playbackId: "<playbackId>",
+    body: new UpdateDomainRestrictionsRequestBody() {
+        Allow = new List<string>() {
+            "yourdomain.com",
+            "sampledomain.com",
+        },
+        Deny = new List<string>() {
+            "yourworkdomain.com",
+        },
+    }
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                            | Type                                 | Required                             | Description                          | Example                              |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `MediaId`                            | *string*                             | :heavy_check_mark:                   | N/A                                  | 4fa85f64-5717-4562-b3fc-2c963f66afa6 |
-| `PlaybackId`                         | *string*                             | :heavy_check_mark:                   | N/A                                  | 4fa85f64-5717-4562-b3fc-2c963f66afa6 |
+| Parameter                                                                                           | Type                                                                                                | Required                                                                                            | Description                                                                                         | Example                                                                                             |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `MediaId`                                                                                           | *string*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 | <mediaId>                                                                |
+| `PlaybackId`                                                                                        | *string*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 | <playbackId>                                                                |
+| `Body`                                                                                              | [UpdateDomainRestrictionsRequestBody](../../Models/Requests/UpdateDomainRestrictionsRequestBody.md) | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
 
 ### Response
 
-**[GetPlaybackIdResponse](../../Models/Requests/GetPlaybackIdResponse.md)**
+**[UpdateDomainRestrictionsResponse](../../Models/Requests/UpdateDomainRestrictionsResponse.md)**
 
 ### Errors
 
-| Error Type                                             | Status Code                                            | Content Type                                           |
-| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException       | 401                                                    | application/json                                       |
-| Fastpix.Models.Errors.ForbiddenException               | 403                                                    | application/json                                       |
-| Fastpix.Models.Errors.MediaOrPlaybackNotFoundException | 404                                                    | application/json                                       |
-| Fastpix.Models.Errors.ValidationErrorResponse          | 422                                                    | application/json                                       |
-| Fastpix.Models.Errors.APIException                     | 4XX, 5XX                                               | \*/\*                                                  |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## UpdateUserAgentRestrictions
+
+This endpoint allows updating user-agent restrictions for a specific playback ID associated with a media asset. 
+It can be used to allow or deny specific user-agents during playback request evaluation.
+
+**How it works:**
+1. Make a `PATCH` request to this endpoint with your desired user-agent access configuration.
+2. Specify a default policy (`allow` or `deny`) and provide specific `allow` or `deny` lists.
+3. Use this to restrict access to specific browsers, devices, or bots.
+
+**Example:**
+A developer may configure a playback ID to deny access from known scraping user-agents while allowing all others by default.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="update-user-agent-restrictions" method="patch" path="/on-demand/{mediaId}/playback-ids/{playbackId}/user-agents" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.Playback.UpdateUserAgentRestrictionsAsync(
+    mediaId: "<mediaId>",
+    playbackId: "<playbackId>",
+    body: new UpdateUserAgentRestrictionsRequestBody() {
+        Allow = new List<string>() {
+            "Mozilla/55.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+        },
+        Deny = new List<string>() {
+            "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/53745.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+        },
+    }
+);
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
+```
+
+### Parameters
+
+| Parameter                                                                                                 | Type                                                                                                      | Required                                                                                                  | Description                                                                                               | Example                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `MediaId`                                                                                                 | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       | <mediaId>                                                                      |
+| `PlaybackId`                                                                                              | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       | <playbackId>                                                                      |
+| `Body`                                                                                                    | [UpdateUserAgentRestrictionsRequestBody](../../Models/Requests/UpdateUserAgentRestrictionsRequestBody.md) | :heavy_check_mark:                                                                                        | N/A                                                                                                       |                                                                                                           |
+
+### Response
+
+**[UpdateUserAgentRestrictionsResponse](../../Models/Requests/UpdateUserAgentRestrictionsResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |

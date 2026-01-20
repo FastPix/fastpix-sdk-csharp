@@ -1,107 +1,90 @@
 # Playlist
-(*Playlist*)
 
 ## Overview
 
+Operations for playlist management
+
 ### Available Operations
 
-* [GetById](#getbyid) - Get a playlist by ID
-* [Update](#update) - Update a playlist by ID
+* [Create](#create) - Create a new playlist
 
-## GetById
+## Create
 
-This endpoint retrieves detailed information about a specific playlist using its unique `playlistId`. It provides comprehensive metadata about the playlist, including its title, creation mode (manual or smart), media items along with the metadata of each media in the playlist.
+This endpoint creates a new playlist within a specified workspace. A playlist acts as a container for organizing media items either manually or based on filters and metadata. <br> <br>
+### Playlists can be created in two modes
+- **Manual:** Creates an empty playlist without any initial media items. Use this mode for manual curation, where you add items later in a user-defined sequence.
+- **Smart:** Auto-populates the playlist at creation time based on the filter criteria (for example, a video creation date range) that you provide in the request.
 
- 
+For more details, see <a href="https://docs.fastpix.io/docs/create-and-manage-playlist">Create and manage playlist</a>.
+
+#### How it works 
+
+ - When you send a `POST` request to this endpoint, FastPix creates a playlist and returns a playlist ID, using which items can be added later in a user-defined sequence.
+ - You can create a smart playlist that is auto-populated based on the metadata in the request body.
+
+
 #### Example
-An e-learning platform requests details for the playlist "Beginner Python Series" by providing its unique `playlistId`. The response includes the playlist's title, creation mode, and the ordered list of video tutorials contained within, enabling the platform to present the full learning path to users.
+An e-learning platform creates a new playlist titled Beginner Python Series through the API. The response returns a unique playlist ID. The platform uses this ID to add a series of video tutorials to the playlist in a defined order. The playlist appears on the frontend as a structured learning path for learners.
 
 ### Example Usage
 
-<!-- UsageSnippet language="csharp" operationID="get-playlist-by-id" method="get" path="/on-demand/playlists/{playlistId}" -->
+<!-- UsageSnippet language="csharp" operationID="create-a-playlist" method="post" path="/on-demand/playlists" -->
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.Playlist.GetByIdAsync(playlistId: "<id>");
-Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistByIdResponse, Formatting.Indented) ?? "null");
-```
-
-### Parameters
-
-| Parameter                                           | Type                                                | Required                                            | Description                                         |
-| --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
-| `PlaylistId`                                        | *string*                                            | :heavy_check_mark:                                  | The unique id of the playlist you want to retrieve. |
-
-### Response
-
-**[GetPlaylistByIdResponse](../../Models/Requests/GetPlaylistByIdResponse.md)**
-
-### Errors
-
-| Error Type                                               | Status Code                                              | Content Type                                             |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| Fastpix.Models.Errors.UnauthorizedException              | 401                                                      | application/json                                         |
-| Fastpix.Models.Errors.NotFoundError                      | 404                                                      | application/json                                         |
-| Fastpix.Models.Errors.InvalidPlaylistIdResponseException | 422                                                      | application/json                                         |
-| Fastpix.Models.Errors.APIException                       | 4XX, 5XX                                                 | \*/\*                                                    |
-
-## Update
-
-This endpoint allows you to update the name and description of an existing playlist. It enables modifications to the playlist's metadata without altering the media items or playlist structure.
-#### How it works
-
- - When a user sends a PUT request to this endpoint with the `playlistId` and updated name and description in the request body, FastPix updates the playlist metadata accordingly and returns the updated playlist details.
-
-#### Example
-An e-learning platform updates the playlist titled "Beginner Python Series" to rename it as "Python Basics" and add a more detailed description. The updated metadata is reflected when retrieving the playlist, helping users better understand the playlist content.
-
-### Example Usage
-
-<!-- UsageSnippet language="csharp" operationID="update-a-playlist" method="put" path="/on-demand/playlists/{playlistId}" -->
-```csharp
-using Fastpix;
-using Fastpix.Models.Components;
-using Newtonsoft.Json;
-
-var sdk = new FastPix(security: new Security() {
-    Username = "your-access-token",
-    Password = "secret-key",
-});
-
-var res = await sdk.Playlist.UpdateAsync(
-    playlistId: "<id>",
-    updatePlaylistRequest: new UpdatePlaylistRequest() {
-        Name = "updated name",
-        Description = "updated description",
+CreatePlaylistRequest req = CreatePlaylistRequest.CreateSmart(
+    new CreatePlaylistRequestSmart() {
+        Name = "playlist name",
+        ReferenceId = "a1",
+        Type = CreatePlaylistRequestSmartType.Smart,
+        Description = "This is a playlist",
+        PlayOrder = PlaylistOrder.CreatedDateASC,
+        Limit = 20,
+        Metadata = new Metadata() {
+            CreatedDate = new DateRange() {
+                StartDate = "2024-11-11",
+                EndDate = "2024-12-12",
+            },
+            UpdatedDate = new DateRange() {
+                StartDate = "2024-11-11",
+                EndDate = "2024-12-12",
+            },
+        },
     }
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.PlaylistCreatedResponse, Formatting.Indented) ?? "null");
+var res = await sdk.Playlist.CreateAsync(req);
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.PlaylistCreatedResponse,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                 | Type                                                                      | Required                                                                  | Description                                                               | Example                                                                   |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `PlaylistId`                                                              | *string*                                                                  | :heavy_check_mark:                                                        | The unique id of the playlist you want to retrieve.                       |                                                                           |
-| `UpdatePlaylistRequest`                                                   | [UpdatePlaylistRequest](../../Models/Components/UpdatePlaylistRequest.md) | :heavy_check_mark:                                                        | N/A                                                                       | {<br/>"name": "updated name",<br/>"description": "updated description"<br/>} |
+| Parameter                                                                 | Type                                                                      | Required                                                                  | Description                                                               |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `request`                                                                 | [CreatePlaylistRequest](../../Models/Components/CreatePlaylistRequest.md) | :heavy_check_mark:                                                        | The request object to use for the request.                                |
 
 ### Response
 
-**[UpdateAPlaylistResponse](../../Models/Requests/UpdateAPlaylistResponse.md)**
+**[CreateAPlaylistResponse](../../Models/Requests/CreateAPlaylistResponse.md)**
 
 ### Errors
 
-| Error Type                                               | Status Code                                              | Content Type                                             |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| Fastpix.Models.Errors.UnauthorizedException              | 401                                                      | application/json                                         |
-| Fastpix.Models.Errors.InvalidPermissionException         | 403                                                      | application/json                                         |
-| Fastpix.Models.Errors.InvalidPlaylistIdResponseException | 422                                                      | application/json                                         |
-| Fastpix.Models.Errors.APIException                       | 4XX, 5XX                                                 | \*/\*                                                    |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
