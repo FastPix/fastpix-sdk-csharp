@@ -1,176 +1,81 @@
 # Videos
-(*Videos*)
 
 ## Overview
 
 ### Available Operations
 
-* [CreateFromUrl](#createfromurl) - Create media from URL
-* [Get](#get) - Get a media by ID
+* [ListLiveClips](#listliveclips) - Get all clips of a live stream
 * [Update](#update) - Update a media by ID
-* [Upload](#upload) - Upload media from device
+* [UpdateTrack](#updatetrack) - Update audio / subtitle track
+* [GetSummary](#getsummary) - Get the summary of a video
+* [GetInputInfo](#getinputinfo) - Get info of media inputs
 
-## CreateFromUrl
+## ListLiveClips
 
-This endpoint allows developers or users to create a new video or audio media in FastPix using a publicly accessible URL. FastPix will fetch the media from the provided URL, process it, and store it on the platform for use. 
-
-
-
-#### Public URL requirement:
-
-
-  The provided URL must be publicly accessible and should point to a video stored in one of the following supported formats: .m4v, .ogv, .mpeg, .mov, .3gp, .f4v, .rm, .ts, .wtv, .avi, .mp4, .wmv, .webm, .mts, .vob, .mxf, asf, m2ts 
-
-
-
-#### Supported storage types:
-
-The URL can originate from various cloud storage services or content delivery networks (CDNs) such as: 
-
-
-* **Amazon S3:** URLs from Amazon's Simple Storage Service. 
-
-* **Google Cloud Storage:** URLs from Google Cloud's storage solution. 
-
-* **Azure Blob Storage:** URLs from Microsoft's Azure storage. 
-
-* **Public CDNs:** URLs from public content delivery networks that host video files. 
-
-Upon successful creation, the API returns an `id` that should be retained for future operations related to this media. 
-
+Retrieves a list of all media clips generated from a specific livestream. Each media entry includes metadata such as the clip media IDs, and other relevant details. A media clip is a segmented portion of an original media file (source live stream). Clips are often created for various purposes such as previews, highlights, or customized edits.
 #### How it works
+1. Provide the livestreamId as a parameter when calling this endpoint.
+
+2. The API returns a paginated list of media clips created from the specified livestream.
+
+3. Pagination helps maintain performance and usability when handling large sets of media files, making it easier to organize and manage content in bulk.
+
+#### Use case
+Suppose you’re hosting a live gaming event and want to showcase key moments from the stream — such as top plays or final match highlights. You can use this endpoint to fetch all clips generated from that livestream, display them in your dashboard, or use them for post-event editing and sharing.
 
 
-1. Send a POST request to this endpoint with the media URL (typically a video or audio file) and optional media settings. 
-
-2. FastPix uploads the video from the provided URL to its storage. 
-
-3. Receive a response containing the unique id for the newly created media item. 
-
-4. Use the id in subsequent API calls, such as checking the status of the media with the <a href="https://docs.fastpix.io/reference/get-media">Get Media by ID</a> endpoint to determine when the media is ready for playback. 
-
-FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, once the media file is created (but not yet processed or encoded), we'll shoot a `POST` message to the address you give us with the webhook event <a href="https://docs.fastpix.io/docs/media-events#videomediacreated">video.media.created</a>. 
-
-
-Once processing is done you can look for the events <a href="https://docs.fastpix.io/docs/media-events#/videomediaready">video.media.ready<a/> and <a href="https://docs.fastpix.io/docs/media-events#videomediafailed">video.media.failed</a> to see the status of your new media file.
-
-Related guide: <a href="https://docs.fastpix.io/docs/upload-videos-from-url">Upload videos from URL</a>
+Related guide: <a href="https://docs.fastpix.io/docs/instant-live-clipping">Instant live clipping</a>
 
 
 ### Example Usage
 
-<!-- UsageSnippet language="csharp" operationID="create-media" method="post" path="/on-demand" -->
+<!-- UsageSnippet language="csharp" operationID="list-live-clips" method="get" path="/on-demand/{livestreamId}/live-clips" -->
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using System.Collections.Generic;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-CreateMediaRequest req = new CreateMediaRequest() {
-    Inputs = new List<Fastpix.Models.Components.Input>() {
-        Fastpix.Models.Components.Input.CreateVideoInput(
-            new VideoInput() {
-                Type = "video",
-                Url = "https://static.fastpix.io/sample.mp4",
-            }
-        ),
-    },
-    Metadata = new Dictionary<string, string>() {
-        { "key1", "value1" },
-    },
-    AccessPolicy = CreateMediaRequestAccessPolicy.Public,
-};
+var res = await sdk.Videos.ListLiveClipsAsync(
+    livestreamId: "<livestreamId>",
+    limit: 20,
+    offset: 1,
+    orderBy: SortOrder.Desc
+);
 
-var res = await sdk.Videos.CreateFromUrlAsync(req);
-Console.WriteLine(JsonConvert.SerializeObject(res.CreateMediaSuccessResponse, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                           | Type                                                                | Required                                                            | Description                                                         |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `request`                                                           | [CreateMediaRequest](../../Models/Components/CreateMediaRequest.md) | :heavy_check_mark:                                                  | The request object to use for the request.                          |
+| Parameter                                                                                 | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `LivestreamId`                                                                            | *string*                                                                                  | :heavy_check_mark:                                                                        | The stream Id is unique identifier assigned to the live stream.                           | <livestreamId>                                                          |
+| `Limit`                                                                                   | *long*                                                                                    | :heavy_minus_sign:                                                                        | Limit specifies the maximum number of items to display per page.                          | 20                                                                                        |
+| `Offset`                                                                                  | *long*                                                                                    | :heavy_minus_sign:                                                                        | Offset determines the starting point for data retrieval within a paginated list.          | 1                                                                                         |
+| `OrderBy`                                                                                 | [SortOrder](../../Models/Components/SortOrder.md)                                         | :heavy_minus_sign:                                                                        | The values in the list can be arranged in two ways: DESC (Descending) or ASC (Ascending). | desc                                                                                      |
 
 ### Response
 
-**[Models.Requests.CreateMediaResponse](../../Models/Requests/CreateMediaResponse.md)**
+**[ListLiveClipsResponse](../../Models/Requests/ListLiveClipsResponse.md)**
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.BadRequestException        | 400                                              | application/json                                 |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
-
-## Get
-
-By calling this endpoint, you can retrieve detailed information about a specific media item, including its current `status` and a `playbackId`. This is particularly useful for retrieving specific media details when managing large content libraries. 
-
-
-
-#### How it works 
-
-
-
-1. Make a GET request to this endpoint, using the `<mediaId>` received after uploading the media file. 
-
-
-2. Receive a response that includes details about the media: 
-
-* `status` Indicates whether the media is still `preparing` or has transitioned to `ready`.  
-
-* The `playbackId` is a unique identifier that allows you to stream the media once it is `ready`. You can construct the stream URL in this format: `https://stream.fastpix.io/<playbackId>.m3u8`
-
-
-#### Example
-
-Suppose your platform provides users with an interface where they can manage their uploaded content. A user requests detailed information about a specific video to see if it has been fully processed and is available for playback. Using the media ID, you can fetch the information from FastPix and display it in the user's dashboard.
-
-
-### Example Usage
-
-<!-- UsageSnippet language="csharp" operationID="get-media" method="get" path="/on-demand/{mediaId}" -->
-```csharp
-using Fastpix;
-using Fastpix.Models.Components;
-using Newtonsoft.Json;
-
-var sdk = new FastPix(security: new Security() {
-    Username = "your-access-token",
-    Password = "secret-key",
-});
-
-var res = await sdk.Videos.GetAsync(mediaId: "paste-your-media-id-here");
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
-```
-
-### Parameters
-
-| Parameter                                                                                              | Type                                                                                                   | Required                                                                                               | Description                                                                                            | Example                                                                                                |
-| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `MediaId`                                                                                              | *string*                                                                                               | :heavy_check_mark:                                                                                     | The Media Id is assigned a universal unique identifier, which can contain a maximum of 255 characters. | 4fa85f64-5717-4562-b3fc-2c963f66afa6                                                                   |
-
-### Response
-
-**[GetMediaResponse](../../Models/Requests/GetMediaResponse.md)**
-
-### Errors
-
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.MediaNotFoundException     | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
 ## Update
 
@@ -179,16 +84,16 @@ This endpoint allows you to update specific parameters of an existing media file
 
 #### How it works
 
-1. Make a PATCH request to this endpoint, replacing `<mediaId>` with the unique ID (`uploadId` or `id`) of the media received after uploading to FastPix. 
+1. Make a PATCH request to this endpoint. Replace `<mediaId>` with the unique ID (`uploadId` or `id`) of the media you received after uploading to FastPix
 
-2. Include the updated parameters in the request body. 
+2. Include the updated parameters in the request body.
 
-3. Receive a response containing the updated media data, confirming the changes made. 
+3. The response returns the updated media data, confirming the changes. 
 
-Once you have made the update request, you can also look for the webhook event <a href="https://docs.fastpix.io/docs/media-events#videomediaupdated">video.media.updated</a> to notify your system about update status. 
+4. Monitor the <a href="https://docs.fastpix.io/docs/media-events#videomediaupdated">video.media.updated</a> webhook event to track the update status in your system.
 
 #### Example
-Imagine a scenario where a user uploads a video and later realizes they need to change the title, add a new description or tags. You can use this endpoint to update the media metadata without having to re-upload the entire video.
+If a user uploads a video and later needs to change the title, add a new description, or update tags, you can use this endpoint to update the media metadata without re-uploading the entire video.
 
 
 ### Example Usage
@@ -198,32 +103,41 @@ Imagine a scenario where a user uploads a video and later realizes they need to 
 using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
-using System.Collections.Generic;
+using Fastpix.Utils;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.Videos.UpdateAsync(
-    mediaId: "paste-your-media-id-here",
-    requestBody: new UpdatedMediaRequestBody() {
+    mediaId: "<mediaId>",
+    body: new UpdatedMediaRequestBody() {
         Metadata = new Dictionary<string, string>() {
-            { "metadata", "{\"user\":\"fastpix_admin\"}" },
+            { "user", "fastpix_admin" },
         },
+        Title = "test title",
     }
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                                                         | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       | Example                                                                                                           |
-| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `MediaId`                                                                                                         | *string*                                                                                                          | :heavy_check_mark:                                                                                                | When creating the media, FastPix assigns a universally unique identifier with a maximum length of 255 characters. | 4fa85f64-5717-4562-b3fc-2c963f66afa6                                                                              |
-| `RequestBody`                                                                                                     | [UpdatedMediaRequestBody](../../Models/Requests/UpdatedMediaRequestBody.md)                                       | :heavy_check_mark:                                                                                                | N/A                                                                                                               |                                                                                                                   |
+| Parameter                                                                                 | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `MediaId`                                                                                 | *string*                                                                                  | :heavy_check_mark:                                                                        | The unique identifier assigned to the media when created. The value must be a valid UUID. | <mediaId>                                                      |
+| `Body`                                                                                    | [UpdatedMediaRequestBody](../../Models/Requests/UpdatedMediaRequestBody.md)               | :heavy_check_mark:                                                                        | N/A                                                                                       |                                                                                           |
 
 ### Response
 
@@ -231,92 +145,207 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.MediaNotFoundException     | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
-## Upload
+## UpdateTrack
 
-This endpoint enables accelerated uploads of large media files directly from your local device to FastPix for processing and storage.
+This endpoint allows you to update an existing audio or subtitle track associated with a media file. When updating a track, you must provide the new track `url`, `languageName`, and `languageCode`, ensuring all three parameters are included in the request.
 
-> **PLEASE NOTE**
->
-> This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the [changelog](https://docs.fastpix.io/changelog/api-update-direct-upload-media-from-device).
 
 #### How it works
 
-1. Send a POST request to this endpoint with optional media settings.  
+1. Send a PATCH request to this endpoint, replacing `{mediaId}` with the media ID, and `{trackId}` with the ID of the track you want to update.
 
-2. The response includes an `uploadId` and a signed `url` for direct video file upload.
+2. Provide the necessary details in the request body.
 
-3. Upload your video file to the provided `url` by making `PUT` request. The API accepts the media file from the device and uploads it to the FastPix platform. 
+3. Receive a response confirming the track update.
 
-4. Once uploaded, the media undergoes processing and is assigned a unique ID for tracking. Retain this `uploadId` for any future operations related to this upload. 
+#### Webhook Events
 
+After updating a track, your system must receive webhook notifications:
 
+1. After successfully updating a track, your system must receive the webhook event <a href="https://docs.fastpix.io/docs/transform-media-events#videomediatrackupdated">video.media.track.updated</a>.
 
+2. Once the new track is processed and ready, you must receive the webhook event <a href="https://docs.fastpix.io/docs/transform-media-events#videomediatrackready">video.media.track.ready</a>.
 
-After uploading, you can use the <a href="https://docs.fastpix.io/reference/get-media">Get Media by ID</a> endpoint to check the status of the uploaded media asset and see if it has transitioned to a `ready` status for playback. 
-
-To notify your application about the status of this API request check for the webhooks for <a href="https://docs.fastpix.io/docs/webhooks-collection#media-related-events">media related events</a>.  
+3. Once the media file is updated with the new track details, a <a href="https://docs.fastpix.io/docs/media-events#videomediaupdated">video.media.updated</a> event must be triggered.
 
 
 #### Example
+Suppose you previously added a French subtitle track to a video but now need to update it with a different file. By calling this API, you can replace the existing subtitle file (.vtt) with a new one while keeping the same track ID. This is useful when:
 
-A social media platform allows users to upload video content directly from their phones or computers. This endpoint facilitates the upload process. For example, if you are developing a video-sharing app where users can upload short clips from their mobile devices, this endpoint enables them to select a video, upload it to the platform.
+  - The original track file has errors and needs correction.
+  - You want to improve subtitle translations or replace an audio track with a better-quality version.
 
-Related guide: <a href="https://docs.fastpix.io/docs/upload-videos-directly">Upload videos directly</a>
+Related guides: <a href="https://docs.fastpix.io/docs/manage-subtitle-tracks">Add own subtitle tracks</a>, <a href="https://docs.fastpix.io/docs/manage-audio-tracks">Add own audio tracks</a>
 
 
 ### Example Usage
 
-<!-- UsageSnippet language="csharp" operationID="direct-upload-video-media" method="post" path="/on-demand/upload" -->
+<!-- UsageSnippet language="csharp" operationID="update-media-track" method="patch" path="/on-demand/{mediaId}/tracks/{trackId}" -->
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Fastpix.Models.Requests;
-using System.Collections.Generic;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-DirectUploadVideoMediaRequest req = new DirectUploadVideoMediaRequest() {
-    CorsOrigin = "*",
-    PushMediaSettings = new PushMediaSettings() {
-        AccessPolicy = BasicAccessPolicy.Public,
-        Metadata = new Dictionary<string, string>() {
-            { "key1", "value1" },
-        },
-    },
-};
+var res = await sdk.Videos.UpdateTrackAsync(
+    trackId: "<trackId>",
+    mediaId: "<mediaId>",
+    body: new UpdateTrackRequest() {
+        LanguageName = "french",
+    }
+);
 
-var res = await sdk.Videos.UploadAsync(req);
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                               | Type                                                                                    | Required                                                                                | Description                                                                             |
-| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `request`                                                                               | [DirectUploadVideoMediaRequest](../../Models/Requests/DirectUploadVideoMediaRequest.md) | :heavy_check_mark:                                                                      | The request object to use for the request.                                              |
+| Parameter                                                                                 | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `TrackId`                                                                                 | *string*                                                                                  | :heavy_check_mark:                                                                        | The unique identifier assigned to the media when created. The value must be a valid UUID. | <mediaId>                                                      |
+| `MediaId`                                                                                 | *string*                                                                                  | :heavy_check_mark:                                                                        | The unique identifier assigned to the media when created. The value must be a valid UUID. | <mediaId>                                                      |
+| `Body`                                                                                    | [UpdateTrackRequest](../../Models/Components/UpdateTrackRequest.md)                       | :heavy_check_mark:                                                                        | N/A                                                                                       |                                                                                           |
 
 ### Response
 
-**[DirectUploadVideoMediaResponse](../../Models/Requests/DirectUploadVideoMediaResponse.md)**
+**[UpdateMediaTrackResponse](../../Models/Requests/UpdateMediaTrackResponse.md)**
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.BadRequestException        | 400                                              | application/json                                 |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## GetSummary
+
+This endpoint returns the generated summary of a video.  
+
+The summary is created using the **InVideo Summary** feature, which processes the video content and produces a textual summary.  
+
+To use this endpoint, you must first generate the video summary using the Generate Video Summary endpoint. This endpoint can return the summary only after that process is complete. 
+
+Typical use cases include:  
+- Providing viewers with a quick preview of the video's main content.  
+- Enabling search or recommendation systems to surface summarized insights.  
+- Supporting accessibility and content discovery without requiring users to watch the full video.  
+
+If the summary has not been generated or the feature is disabled for the requested media, the endpoint returns an error indicating that the summary is unavailable. 
+
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="get-media-summary" method="get" path="/on-demand/{mediaId}/summary" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.Videos.GetSummaryAsync(mediaId: "<mediaId>");
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
+```
+
+### Parameters
+
+| Parameter                                                                                 | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `MediaId`                                                                                 | *string*                                                                                  | :heavy_check_mark:                                                                        | The unique identifier assigned to the media when created. The value must be a valid UUID. | <mediaId>                                                      |
+
+### Response
+
+**[GetMediaSummaryResponse](../../Models/Requests/GetMediaSummaryResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## GetInputInfo
+
+This endpoint lets you retrieve detailed information about the media inputs associated with a specific media item. You can use it to verify the media file’s input URL, track its creation status, and check its container format. You must provide the mediaId (either the uploadId or the id) to fetch this information.
+
+
+#### How it works
+
+Upon making a `GET` request with the mediaId, FastPix returns a response with: 
+
+* The public storage input `url` of the uploaded media file. 
+
+* Information about the media’s video and audio tracks, including whether they were successfully created.
+
+* The container format of the uploaded media file (for example, MP4, MKV).
+
+This endpoint is particularly useful for ensuring that all necessary tracks (video and audio) have been correctly associated with the media during the upload or media creation process.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="retrieveMediaInputInfo" method="get" path="/on-demand/{mediaId}/input-info" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.Videos.GetInputInfoAsync(mediaId: "<mediaId>");
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
+```
+
+### Parameters
+
+| Parameter                                                                                 | Type                                                                                      | Required                                                                                  | Description                                                                               | Example                                                                                   |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `MediaId`                                                                                 | *string*                                                                                  | :heavy_check_mark:                                                                        | Pass the list of the input objects used to create the media, along with applied settings. | <mediaId>                                                      |
+
+### Response
+
+**[RetrieveMediaInputInfoResponse](../../Models/Requests/RetrieveMediaInputInfoResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.1.0]
+
+- Fixed missing parameters in multiple API methods.
+- Improved overall developer experience through more accurate typings.
+
+---
+
 ## [1.0.0]
 
 This release introduces a C#-modified version of the SDK.

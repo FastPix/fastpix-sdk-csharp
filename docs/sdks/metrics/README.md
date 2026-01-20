@@ -1,16 +1,17 @@
 # Metrics
-(*Metrics*)
 
 ## Overview
 
+Operations involving metrics
+
 ### Available Operations
 
-* [ListBreakdown](#listbreakdown) - List breakdown values
-* [ListOverall](#listoverall) - List overall values
-* [GetTimeseries](#gettimeseries) - Get timeseries data
-* [ListComparisonValues](#listcomparisonvalues) - List comparison values
+* [ListBreakdownValues](#listbreakdownvalues) - List breakdown values
+* [ListOverallValues](#listoverallvalues) - List overall values
+* [GetTimeseriesData](#gettimeseriesdata) - Get timeseries data
+* [Compare](#compare) - List comparison values
 
-## ListBreakdown
+## ListBreakdownValues
 
 Retrieves breakdown values for a specified metric and timespan, allowing you to analyze the performance of your content based on various dimensions. It provides insights into how different factors contribute to the overall metrics. 
 
@@ -18,17 +19,28 @@ Retrieves breakdown values for a specified metric and timespan, allowing you to 
 
   1. Before using this endpoint, you can call the <a href="https://docs.fastpix.io/reference/list_dimensions">List Dimensions</a> endpoint to retrieve all available dimensions that can be used in your query. 
 
-  2. Make a `GET` request to this endpoint with the required `metricId` and other query parameters. 
+  2. Send a `GET` request to this endpoint with the required `metricId` and other query parameters. 
 
-  3. Receive a response containing the breakdown values for the specified metric, grouped and filtered according to your parameters. 
+  3. You receive a response containing the breakdown values for the specified metric, grouped and filtered according to your parameters. 
 
-  4. Upon successful retrieval, the response will include the breakdown values based on the specified parameters. Note that the time values ( `totalWatchTime` and `totalPlayingTime` ) are in milliseconds. 
+  4. Upon successful retrieval, the response includes the breakdown values based on the specified parameters. Note that the time values ( `totalWatchTime` and `totalPlayingTime` ) are in milliseconds 
 
 
 #### Example
 
 
-A developer wants to analyze how watch time varies across different device types. By calling this endpoint for the `playing_time` metric and filtering by `device_type`, they can understand how engagement differs between mobile, desktop, and tablet users. This data will guide optimization efforts for different platforms. 
+A developer wants to analyze how watch time varies across different device types. By calling this endpoint for the `playing_time` metric and filtering by `device_type`, they can understand how engagement differs between mobile, desktop, and tablet users. This data guides optimization efforts for different platforms.
+
+#### Key fields in response
+
+
+  * **views:** The count of views based based on the applied filters.
+
+  * **value:** The specific metric value calculated based on the applied filters. 
+  * **totalWatchTime:** Total time watched across all views, represented in milliseconds. 
+
+  * **totalPlayTime:** Total time spent playing the video, represented in milliseconds. 
+  * **field:** The grouping field value based on the groupBy parameter. 
 
 
 Related guide: <a href="https://docs.fastpix.io/docs/metrics-overview">Understand data definitions</a>
@@ -40,23 +52,32 @@ Related guide: <a href="https://docs.fastpix.io/docs/metrics-overview">Understan
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Newtonsoft.Json;
 using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 ListBreakdownValuesRequest req = new ListBreakdownValuesRequest() {
     MetricId = ListBreakdownValuesMetricId.QualityOfExperienceScore,
-    Timespan = ListBreakdownValuesTimespan.Sevendays,
+    Timespan = ListBreakdownValuesTimespan.TwentyFourhours,
     Filterby = "browser_name:Chrome",
     GroupBy = "browser_name",
 };
 
-var res = await sdk.Metrics.ListBreakdownAsync(req);
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+var res = await sdk.Metrics.ListBreakdownValuesAsync(req);
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
@@ -71,14 +92,11 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ViewNotFoundException      | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
-## ListOverall
+## ListOverallValues
 
 Retrieves overall values for a specified metric, providing summary statistics that help you understand the performance of your content. The response includes key metrics such as `totalWatchTime`, `uniqueViews`, `totalPlayTime` and `totalViews`. 
 
@@ -86,9 +104,9 @@ Retrieves overall values for a specified metric, providing summary statistics th
 
   1. Before using this endpoint, you can call the <a href="https://docs.fastpix.io/reference/list_dimensions">list dimensions</a> endpoint to retrieve all available dimensions that can be used in your query. 
 
-  2. Make a `GET` request to this endpoint with the required `metricId` and other query parameters. 
+  2. Send a `GET` request to this endpoint with the required `metricId` and other query parameters. 
 
-  3. Receive a response containing the overall values for the specified metric, which may vary based on the applied filters. 
+  3. You receive a response containing the overall values for the specified metric, which may vary based on the applied filters. 
 
 
 
@@ -115,32 +133,40 @@ Retrieves overall values for a specified metric, providing summary statistics th
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Newtonsoft.Json;
 using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.Metrics.ListOverallAsync(
+var res = await sdk.Metrics.ListOverallValuesAsync(
     metricId: ListOverallValuesMetricId.QualityOfExperienceScore,
-    timespan: ListOverallValuesTimespan.Sevendays,
     measurement: "avg",
+    timespan: ListOverallValuesTimespan.TwentyFourhours,
     filterby: "browser_name:Chrome"
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                                                                                                                | Type                                                                                                                                                                                                                                                                                                                     | Required                                                                                                                                                                                                                                                                                                                 | Description                                                                                                                                                                                                                                                                                                              | Example                                                                                                                                                                                                                                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `MetricId`                                                                                                                                                                                                                                                                                                               | [ListOverallValuesMetricId](../../Models/Requests/ListOverallValuesMetricId.md)                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                                                       | Pass metric Id<br/>                                                                                                                                                                                                                                                                                                      | quality_of_experience_score                                                                                                                                                                                                                                                                                              |
-| `Timespan`                                                                                                                                                                                                                                                                                                               | [ListOverallValuesTimespan](../../Models/Requests/ListOverallValuesTimespan.md)                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                                                       | This parameter specifies the time span between which the video views list should be retrieved by. You can provide either from and to unix epoch timestamps or time duration. The scope of duration is between 60 minutes to 30 days.<br/>                                                                                | 7:days                                                                                                                                                                                                                                                                                                                   |
-| `Measurement`                                                                                                                                                                                                                                                                                                            | *string*                                                                                                                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                       | The measurement for the given metrics.<br/>Possible Values : [95th, median, avg, count or sum]<br/>                                                                                                                                                                                                                      | avg                                                                                                                                                                                                                                                                                                                      |
-| `Filterby`                                                                                                                                                                                                                                                                                                               | *string*                                                                                                                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                       | Pass the dimensions and their corresponding values you want to filter the views by. For excluding the values in the filter we can pass '!' before the filter value. The list of filters can be obtained from list of dimensions endpoint.<br/>Example Values : [ browser_name:Chrome , os_name:macOS , device_name:Galaxy ]<br/> | browser_name:Chrome                                                                                                                                                                                                                                                                                                      |
+| Parameter                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                                                                                                                                                                                                                                                                                                                                                                                                                             | Required                                                                                                                                                                                                                                                                                                                                                                                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                      | Example                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MetricId`                                                                                                                                                                                                                                                                                                                                                                                                                       | [ListOverallValuesMetricId](../../Models/Requests/ListOverallValuesMetricId.md)                                                                                                                                                                                                                                                                                                                                                  | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                               | Pass metric Id<br/>                                                                                                                                                                                                                                                                                                                                                                                                              | quality_of_experience_score                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `Measurement`                                                                                                                                                                                                                                                                                                                                                                                                                    | *string*                                                                                                                                                                                                                                                                                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                               | The measurement for the given metrics.<br/>Possible Values : [95th, median, avg, count or sum]<br/>                                                                                                                                                                                                                                                                                                                              | avg                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `Timespan`                                                                                                                                                                                                                                                                                                                                                                                                                       | [ListOverallValuesTimespan](../../Models/Requests/ListOverallValuesTimespan.md)                                                                                                                                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                               | This parameter specifies the time span between which the video views list must be retrieved by. You can provide either from and to unix epoch timestamps or time duration. The scope of duration is between 60 minutes to 30 days.<br/><br/>**Accepted formats are:**<br/><br/>array of epoch timestamps for example <br/>`timespan[]=1498867200&timespan[]=1498953600`<br/><br/>duration string for example  <br/>`timespan[]=24:hours` or `timespan[]=7:days`<br/> | 24:hours                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `Filterby`                                                                                                                                                                                                                                                                                                                                                                                                                       | *string*                                                                                                                                                                                                                                                                                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                               | Pass the dimensions and their corresponding values you want to filter the views by. For excluding the values in the filter we can pass "!" before the filter value. The list of filters can be obtained from list of dimensions endpoint.<br/>Example Values : [ browser_name:Chrome , os_name:macOS , !device_name:Galaxy ]<br/>                                                                                                | browser_name:Chrome                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Response
 
@@ -148,22 +174,19 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ViewNotFoundException      | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
-## GetTimeseries
+## GetTimeseriesData
 
-This endpoint retrieves timeseries data for a specified metric, providing insights into how the metric values change over time. The response includes an array of data points, each representing the metric's value at specific intervals. 
+This endpoint retrieves timeseries data for a specified metric, providing insights into how the metric values change over time. The response includes an array of data points, each representing the metrics value at specific intervals. 
 
-Each data point contains the following fields: 
+#### Key fields in response
 
 * **intervalTime:** The timestamp for the data point indicating when the metric value was recorded. 
 * **metricValue:** The value of the specified metric at the given interval, reflecting the performance or engagement level during that time. 
-* **numberOfViews:** The total number of views recorded during that interval, providing context for the metric value. 
+* **numberOfViews:** The total number of views recorded during that interval, providing context for the metric value.
 
 
 ### Example Usage
@@ -172,22 +195,31 @@ Each data point contains the following fields:
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Newtonsoft.Json;
 using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 GetTimeseriesDataRequest req = new GetTimeseriesDataRequest() {
     MetricId = GetTimeseriesDataMetricId.QualityOfExperienceScore,
-    Timespan = GetTimeseriesDataTimespan.Sevendays,
+    Timespan = GetTimeseriesDataTimespan.TwentyFourhours,
     Filterby = "browser_name:Chrome",
 };
 
-var res = await sdk.Metrics.GetTimeseriesAsync(req);
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+var res = await sdk.Metrics.GetTimeseriesDataAsync(req);
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
@@ -202,24 +234,30 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ViewNotFoundException      | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
-## ListComparisonValues
+## Compare
 
-This endpoint allows you to compare multiple metrics across specified dimensions. You can specify the metrics you want to compare in the query parameters, and the response will include the relevant metrics for the specified dimensions. 
+This endpoint lets you to compare multiple metrics across specified dimensions. You can specify the metrics you want to compare in the query parameters, and the response includes the relevant metrics for the specified dimensions.
+
+#### Key fields in response 
+
+* **value:** The specific metric value calculated based on the applied filters.
+* **type:** The data unit or format type (for example, "number", "milliseconds", "percentage").
+* **name:** The display name of the metric (for example, "Views", "Overall Score").
+* **metric:** The metric field represents the name of the Key Performance Indicator (KPI) being tracked or analyzed. It identifies a specific measurable aspect of the video playback experience, such as buffering time, video start failure rate, or playback quality.
+* **items:** Nested breakdown of related metrics for more detailed analysis.
+* **measurement:** Defines the aggregation type (for example, "avg", "sum", "median", "95th").
 
 #### How it works 
 
   1. Before making a request to this endpoint, call the <a href="https://docs.fastpix.io/reference/list_dimensions">list dimensions</a> endpoint to obtain all available dimensions that can be used for comparison. 
 
-  2. Make a `GET` request to this endpoint with the desired metrics specified in the query parameters. 
+  2. Send a `GET` request to this endpoint with the desired metrics specified in the query parameters. 
 
-  3. Receive a response containing the comparison values for the specified metrics across the selected dimensions. 
+  3. You Receive a response containing the comparison values for the specified metrics across the selected dimensions. 
 
 
   Related guide: <a href="https://docs.fastpix.io/docs/understand-dashboard-ui#compare-metrics">Compare metrics in dashboard</a>
@@ -231,32 +269,40 @@ This endpoint allows you to compare multiple metrics across specified dimensions
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Newtonsoft.Json;
 using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.Metrics.ListComparisonValuesAsync(
-    timespan: ListComparisonValuesTimespan.Sevendays,
+var res = await sdk.Metrics.CompareAsync(
+    timespan: ListComparisonValuesTimespan.TwentyFourhours,
     filterby: "browser_name:Chrome",
-    dimension: ListComparisonValuesDimension.BrowserName,
+    dimension: Dimension.BrowserName,
     valueP: "Chrome"
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                                                                                                                | Type                                                                                                                                                                                                                                                                                                                     | Required                                                                                                                                                                                                                                                                                                                 | Description                                                                                                                                                                                                                                                                                                              | Example                                                                                                                                                                                                                                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Timespan`                                                                                                                                                                                                                                                                                                               | [ListComparisonValuesTimespan](../../Models/Requests/ListComparisonValuesTimespan.md)                                                                                                                                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                                                                                                                       | This parameter specifies the time span between which the video views list should be retrieved by. You can provide either from and to unix epoch timestamps or time duration. The scope of duration is between 60 minutes to 30 days.<br/>                                                                                | 7:days                                                                                                                                                                                                                                                                                                                   |
-| `Filterby`                                                                                                                                                                                                                                                                                                               | *string*                                                                                                                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                       | Pass the dimensions and their corresponding values you want to filter the views by. For excluding the values in the filter we can pass '!' before the filter value. The list of filters can be obtained from list of dimensions endpoint.<br/>Example Values : [ browser_name:Chrome , os_name:macOS , device_name:Galaxy ]<br/> | browser_name:Chrome                                                                                                                                                                                                                                                                                                      |
-| `Dimension`                                                                                                                                                                                                                                                                                                              | [ListComparisonValuesDimension](../../Models/Requests/ListComparisonValuesDimension.md)                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                       | The dimension id in which the views are watched.<br/>                                                                                                                                                                                                                                                                    | browser_name                                                                                                                                                                                                                                                                                                             |
-| `Value`                                                                                                                                                                                                                                                                                                                  | *string*                                                                                                                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                       | The value for the selected dimension. <br/>For example:<br/> If `dimension` is `browser_name`, the value could be  `Chrome` `,` `Firefox` `etc` .<br/> If `dimension` is `os_name`, the value could be `macOS` `,` `Windows` `etc` .<br/>                                                                                | Chrome                                                                                                                                                                                                                                                                                                                   |
+| Parameter                                                                                                                                                                                                                                                                                                                                                                                                                       | Type                                                                                                                                                                                                                                                                                                                                                                                                                            | Required                                                                                                                                                                                                                                                                                                                                                                                                                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                     | Example                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Timespan`                                                                                                                                                                                                                                                                                                                                                                                                                      | [ListComparisonValuesTimespan](../../Models/Requests/ListComparisonValuesTimespan.md)                                                                                                                                                                                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                              | This parameter specifies the time span between which the video views list must be retrieved by. You can provide either from and to unix epoch timestamps or time duration. The scope of duration is between 60 minutes to 30 days.<br/><br/>**Accepted formats are:**<br/><br/>array of epoch timestamps for example <br/>`timespan[]=1498867200&timespan[]=1498953600`<br/><br/>duration string for example <br/>`timespan[]=24:hours` or `timespan[]=7:days`<br/> | 24:hours                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `Filterby`                                                                                                                                                                                                                                                                                                                                                                                                                      | *string*                                                                                                                                                                                                                                                                                                                                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                              | Pass the dimensions and their corresponding values you want to filter the views by. For excluding the values in the filter we can pass "!" before the filter value. The list of filters can be obtained from list of dimensions endpoint.<br/>Example Values : [ browser_name:Chrome , os_name:macOS , !device_name:Galaxy ]<br/>                                                                                               | browser_name:Chrome                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `Dimension`                                                                                                                                                                                                                                                                                                                                                                                                                     | [Dimension](../../Models/Requests/Dimension.md)                                                                                                                                                                                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                              | The dimension id in which the views are watched.<br/>                                                                                                                                                                                                                                                                                                                                                                           | browser_name                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `Value`                                                                                                                                                                                                                                                                                                                                                                                                                         | *string*                                                                                                                                                                                                                                                                                                                                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                              | The value for the selected dimension. <br/>For example:<br/> If `dimension` is `browser_name`, the value could be  `Chrome` `,` `Firefox` `etc` .<br/> If `dimension` is `os_name`, the value could be `macOS` `,` `Windows` `etc` .<br/>                                                                                                                                                                                       | Chrome                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### Response
 
@@ -264,9 +310,6 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ViewNotFoundException      | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |

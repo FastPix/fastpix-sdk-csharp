@@ -1,11 +1,11 @@
 # CreateMediaPlaybackIdResponseBody
 
-Playback id for an media
+Playback ID for a media content.
 
 
 ## Fields
 
-| Field                                                                           | Type                                                                            | Required                                                                        | Description                                                                     | Example                                                                         |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `Success`                                                                       | *bool*                                                                          | :heavy_minus_sign:                                                              | Demonstrates whether the request is successful or not.                          | true                                                                            |
-| `Data`                                                                          | [CreateMediaPlaybackIdData](../../Models/Requests/CreateMediaPlaybackIdData.md) | :heavy_minus_sign:                                                              | Displays the result of the request.                                             |                                                                                 |
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Success`                                                                    | *bool*                                                                       | :heavy_minus_sign:                                                           | Shows the request status. Returns true for success and false for failure.    | true                                                                         |
+| `Data`                                                                       | [CreatePlaybackId](../../Models/Components/CreatePlaybackId.md)              | :heavy_minus_sign:                                                           | A collection of Playback ID objects utilized for crafting HLS playback urls. |                                                                              |

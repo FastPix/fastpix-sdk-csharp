@@ -2,46 +2,27 @@
 
 A robust, type-safe C# SDK designed for seamless integration with the FastPix API platform.
 
-<!-- Start Summary [summary] -->
 ## Introduction
 
-The FastPix C# SDK simplifies integration with the FastPix platform. It provides a clean, type-safe interface for secure and efficient communication with the FastPix API, enabling easy management of media uploads, live streaming, on‑demand content, playlists, video analytics, and signing keys for secure access and token management. It is intended for use with .NET 8 and above.
+The FastPix C# SDK simplifies integration with the FastPix platform. It provides a clean, strongly-typed interface for secure and efficient communication with the FastPix API, enabling easy management of media uploads, live streaming, on‑demand content, playlists, video analytics, and signing keys for secure access and token management. It is intended for use with .NET 8.0 and above.
 
 ## Prerequisites
 
 ### Environment and Version Support
 
-<table>
-<tr>
-<th>Requirement</th>
-<th>Version</th>
-<th>Description</th>
-</tr>
-<tr>
-<td><strong>.NET SDK</strong></td>
-<td><code>8.0+</code></td>
-<td>Core runtime environment</td> 
-</tr>
-<tr>
-<td><strong>NuGet</strong></td>
-<td><code>Latest</code></td>
-<td>Package manager for dependencies</td>
-</tr>
-<tr>
-<td><strong>Internet</strong></td>
-<td><code>Required</code></td>
-<td>API communication and authentication</td>
-</tr>
-</table>
+| Requirement | Version | Description |
+|---|---:|---|
+| .NET | `8.0+` | Core runtime environment |
+| NuGet | `Latest` | Package manager for dependencies |
+| Internet | `Required` | API communication and authentication |
 
-> **Pro Tip:** We recommend using .NET 9+ for optimal performance and the latest language features.
+> Pro Tip: We recommend using .NET 8.0+ for optimal performance and the latest language features.
 
 ### Getting Started with FastPix
 
-To get started with the **FastPix C# SDK**, ensure you have the following:
+To get started with the FastPix C# SDK, ensure you have the following:
 
 - The FastPix APIs are authenticated using a **Username** and a **Password**. You must generate these credentials to use the SDK.
-
 - Follow the steps in the [Authentication with Basic Auth](https://docs.fastpix.io/docs/basic-authentication) guide to obtain your credentials.
 
 ### Environment Variables (Optional)
@@ -54,11 +35,10 @@ export FASTPIX_USERNAME="your-access-token"
 export FASTPIX_PASSWORD="your-secret-key"
 ```
 
-> **Security Note:** Never commit your credentials to version control. Use environment variables or secure credential management systems.
+> Security Note: Never commit your credentials to version control. Use environment variables or secure credential management systems.
 
-<!-- Start Table of Contents [toc] -->
 ## Table of Contents
-<!-- $toc-max-depth=2 -->
+
 * [FastPix C# SDK](#fastpix-c-sdk)
   * [Setup](#setup)
   * [Example Usage](#example-usage)
@@ -66,59 +46,47 @@ export FASTPIX_PASSWORD="your-secret-key"
   * [Retries](#retries)
   * [Error Handling](#error-handling)
   * [Server Selection](#server-selection)
+  * [Custom HTTP Client](#custom-http-client)
   * [Development](#development)
 
-<!-- End Table of Contents [toc] -->
-
-<!-- Start Setup [setup] -->
 ## Setup
 
 ### Installation
 
 Install the FastPix C# SDK using your preferred package manager:
 
+#### .NET CLI
+
 ```bash
-dotnet add package Fastpix  
+dotnet add package Fastpix
 ```
 
-### NuGet Package Manager
+#### NuGet Package Manager
+
+In Visual Studio, open the Package Manager Console and run:
 
 ```bash
 Install-Package Fastpix
 ```
 
-### Package Manager Console
+#### Local Reference
+
+To add a reference to a local instance of the SDK in a .NET project:
 
 ```bash
-PM> Install-Package Fastpix
+dotnet add reference src/Fastpix/Fastpix.csproj
 ```
 
 ### Imports
 
-This SDK supports both **C# 8.0+** and **.NET Framework 4.8+**. Examples in this documentation use modern C# syntax as it's the preferred format, but you can use either approach.
+The SDK uses standard C# namespaces. Import the necessary namespaces at the top of your files:
 
-#### Modern C# (Recommended)
 ```csharp
-// Basic imports
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Models.Requests;
+using System.Collections.Generic;
 ```
-
-#### Legacy .NET Framework
-```csharp
-// Legacy using statements
-using Fastpix;
-using Fastpix.Models.Components;
-```
-
-> **Why Modern C#?** Modern C# provides better type safety, nullable reference types, and are the current .NET standard. They enable better IntelliSense and development tooling support.
-
-> **Note:** This SDK automatically provides both framework support. If you encounter compatibility issues in your project, you may need to update your target framework to .NET 8.0 or higher.
-
-> **Security Note:** For production applications, it's recommended to make API calls from your backend server rather than directly from client applications to:
-> - Keep credentials secure
-> - Avoid CORS issues  
-> - Implement proper authentication.
 
 ### Initialization
 
@@ -128,13 +96,10 @@ Initialize the FastPix SDK with your credentials:
 using Fastpix;
 using Fastpix.Models.Components;
 
-var sdk = new FastPix(
-    security: new Security
-    {
-        Username = "your-access-token",  // ⚠️ Replace with your actual FastPix username
-        Password = "secret-key",         // ⚠️ Replace with your actual FastPix password
-    }
-);
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
 ```
 
 Or using environment variables:
@@ -142,67 +107,42 @@ Or using environment variables:
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using System;
 
-var sdk = new FastPix(
-    security: new Security
-    {
-        Username = Environment.GetEnvironmentVariable("FASTPIX_USERNAME"),
-        Password = Environment.GetEnvironmentVariable("FASTPIX_PASSWORD"),
-    }
-);
+var sdk = new FastpixSDK(security: new Security() {
+    Username = Environment.GetEnvironmentVariable("FASTPIX_USERNAME"), // Your Access Token
+    Password = Environment.GetEnvironmentVariable("FASTPIX_PASSWORD"), // Your Secret Key
+});
 ```
- 
-<!-- End Setup [setup] -->
 
-<!-- Start Example Usage [example-usage] -->
 ## Example Usage
-
-### Example
 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-   Password = "your-secret-key",
+    Password = "your-secret-key",
 });
 
-CreateMediaRequest req = new CreateMediaRequest() {
+var req = new CreateMediaRequest() {
     Inputs = new List<Fastpix.Models.Components.Input>() {
-        Fastpix.Models.Components.Input.CreateVideoInput(
-            new VideoInput() {
-                Type = "video",
-                Url = "https://static.fastpix.io/sample.mp4",
-            }
+        Fastpix.Models.Components.Input.CreatePullVideoInput(
+            new PullVideoInput() {}
         ),
     },
     Metadata = new Dictionary<string, string>() {
-        { "key1", "value1" },
+        { "<key>", "<value>" },
     },
-    AccessPolicy = CreateMediaRequestAccessPolicy.Public,
 };
 
-var res = await sdk.Videos.CreateFromUrlAsync(req);
-Console.WriteLine(JsonConvert.SerializeObject(res.CreateMediaSuccessResponse, Formatting.Indented) ?? "null");
-//  handle response
+var res = await sdk.InputVideo.CreateMediaAsync(req);
+
+// handle response
 ```
 
-> **⚠️ IMPORTANT: Replace Credentials**
-> 
-> **You MUST replace the placeholder credentials with your actual FastPix API credentials:**
-> - Replace `"your-access-token"` with your actual FastPix username/access token
-> - Replace `"your-secret-key"` with your actual FastPix password/secret key
-> 
-> **Using placeholder credentials will result in `UnauthorizedException` errors.**
-> 
-> Get your credentials from the [FastPix Dashboard](https://dashboard.fastpix.io) or follow the [Authentication Guide](https://docs.fastpix.io/docs/basic-authentication).
-
-<!-- End Example Usage [example-usage] -->
-
-<!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
 
 Comprehensive C# SDK for FastPix platform integration with full API coverage.
@@ -214,39 +154,35 @@ Upload, manage, and transform video content with comprehensive media management 
 For detailed documentation, see [FastPix Video on Demand Overview](https://docs.fastpix.io/docs/video-on-demand-overview).
 
 #### Input Video
-- [Create from URL](docs/sdks/videos/README.md#createfromurl) - Upload video content from external URL
-- [Upload from Device](docs/sdks/videos/README.md#upload) - Upload video files directly from device
+- [Create from URL](docs/sdks/inputvideo/README.md#createmedia) - Upload video content from external URL
+- [Upload from Device](docs/sdks/inputvideo/README.md#upload) - Upload video files directly from device
 
 #### Manage Videos
 - [List All Media](docs/sdks/managevideos/README.md#list) - Retrieve complete list of all media files
-- [Get Media by ID](docs/sdks/managevideos/README.md#get) - Get detailed information for specific media
-- [Update Media](docs/sdks/managevideos/README.md#update) - Modify media metadata and settings
-- [Delete Media](docs/sdks/managevideos/README.md#delete) - Remove media files from library
+- [Get Media by ID](docs/sdks/managevideos/README.md#getbyid) - Get detailed information for specific media
+- [Update Media](docs/sdks/videos/README.md#update) - Modify media metadata and settings
+- [Delete Media](docs/sdks/managevideos/README.md#deletemedia) - Remove media files from library
 - [Cancel Upload](docs/sdks/managevideos/README.md#cancelupload) - Stop ongoing media upload process
-- [Get Input Info](docs/sdks/managevideos/README.md#getinputinfo) - Retrieve detailed input information
-- [List Uploads](docs/sdks/uploads/README.md#list) - Get all available upload URLs
+- [Get Input Info](docs/sdks/videos/README.md#getinputinfo) - Retrieve detailed input information
+- [List Uploads](docs/sdks/managevideos/README.md#listuploads) - Get all available upload URLs
+- [List Clips](docs/sdks/managevideos/README.md#listclips) - Get all clips of a media
 
 #### Playback
 - [Create Playback ID](docs/sdks/playback/README.md#create) - Generate secure playback identifier
+- [List Playback IDs](docs/sdks/playback/README.md#list) - Get all playback IDs for a media
 - [Delete Playback ID](docs/sdks/playback/README.md#delete) - Remove playback access
-- [Get Playback ID](docs/sdks/playback/README.md#getbyid) - Retrieve playback configuration details
-
-#### Play Specific Segments
-- Stream only a portion of a video by appending `start`/`end` parameters to the playback URL. Explore: [Play specific segments](https://docs.fastpix.io/docs/play-your-videos#play-specific-segments). For creating reusable assets instead, see [Create clips from existing media](https://docs.fastpix.io/docs/create-clips-from-existing-media).
-- Try it: `https://stream.fastpix.io/{PLAYBACK_ID}.m3u8?start=20&end=60` (replace `{PLAYBACK_ID}` and tweak times).
-
-#### Create Clips from Existing Media
-- Create reusable, shareable clip assets from a source video with precise start/end control. Explore: [Create clips from existing media](https://docs.fastpix.io/docs/create-clips-from-existing-media).
-- Try it: use the clipping API from the guide to generate a new clip asset, then retrieve it via Media Clips to validate.
+- [Get Playback ID](docs/sdks/playbacks/README.md#get) - Retrieve playback configuration details
+- [Update Domain Restrictions](docs/sdks/playback/README.md#updatedomainrestrictions) - Update domain restrictions for a playback ID
+- [Update User-Agent Restrictions](docs/sdks/playback/README.md#updateuseragentrestrictions) - Update user-agent restrictions for a playback ID
 
 #### Playlist
-- [Create Playlist](docs/sdks/playlists/README.md#create) - Create new video playlist
-- [List Playlists](docs/sdks/playlists/README.md#list) - Get all available playlists
-- [Get Playlist](docs/sdks/playlist/README.md#getbyid) - Retrieve specific playlist details
-- [Update Playlist](docs/sdks/playlist/README.md#update) - Modify playlist settings and metadata
+- [Create Playlist](docs/sdks/playlist/README.md#create) - Create new video playlist
+- [List Playlists](docs/sdks/playlists/README.md#getall) - Get all available playlists
+- [Get Playlist](docs/sdks/playlists/README.md#get) - Retrieve specific playlist details
+- [Update Playlist](docs/sdks/playlists/README.md#update) - Modify playlist settings and metadata
 - [Delete Playlist](docs/sdks/playlists/README.md#delete) - Remove playlist from library
 - [Add Media](docs/sdks/playlists/README.md#addmedia) - Add media items to playlist
-- [Reorder Media](docs/sdks/playlists/README.md#changemediaorder) - Change order of media in playlist
+- [Reorder Media](docs/sdks/playlists/README.md#reordermedia) - Change order of media in playlist
 - [Remove Media](docs/sdks/playlists/README.md#deletemedia) - Remove media from playlist
 
 #### Signing Keys
@@ -259,79 +195,95 @@ For detailed documentation, see [FastPix Video on Demand Overview](https://docs.
 - [List DRM Configs](docs/sdks/drmconfigurations/README.md#list) - Get all DRM configuration options
 - [Get DRM Config](docs/sdks/drmconfigurations/README.md#getbyid) - Retrieve specific DRM configuration
 
-### Live API 
+### Live API
 
 Stream, manage, and transform live video content with real-time broadcasting capabilities.
 
 For detailed documentation, see [FastPix Live Stream Overview](https://docs.fastpix.io/docs/live-stream-overview).
 
 #### Start Live Stream
-- [Create Stream](docs/sdks/livestreams/README.md#create) - Initialize new live streaming session with **DVR mode support**
+- [Create Stream](docs/sdks/livestreams/README.md#create) - Initialize new live streaming session
 
 #### Manage Live Stream
-- [List Streams](docs/sdks/livestreams/README.md#list) - Retrieve all active live streams
-- [Get Viewer Count](docs/sdks/managelivestream/README.md#getviewercount) - Get real-time viewer statistics
-- [Get Stream](docs/sdks/streams/README.md#getbyid) - Retrieve detailed stream information
-- [Delete Stream](docs/sdks/streams/README.md#delete) - Terminate and remove live stream
+- [List Streams](docs/sdks/livestreams/README.md#getall) - Retrieve all active live streams
+- [Get Viewer Count](docs/sdks/livestreams/README.md#getviewercount) - Get real-time viewer statistics
+- [Get Stream](docs/sdks/livestreams/README.md#getbyid) - Retrieve detailed stream information
+- [Delete Stream](docs/sdks/livestreams/README.md#delete) - Terminate and remove live stream
 - [Update Stream](docs/sdks/streams/README.md#update) - Modify stream settings and configuration
-- [Enable Stream](docs/sdks/streams/README.md#enable) - Activate live streaming
+- [Enable Stream](docs/sdks/managelivestream/README.md#enable) - Activate live streaming
 - [Disable Stream](docs/sdks/managelivestream/README.md#disable) - Pause live streaming
-- [Complete Stream](docs/sdks/managelivestream/README.md#complete) - Finalize and archive stream
+- [Complete Stream](docs/sdks/livestreams/README.md#complete) - Finalize and archive stream
 
 #### Live Playback
 - [Create Playback ID](docs/sdks/liveplayback/README.md#create) - Generate secure live playback access
-- [Delete Playback ID](docs/sdks/liveplayback/README.md#delete) - Revoke live playback access
-- [Get Playback ID](docs/sdks/liveplaybacks/README.md#get) - Retrieve live playback configuration
-
-#### Live Clipping
-- Explore instant live clipping during a live stream to capture key moments without creating new assets. See the Live Clipping guide: [Instant Live Clipping](https://docs.fastpix.io/docs/instant-live-clipping).
-- Try it: enable a test live stream and capture a highlight clip while broadcasting to see it appear instantly.
+- [Delete Playback ID](docs/sdks/liveplayback/README.md#deleteplaybackid) - Revoke live playback access
+- [Get Playback ID](docs/sdks/liveplayback/README.md#getplaybackdetails) - Retrieve live playback configuration
 
 #### Simulcast Stream
-- [Create Simulcast](docs/sdks/simulcaststream/README.md#create) - Set up multi-platform streaming
+- [Create Simulcast](docs/sdks/simulcasts/README.md#create) - Set up multi-platform streaming
 - [Delete Simulcast](docs/sdks/simulcasts/README.md#delete) - Remove simulcast configuration
-- [Get Simulcast](docs/sdks/simulcaststreams/README.md#getspecific) - Retrieve simulcast settings
-- [Update Simulcast](docs/sdks/simulcaststreams/README.md#update) - Modify simulcast parameters
+- [Get Simulcast](docs/sdks/simulcaststream/README.md#getspecific) - Retrieve simulcast settings
+- [Update Simulcast](docs/sdks/simulcasts/README.md#update) - Modify simulcast parameters
 
-### Video Data API 
+### Video Data API
 
 Monitor video performance and quality with comprehensive analytics and real-time metrics.
 
 For detailed documentation, see [FastPix Video Data Overview](https://docs.fastpix.io/docs/video-data-overview).
 
 #### Metrics
-- [List Breakdown Values](docs/sdks/metrics/README.md#listbreakdown) - Get detailed breakdown of metrics by dimension
-- [List Overall Values](docs/sdks/metrics/README.md#listoverall) - Get aggregated metric values across all content
-- [Get Timeseries Data](docs/sdks/metrics/README.md#gettimeseries) - Retrieve time-based metric trends and patterns
+- [List Breakdown Values](docs/sdks/metrics/README.md#listbreakdownvalues) - Get detailed breakdown of metrics by dimension
+- [List Overall Values](docs/sdks/metrics/README.md#listoverallvalues) - Get aggregated metric values across all content
+- [Get Timeseries Data](docs/sdks/metrics/README.md#gettimeseriesdata) - Retrieve time-based metric trends and patterns
+- [Compare Values](docs/sdks/metrics/README.md#compare) - List comparison values
 
 #### Views
 - [List Video Views](docs/sdks/views/README.md#list) - Get comprehensive list of video viewing sessions
-- [Get View Details](docs/sdks/views/README.md#getdetails) - Retrieve detailed information about specific video views
-- [List Top Content](docs/sdks/views/README.md#listtopcontent) - Find your most popular and engaging content
-- [Get Concurrent Viewers](docs/sdks/views/README.md#gettimeseries) - Monitor real-time viewer counts over time
-- [Get Viewer Breakdown](docs/sdks/views/README.md#getconcurrentviewersbreakdown) - Analyze viewers by device, location, and other dimensions
+- [Get View Details](docs/sdks/views/README.md#getviewdetails) - Retrieve detailed information about specific video views
+- [List Top Content](docs/sdks/views/README.md#listbytopcontent) - Find your most popular and engaging content
 
 #### Dimensions
 - [List Dimensions](docs/sdks/dimensions/README.md#list) - Get available data dimensions for filtering and analysis
-- [List Filter Values](docs/sdks/dimensions/README.md#listfiltervalues) - Get specific values for a particular dimension
+- [List Filter Values](docs/sdks/dimensions/README.md#listfilters) - Get specific values for a particular dimension
+
+#### Errors
+- [List Errors](docs/sdks/errors/README.md#list) - Get list of playback errors
 
 ### Transformations
 
 Transform and enhance your video content with powerful AI and editing capabilities.
 
-- [In-Video AI Features](docs/sdks/transformations/README.md#in-video-ai-features) - AI-powered content enhancement
-- [Media Clips](docs/sdks/transformations/mediaclips/README.md#listmediaclips) - Manage video clips and segments
-- [Live Clips](docs/sdks/transformations/mediaclips/README.md#listliveclips) - Get clips from live streams
-- [Subtitles](docs/sdks/transformations/README.md#subtitles) - Generate automatic subtitles
-- [Media Tracks](docs/sdks/transformations/mediatracks/README.md#addtrack) - Add audio and subtitle tracks
-- [Access Control](docs/sdks/transformations/README.md#access-control) - Control content permissions
-- [Format Support](docs/sdks/transformations/README.md#format-support) - Configure download capabilities
+#### In-Video AI Features
 
-### Error Handling
+Enhance video content with AI-powered features including moderation, summarization, and intelligent categorization.
 
-Handle and manage errors with comprehensive error handling capabilities and detailed error information for all API operations.
+- [Update Summary](docs/sdks/invideoaifeatures/README.md#updatesummary) - Create AI-generated video summaries
+- [Update Chapters](docs/sdks/invideoai/README.md#updatemediachapters) - Automatically generate video chapter markers
+- [Extract Entities](docs/sdks/invideoai/README.md#updatenamedentities) - Identify and extract named entities from content
+- [Enable Moderation](docs/sdks/moderations/README.md#update) - Activate content moderation and safety checks
 
-- [List Errors](docs/sdks/errors/README.md#list) - Retrieve comprehensive error logs and diagnostics
+#### Media Clips
+
+- [List Live Clips](docs/sdks/videos/README.md#listliveclips) - Get all clips of a live stream
+- [List Media Clips](docs/sdks/managevideos/README.md#listclips) - Retrieve all clips associated with a source media
+
+#### Subtitles
+
+- [Generate Subtitles](docs/sdks/managevideos/README.md#generatesubtitles) - Create automatic subtitles for media
+
+#### Media Tracks
+
+- [Add Track](docs/sdks/managevideos/README.md#addmediatrack) - Add audio or subtitle tracks to media
+- [Update Track](docs/sdks/videos/README.md#updatetrack) - Modify existing audio or subtitle tracks
+- [Delete Track](docs/sdks/tracks/README.md#delete) - Remove audio or subtitle tracks
+
+#### Access Control
+
+- [Update Source Access](docs/sdks/managevideos/README.md#updatesourceaccess) - Control access permissions for media source
+
+#### Format Support
+
+- [Update MP4 Support](docs/sdks/managevideos/README.md#updatemp4support) - Configure MP4 download capabilities
 
 <!-- End Available Resources and Operations [operations] -->
 
@@ -341,32 +293,30 @@ Handle and manage errors with comprehensive error handling capabilities and deta
 Some of the endpoints in this SDK support retries. If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API. However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
 
 To change the default retry strategy for a single API call, simply pass a `RetryConfig` to the call:
+
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils.Retries;
 using System.Collections.Generic;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 CreateMediaRequest req = new CreateMediaRequest() {
     Inputs = new List<Fastpix.Models.Components.Input>() {
-        Fastpix.Models.Components.Input.CreateVideoInput(
-            new VideoInput() {
-                Type = "video",
-                Url = "https://static.fastpix.io/sample.mp4",
-            }
+        Fastpix.Models.Components.Input.CreatePullVideoInput(
+            new PullVideoInput() {}
         ),
     },
     Metadata = new Dictionary<string, string>() {
-        { "key1", "value1" },
+        { "<key>", "<value>" },
     },
-    AccessPolicy = CreateMediaRequestAccessPolicy.Public,
 };
 
-var res = await sdk.Videos.CreateFromUrlAsync(
+var res = await sdk.InputVideo.CreateMediaAsync(
     retryConfig: new RetryConfig(
         strategy: RetryConfig.RetryStrategy.BACKOFF,
         backoff: new BackoffStrategy(
@@ -384,12 +334,14 @@ var res = await sdk.Videos.CreateFromUrlAsync(
 ```
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `RetryConfig` optional parameter when initializing the SDK:
+
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils.Retries;
 using System.Collections.Generic;
 
-var sdk = new FastPix(
+var sdk = new FastpixSDK(
     retryConfig: new RetryConfig(
         strategy: RetryConfig.RetryStrategy.BACKOFF,
         backoff: new BackoffStrategy(
@@ -402,74 +354,70 @@ var sdk = new FastPix(
     ),
     security: new Security() {
         Username = "your-access-token",
-        Password = "secret-key",
+        Password = "your-secret-key",
     }
 );
 
 CreateMediaRequest req = new CreateMediaRequest() {
     Inputs = new List<Fastpix.Models.Components.Input>() {
-        Fastpix.Models.Components.Input.CreateVideoInput(
-            new VideoInput() {
-                Type = "video",
-                Url = "https://static.fastpix.io/sample.mp4",
-            }
+        Fastpix.Models.Components.Input.CreatePullVideoInput(
+            new PullVideoInput() {}
         ),
     },
     Metadata = new Dictionary<string, string>() {
-        { "key1", "value1" },
+        { "<key>", "<value>" },
     },
-    AccessPolicy = CreateMediaRequestAccessPolicy.Public,
 };
 
-var res = await sdk.Videos.CreateFromUrlAsync(req);
+var res = await sdk.InputVideo.CreateMediaAsync(req);
 
 // handle response
 ```
+<!-- End Retries [retries] -->
 
+<!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`FastPixException`](./src/Fastpix/Models/Errors/FastPixException.cs) is the base class for all HTTP error responses. It has the following properties:
+[`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs) is the base exception class for all HTTP error responses. It has the following properties:
 
 | Property      | Type                  | Description           |
 |---------------|-----------------------|-----------------------|
 | `Message`     | *string*              | Error message         |
 | `Request`     | *HttpRequestMessage*  | HTTP request object   |
 | `Response`    | *HttpResponseMessage* | HTTP response object  |
+| `Body`        | *string*              | HTTP response body    |
 
 ### Example
+
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Models.Errors;
 using System.Collections.Generic;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 try
 {
     CreateMediaRequest req = new CreateMediaRequest() {
         Inputs = new List<Fastpix.Models.Components.Input>() {
-            Fastpix.Models.Components.Input.CreateVideoInput(
-                new VideoInput() {
-                    Type = "video",
-                    Url = "https://static.fastpix.io/sample.mp4",
-                }
+            Fastpix.Models.Components.Input.CreatePullVideoInput(
+                new PullVideoInput() {}
             ),
         },
         Metadata = new Dictionary<string, string>() {
-            { "key1", "value1" },
+            { "<key>", "<value>" },
         },
-        AccessPolicy = CreateMediaRequestAccessPolicy.Public,
     };
 
-    var res = await sdk.Videos.CreateFromUrlAsync(req);
+    var res = await sdk.InputVideo.CreateMediaAsync(req);
 
     // handle response
 }
-catch (FastPixException ex)  // all SDK exceptions inherit from FastPixException
+catch (FastpixException ex)  // all SDK exceptions inherit from FastpixException
 {
     // ex.ToString() provides a detailed error message
     System.Console.WriteLine(ex);
@@ -479,21 +427,6 @@ catch (FastPixException ex)  // all SDK exceptions inherit from FastPixException
     HttpResponseMessage response = ex.Response;
     var statusCode = (int)response.StatusCode;
     var responseBody = ex.Body;
-
-    if (ex is BadRequestException badRequestEx) // different exceptions may be thrown depending on the method
-    {
-        // Check error data fields
-        BadRequestExceptionPayload payload = badRequestEx.Payload;
-        bool? Success = payload.Success;
-        BadRequestError? Error = payload.Error;
-        // ...
-    }
-
-    // An underlying cause may be provided
-    if (ex.InnerException != null)
-    {
-        Exception cause = ex.InnerException;
-    }
 }
 catch (OperationCanceledException ex)
 {
@@ -506,80 +439,200 @@ catch (System.Net.Http.HttpRequestException ex)
 ```
 
 ### Error Classes
-**Primary exceptions:**
-* [`FastPixException`](./src/Fastpix/Models/Errors/FastPixException.cs): The base class for HTTP error responses.
-  * [`InvalidPermissionException`](./src/Fastpix/Models/Errors/InvalidPermissionException.cs): *
-  * [`ValidationErrorResponse`](./src/Fastpix/Models/Errors/ValidationErrorResponse.cs): Status code `422`. *
 
-<details><summary>Less common exceptions (24)</summary>
+**Primary exception:**
+* [`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs): The base class for HTTP error responses.
+
+<details><summary>Less common exceptions (2)</summary>
 
 * [`System.Net.Http.HttpRequestException`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httprequestexception): Network connectivity error. For more details about the underlying cause, inspect the `ex.InnerException`.
 
-* Inheriting from [`FastPixException`](./src/Fastpix/Models/Errors/FastPixException.cs):
-  * [`ForbiddenException`](./src/Fastpix/Models/Errors/ForbiddenException.cs): Status code `403`. Applicable to 26 of 66 methods.*
-  * [`UnauthorizedException`](./src/Fastpix/Models/Errors/UnauthorizedException.cs): Applicable to 24 of 66 methods.*
-  * [`MediaNotFoundException`](./src/Fastpix/Models/Errors/MediaNotFoundException.cs): Status code `404`. Applicable to 17 of 66 methods.*
-  * [`BadRequestException`](./src/Fastpix/Models/Errors/BadRequestException.cs): Bad Request. Status code `400`. Applicable to 10 of 66 methods.*
-  * [`NotFoundError`](./src/Fastpix/Models/Errors/NotFoundError.cs): Status code `404`. Applicable to 8 of 66 methods.*
-  * [`ViewNotFoundException`](./src/Fastpix/Models/Errors/ViewNotFoundException.cs): View Not Found. Status code `404`. Applicable to 7 of 66 methods.*
-  * [`LiveNotFoundError`](./src/Fastpix/Models/Errors/LiveNotFoundError.cs): Stream Not Found. Status code `404`. Applicable to 6 of 66 methods.*
-  * [`InvalidPlaylistIdResponseException`](./src/Fastpix/Models/Errors/InvalidPlaylistIdResponseException.cs): Payload Validation Failed. Status code `422`. Applicable to 6 of 66 methods.*
-  * [`UnAuthorizedResponseException`](./src/Fastpix/Models/Errors/UnAuthorizedResponseException.cs): response for unauthorized request. Status code `401`. Applicable to 4 of 66 methods.*
-  * [`ForbiddenResponseException`](./src/Fastpix/Models/Errors/ForbiddenResponseException.cs): response for forbidden request. Status code `403`. Applicable to 4 of 66 methods.*
-  * [`TrackDuplicateRequestException`](./src/Fastpix/Models/Errors/TrackDuplicateRequestException.cs): Duplicate language name. Status code `400`. Applicable to 3 of 66 methods.*
-  * [`NotFoundErrorSimulcast`](./src/Fastpix/Models/Errors/NotFoundErrorSimulcast.cs): Stream/Simulcast Not Found. Status code `404`. Applicable to 3 of 66 methods.*
-  * [`MediaOrPlaybackNotFoundException`](./src/Fastpix/Models/Errors/MediaOrPlaybackNotFoundException.cs): Status code `404`. Applicable to 2 of 66 methods.*
-  * [`NotFoundErrorPlaybackId`](./src/Fastpix/Models/Errors/NotFoundErrorPlaybackId.cs): Status code `404`. Applicable to 2 of 66 methods.*
-  * [`SigningKeyNotFoundError`](./src/Fastpix/Models/Errors/SigningKeyNotFoundError.cs): Bad Request. Status code `404`. Applicable to 2 of 66 methods.*
-  * [`DuplicateMp4SupportException`](./src/Fastpix/Models/Errors/DuplicateMp4SupportException.cs): Mp4Support value already exists. Status code `400`. Applicable to 1 of 66 methods.*
-  * [`StreamAlreadyDisabledError`](./src/Fastpix/Models/Errors/StreamAlreadyDisabledError.cs): Stream already disabled. Status code `400`. Applicable to 1 of 66 methods.*
-  * [`TrialPlanRestrictionError`](./src/Fastpix/Models/Errors/TrialPlanRestrictionError.cs): Bad Request – Stream is either already enabled or cannot be enabled on trial plan. Status code `400`. Applicable to 1 of 66 methods.*
-  * [`StreamAlreadyEnabledError`](./src/Fastpix/Models/Errors/StreamAlreadyEnabledError.cs): Bad Request – Stream is either already enabled or cannot be enabled on trial plan. Status code `400`. Applicable to 1 of 66 methods.*
-  * [`SimulcastUnavailableException`](./src/Fastpix/Models/Errors/SimulcastUnavailableException.cs): Simulcast is not available for trial streams. Status code `400`. Applicable to 1 of 66 methods.*
-  * [`MediaClipNotFoundException`](./src/Fastpix/Models/Errors/MediaClipNotFoundException.cs): media workspace relation not found. Status code `404`. Applicable to 1 of 66 methods.*
-  * [`DuplicateReferenceIdErrorResponse`](./src/Fastpix/Models/Errors/DuplicateReferenceIdErrorResponse.cs): Displays the result of the request. Status code `409`. Applicable to 1 of 66 methods.*
+* Inheriting from [`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs):
   * [`ResponseValidationError`](./src/Fastpix/Models/Errors/ResponseValidationError.cs): Thrown when the response data could not be deserialized into the expected type.
 </details>
+<!-- End Error Handling [errors] -->
 
-\* Refer to the [relevant documentation](#available-resources-and-operations) to determine whether an exception applies to a specific operation.
-
+<!-- Start Server Selection [server] -->
 ## Server Selection
 
 ### Override Server URL Per-Client
 
 The default server can be overridden globally by passing a URL to the `serverUrl: string` optional parameter when initializing the SDK client instance. For example:
+
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
 using System.Collections.Generic;
 
-var sdk = new FastPix(
-    serverUrl: "https://api.fastpix.io/v1/",
+var sdk = new FastpixSDK(
+    serverUrl: "<server-url>",
     security: new Security() {
         Username = "your-access-token",
-        Password = "secret-key",
+        Password = "your-secret-key",
     }
 );
 
 CreateMediaRequest req = new CreateMediaRequest() {
     Inputs = new List<Fastpix.Models.Components.Input>() {
-        Fastpix.Models.Components.Input.CreateVideoInput(
-            new VideoInput() {
-                Type = "video",
-                Url = "https://static.fastpix.io/sample.mp4",
-            }
+        Fastpix.Models.Components.Input.CreatePullVideoInput(
+            new PullVideoInput() {}
         ),
     },
     Metadata = new Dictionary<string, string>() {
-        { "key1", "value1" },
+        { "<key>", "<value>" },
     },
-    AccessPolicy = CreateMediaRequestAccessPolicy.Public,
 };
 
-var res = await sdk.Videos.CreateFromUrlAsync(req);
+var res = await sdk.InputVideo.CreateMediaAsync(req);
 
 // handle response
 ```
+<!-- End Server Selection [server] -->
+
+<!-- Start Custom HTTP Client [http-client] -->
+## Custom HTTP Client
+
+The C# SDK makes API calls using an `IFastpixHttpClient` that wraps the native
+[HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient). This
+client provides the ability to attach hooks around the request lifecycle that can be used to modify the request or handle
+errors and response.
+
+The `IFastpixHttpClient` interface allows you to either use the default `FastpixHttpClient` that comes with the SDK,
+or provide your own custom implementation with customized configuration such as custom message handlers, timeouts,
+connection pooling, and other HTTP client settings.
+
+The following example shows how to create a custom HTTP client with request modification and error handling:
+
+```csharp
+using Fastpix;
+using Fastpix.Utils;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+// Create a custom HTTP client
+public class CustomHttpClient : IFastpixHttpClient
+{
+    private readonly IFastpixHttpClient _defaultClient;
+
+    public CustomHttpClient()
+    {
+        _defaultClient = new FastpixHttpClient();
+    }
+
+    public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken? cancellationToken = null)
+    {
+        // Add custom header and timeout
+        request.Headers.Add("x-custom-header", "custom value");
+        request.Headers.Add("x-request-timeout", "30");
+        
+        try
+        {
+            var response = await _defaultClient.SendAsync(request, cancellationToken);
+            // Log successful response
+            Console.WriteLine($"Request successful: {response.StatusCode}");
+            return response;
+        }
+        catch (Exception error)
+        {
+            // Log error
+            Console.WriteLine($"Request failed: {error.Message}");
+            throw;
+        }
+    }
+
+    public void Dispose()
+    {
+        _defaultClient?.Dispose();
+    }
+}
+
+// Use the custom HTTP client with the SDK
+var customHttpClient = new CustomHttpClient();
+var sdk = new FastpixSDK(client: customHttpClient);
+```
+
+<details>
+<summary>You can also provide a completely custom HTTP client with your own configuration:</summary>
+
+```csharp
+using Fastpix.Utils;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+// Custom HTTP client with custom configuration
+public class AdvancedHttpClient : IFastpixHttpClient
+{
+    private readonly HttpClient _httpClient;
+
+    public AdvancedHttpClient()
+    {
+        var handler = new HttpClientHandler()
+        {
+            MaxConnectionsPerServer = 10,
+            // ServerCertificateCustomValidationCallback = customCertValidation, // Custom SSL validation if needed
+        };
+
+        _httpClient = new HttpClient(handler)
+        {
+            Timeout = TimeSpan.FromSeconds(30)
+        };
+    }
+
+    public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken? cancellationToken = null)
+    {
+        return await _httpClient.SendAsync(request, cancellationToken ?? CancellationToken.None);
+    }
+
+    public void Dispose()
+    {
+        _httpClient?.Dispose();
+    }
+}
+
+var sdk = new FastpixSDK(client: new AdvancedHttpClient());
+```
+</details>
+
+<details>
+<summary>For simple debugging, you can enable request/response logging by implementing a custom client:</summary>
+
+```csharp
+public class LoggingHttpClient : IFastpixHttpClient
+{
+    private readonly IFastpixHttpClient _innerClient;
+
+    public LoggingHttpClient(IFastpixHttpClient innerClient = null)
+    {
+        _innerClient = innerClient ?? new FastpixHttpClient();
+    }
+
+    public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken? cancellationToken = null)
+    {
+        // Log request
+        Console.WriteLine($"Sending {request.Method} request to {request.RequestUri}");
+        
+        var response = await _innerClient.SendAsync(request, cancellationToken);
+        
+        // Log response
+        Console.WriteLine($"Received {response.StatusCode} response");
+        
+        return response;
+    }
+
+    public void Dispose() => _innerClient?.Dispose();
+}
+
+var sdk = new FastpixSDK(client: new LoggingHttpClient());
+```
+</details>
+
+The SDK also provides built-in hook support through the `SDKConfiguration.Hooks` system, which automatically handles
+`BeforeRequestAsync`, `AfterSuccessAsync`, and `AfterErrorAsync` hooks for advanced request lifecycle management.
+<!-- End Custom HTTP Client [http-client] -->
+
+<!-- Placeholder for Future Fastpix SDK Sections -->
 
 # Development
 

@@ -12,8 +12,8 @@ Player Height refers to the vertical dimension, measured in pixels, of the video
 PlayerHeight.CreateStr(/* values here */);
 ```
 
-### Number
+### Integer
 
 ```csharp
-PlayerHeight.CreateNumber(/* values here */);
+PlayerHeight.CreateInteger(/* values here */);
 ```

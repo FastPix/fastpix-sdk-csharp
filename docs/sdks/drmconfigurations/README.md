@@ -1,5 +1,4 @@
 # DrmConfigurations
-(*DrmConfigurations*)
 
 ## Overview
 
@@ -30,11 +29,12 @@ Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">M
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.DrmConfigurations.ListAsync(
@@ -42,7 +42,14 @@ var res = await sdk.DrmConfigurations.ListAsync(
     limit: 10
 );
 
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
@@ -58,13 +65,9 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.BadRequestException        | 400                                              | application/json                                 |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
 
 ## GetById
 
@@ -73,7 +76,7 @@ This endpoint retrieves a DRM configuration ID. It is used to fetch the DRM-rela
 
 **How it works:**
 1. Make a GET request to this endpoint, replacing `{drmConfigurationId}` with the UUID of the DRM configuration.  
-2. The response will contain the associated DRM configuration ID.
+2. The response contains the associated DRM configuration ID.
 
 Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">Manage DRM configuration</a>
 
@@ -84,22 +87,31 @@ Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">M
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
+using Fastpix.Utils;
 using Newtonsoft.Json;
 
-var sdk = new FastPix(security: new Security() {
+var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
-    Password = "secret-key",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.DrmConfigurations.GetByIdAsync(drmConfigurationId: "4fa85f64-5717-4562-b3fc-2c963f66afa6");
-Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?? "null");
+var res = await sdk.DrmConfigurations.GetByIdAsync(drmConfigurationId: "<drmConfigurationId>");
+
+// handle response
+Console.WriteLine(
+    JsonConvert.SerializeObject(
+        res.Object,
+        Formatting.Indented,
+        Utilities.GetDefaultJsonSerializerSettings()
+    )
+);
 ```
 
 ### Parameters
 
 | Parameter                                       | Type                                            | Required                                        | Description                                     | Example                                         |
 | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- |
-| `DrmConfigurationId`                            | *string*                                        | :heavy_check_mark:                              | The unique identifier of the DRM configuration. | 4fa85f64-5717-4562-b3fc-2c963f66afa6            |
+| `DrmConfigurationId`                            | *string*                                        | :heavy_check_mark:                              | The unique identifier of the DRM configuration. | <drmConfigurationId>            |
 
 ### Response
 
@@ -107,11 +119,6 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Object, Formatting.Indented) ?
 
 ### Errors
 
-| Error Type                                       | Status Code                                      | Content Type                                     |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Fastpix.Models.Errors.BadRequestException        | 400                                              | application/json                                 |
-| Fastpix.Models.Errors.InvalidPermissionException | 401                                              | application/json                                 |
-| Fastpix.Models.Errors.ForbiddenException         | 403                                              | application/json                                 |
-| Fastpix.Models.Errors.MediaNotFoundException     | 404                                              | application/json                                 |
-| Fastpix.Models.Errors.ValidationErrorResponse    | 422                                              | application/json                                 |
-| Fastpix.Models.Errors.APIException               | 4XX, 5XX                                         | \*/\*                                            |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |

@@ -3,10 +3,10 @@
 
 ## Supported Types
 
-### VideoInput
+### PullVideoInput
 
 ```csharp
-Input.CreateVideoInput(/* values here */);
+Input.CreatePullVideoInput(/* values here */);
 ```
 
 ### WatermarkInput

@@ -1,6 +1,6 @@
 # CreateMediaRequestMaxResolution
 
-The maximum resolution tier determines the highest quality your media will be available in.
+The maximum resolution tier defines the highest quality at which your media is available.
 
 
 
@@ -13,4 +13,3 @@ The maximum resolution tier determines the highest quality your media will be av
 | `OneThousandAndEightyp`           | 1080p                             |
 | `SevenHundredAndTwentyp`          | 720p                              |
 | `FourHundredAndEightyp`           | 480p                              |
-| `ThreeHundredAndSixtyp`           | 360p                              |

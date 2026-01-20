@@ -135,13 +135,13 @@
     "/Users/tharunbudidha/.nuget/packages/": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "restore": {
-      "projectUniqueName": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side-azure-cloned/src/Fastpix/Fastpix.csproj",
+      "projectUniqueName": "/Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/Fastpix.csproj",
       "projectName": "Fastpix",
-      "projectPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side-azure-cloned/src/Fastpix/Fastpix.csproj",
+      "projectPath": "/Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/Fastpix.csproj",
       "packagesPath": "/Users/tharunbudidha/.nuget/packages/",
-      "outputPath": "/Users/tharunbudidha/Desktop/csharp-language-sdk-server-side-azure-cloned/src/Fastpix/obj/",
+      "outputPath": "/Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/tharunbudidha/.nuget/NuGet/NuGet.Config"
