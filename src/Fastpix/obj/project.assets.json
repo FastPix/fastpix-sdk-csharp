@@ -135,7 +135,7 @@
     "/Users/tharunbudidha/.nuget/packages/": {}
   },
   "project": {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "restore": {
       "projectUniqueName": "/Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/Fastpix.csproj",
       "projectName": "Fastpix",

@@ -44,7 +44,7 @@
           }
         }
       },
-      "Fastpix/1.1.0": {
+      "Fastpix/1.1.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
@@ -138,7 +138,7 @@
         "version.txt"
       ]
     },
-    "Fastpix/1.1.0": {
+    "Fastpix/1.1.1": {
       "type": "project",
       "path": "../fastpix-csharp/src/Fastpix/Fastpix.csproj",
       "msbuildProject": "../fastpix-csharp/src/Fastpix/Fastpix.csproj"
@@ -146,7 +146,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Fastpix >= 1.1.0"
+      "Fastpix >= 1.1.1"
     ]
   },
   "packageFolders": {

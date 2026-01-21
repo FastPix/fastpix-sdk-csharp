@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Fastpix
-build_property.ProjectDir = /Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/
+build_property.ProjectDir = /Users/tharunbudidha/Desktop/c-sharp-git-links/src/Fastpix/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
