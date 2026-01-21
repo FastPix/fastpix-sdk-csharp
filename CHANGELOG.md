@@ -4,7 +4,10 @@
 All notable changes to this project will be documented in this file.
 
 ---
+## [1.1.1]
 
+- Updated documentation redirection links in README.md.
+  
 ## [1.1.0]
 
 - Fixed missing parameters in multiple API methods.
