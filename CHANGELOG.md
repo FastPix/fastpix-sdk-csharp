@@ -6,8 +6,10 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [1.1.2]
+
 ### Fixed
 - Fixed data event field remapping in hooks.
+
 ## [1.1.1]
 
 - Updated documentation redirection links in README.md.
