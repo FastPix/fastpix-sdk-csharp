@@ -25,12 +25,8 @@ namespace Fastpix.Hooks
         /// </remarks>
         public static void InitHooks(IHooks hooks)
         {
-            // var myHook = new MyHook();
-
-            // hooks.RegisterSDKInitHook(myHook);
-            // hooks.RegisterBeforeRequestHook(myHook);
-            // hooks.RegisterAfterSuccessHook(myHook);
-            // hooks.RegisterAfterErrorHook(myHook;
+            var eventsFieldRemapHook = new EventsFieldRemapHook();
+            hooks.RegisterAfterSuccessHook(eventsFieldRemapHook);
         }
     }
 }

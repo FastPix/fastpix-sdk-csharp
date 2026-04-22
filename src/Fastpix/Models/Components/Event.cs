@@ -44,7 +44,7 @@ namespace Fastpix.Models.Components
         /// 
         /// </remarks>
         /// </summary>
-        [JsonProperty("viewer_time", NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty("viewer_time", NullValueHandling = NullValueHandling.Ignore)]
         public ViewerTime? ViewerTime { get; set; } = null;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Fastpix.Models.Components
         /// 
         /// </remarks>
         /// </summary>
-        [JsonProperty("event_time", NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty("event_time", NullValueHandling = NullValueHandling.Ignore)]
         public EventTime? EventTime { get; set; } = null;
     }
 }
