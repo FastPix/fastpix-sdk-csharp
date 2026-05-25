@@ -46,7 +46,7 @@ namespace Fastpix
         /// * **code:** The error code associated with the specific error. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/track-playback-errors&quot;&gt;Troubleshoot errors&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/troubleshoot-playback-errors&quot;&gt;Troubleshoot errors&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

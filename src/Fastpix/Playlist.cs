@@ -35,7 +35,7 @@ namespace Fastpix
         /// - **Manual:** Creates an empty playlist without any initial media items. Use this mode for manual curation, where you add items later in a user-defined sequence.<br/>
         /// - **Smart:** Auto-populates the playlist at creation time based on the filter criteria (for example, a video creation date range) that you provide in the request.<br/>
         /// <br/>
-        /// For more details, see &lt;a href=&quot;https://docs.fastpix.io/docs/create-and-manage-playlist&quot;&gt;Create and manage playlist&lt;/a&gt;.<br/>
+        /// For more details, see &lt;a href=&quot;https://fastpix.com/docs/playback-and-delivery/create-and-manage-playlists&quot;&gt;Create and manage playlist&lt;/a&gt;.<br/>
         /// <br/>
         /// #### How it works <br/>
         /// <br/>

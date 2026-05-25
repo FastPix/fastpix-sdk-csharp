@@ -20,7 +20,7 @@ namespace Fastpix.Models.Components
         /// The direct URL of the track file. It must point to a valid audio or subtitle file.
         /// </summary>
         [JsonProperty("url")]
-        public string? Url { get; set; } = "https://static.fastpix.io/music-1.mp3";
+        public string? Url { get; set; } = "https://static.fastpix.com/music-1.mp3";
 
         /// <summary>
         /// Specifies the type of track being added. It can be either `audio` or `subtitle`.

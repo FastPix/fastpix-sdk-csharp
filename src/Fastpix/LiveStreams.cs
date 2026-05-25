@@ -27,7 +27,7 @@ namespace Fastpix
         /// Create a new stream
         /// 
         /// <remarks>
-        /// Creates a new &lt;a href=&quot;https://docs.fastpix.io/docs/get-started-with-live-streaming&quot;&gt;RTMPS&lt;/a&gt; or &lt;a href=&quot;https://docs.fastpix.io/docs/using-srt-to-live-stream&quot;&gt;SRT&lt;/a&gt; live stream in FastPix. When you create a stream, FastPix generates a unique `streamKey` and `srtSecret` that you can use with broadcasting software such as OBS to connect to FastPix RTMPS or SRT servers. Use SRT for live streaming in unstable network conditions, as it provides error correction and encryption for a more reliable and secure broadcast.<br/>
+        /// Creates a new &lt;a href=&quot;https://fastpix.com/docs/get-started/live-quickstart&quot;&gt;RTMPS&lt;/a&gt; or &lt;a href=&quot;https://fastpix.com/docs/broadcast/live-stream-with-srt&quot;&gt;SRT&lt;/a&gt; live stream in FastPix. When you create a stream, FastPix generates a unique `streamKey` and `srtSecret` that you can use with broadcasting software such as OBS to connect to FastPix RTMPS or SRT servers. Use SRT for live streaming in unstable network conditions, as it provides error correction and encryption for a more reliable and secure broadcast.<br/>
         /// <br/>
         /// Leverage SRT for live streaming in environments with unstable networks, taking advantage of its error correction and encryption features for a resilient and secure broadcast. <br/>
         /// <br/>
@@ -37,7 +37,7 @@ namespace Fastpix
         /// <br/>
         /// 2. FastPix returns the stream details for both RTMPS and SRT configurations. These keys and IDs from the stream details are essential for connecting the broadcasting software to FastPix’s servers and transmitting the live stream to viewers.<br/>
         /// <br/>
-        /// 3. After the live stream is created, FastPix sends a `POST` request to your specified webhook endpoint with the event &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamcreated&quot;&gt;video.live_stream.created&lt;/a&gt;.<br/>
+        /// 3. After the live stream is created, FastPix sends a `POST` request to your specified webhook endpoint with the event &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamcreated&quot;&gt;video.live_stream.created&lt;/a&gt;.<br/>
         /// <br/>
         /// <br/>
         /// **Example:**<br/>
@@ -46,7 +46,7 @@ namespace Fastpix
         ///   Imagine a gaming platform that allows users to live stream gameplay directly from their dashboard. The API creates a new stream, provides the necessary stream key, and sets it to &quot;private&quot; so that only specific viewers can access it. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/how-to-livestream&quot;&gt;How to live stream&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/get-started/live-quickstart&quot;&gt;How to live stream&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<CreateNewStreamResponse> CreateAsync(CreateLiveStreamRequest request, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -77,7 +77,7 @@ namespace Fastpix
         /// <br/>
         /// Suppose a content creator is hosting a live concert and wants to display the number of live viewers on their dashboard. This endpoint can be queried to show up-to-date viewer statistics.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<GetLiveStreamViewerCountByIdResponse> GetViewerCountAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -92,7 +92,7 @@ namespace Fastpix
         ///   Suppose a news agency is broadcasting a live event and wants to track the configurations set for the live stream while also checking the stream&apos;s status.<br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<GetLiveStreamByIdResponse> GetByIdAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -103,14 +103,14 @@ namespace Fastpix
         /// <remarks>
         /// Permanently deletes a specified live stream from the workspace. If the stream is active, the encoder is disconnected and ingestion stops immediately. This action is irreversible, and any future playback attempts fail as a result.<br/>
         /// <br/>
-        ///   Provide the `streamId` in the request to terminate active connections and remove the stream from the workspace. You can further look for &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamdeleted&quot;&gt;video.live_stream.deleted&lt;/a&gt; webhook to notify your system about the status.<br/>
+        ///   Provide the `streamId` in the request to terminate active connections and remove the stream from the workspace. You can further look for &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamdeleted&quot;&gt;video.live_stream.deleted&lt;/a&gt; webhook to notify your system about the status.<br/>
         /// <br/>
         ///   #### Example<br/>
         /// <br/>
         ///   For an online concert platform, a trial stream was mistakenly made public. The event manager deletes the stream before the concert begins to avoid confusion among viewers. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<DeleteLiveStreamResponse> DeleteAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -129,7 +129,7 @@ namespace Fastpix
         /// <br/>
         /// A virtual event ends, and the system or host needs to close the livestream to prevent further streaming. This endpoint ensures the livestream status is changed from `active` to `idle`, indicating it&apos;s officially completed.<br/>
         /// <br/>
-        /// Related guide &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<CompleteLiveStreamResponse> CompleteAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);

@@ -37,7 +37,7 @@ namespace Fastpix
         /// <br/>
         /// A creator disables a livestream to pause it temporarily. Later, they decide to continue the session. By calling this endpoint with the stream&apos;s ID, they can re-enable and restart the same livestream.<br/>
         /// <br/>
-        /// Related guide &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<EnableLiveStreamResponse> EnableAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -54,7 +54,7 @@ namespace Fastpix
         /// <br/>
         /// A speaker finishes their live session and wants to prevent the stream from being mistakenly started again. By calling this endpoint, the stream is transitioned to a `disabled` state, ensuring it&apos;s permanently stopped (unless re-enabled on a paid plan).<br/>
         /// <br/>
-        /// Related guide &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<DisableLiveStreamResponse> DisableAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);

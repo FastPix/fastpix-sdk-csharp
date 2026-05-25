@@ -1,9 +1,0 @@
-# UpdatedSourceAccessRequest
-
-
-## Fields
-
-| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `MediaId`                                                                                  | *string*                                                                                   | :heavy_check_mark:                                                                         | The unique identifier assigned to the media when created. The value must be a valid UUID.<br/> | 4fa85f64-5717-4562-b3fc-2c963f66afa6                                                       |
-| `Body`                                                                                     | [UpdatedSourceAccessRequestBody](../../Models/Requests/UpdatedSourceAccessRequestBody.md)  | :heavy_check_mark:                                                                         | N/A                                                                                        | {<br/>"sourceAccess": true<br/>}                                                           |

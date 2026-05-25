@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.1.3]
+
+### ⚠️ Important — FastPix is migrating from `.io` to `.com`
+
+All FastPix hosts and documentation links are moving to the `.com` TLD:
+
+| Old (`.io`) | New (`.com`) |
+|---|---|
+| `api.fastpix.io` | `api.fastpix.com` |
+| `stream.fastpix.io` | `stream.fastpix.com` |
+| `images.fastpix.io` | `images.fastpix.com` |
+| `dashboard.fastpix.io` | `dashboard.fastpix.com` |
+| `www.fastpix.io` | `www.fastpix.com` |
+| `docs.fastpix.io/...` | `fastpix.com/docs/...` |
+
+The `.io` hosts continue to serve traffic during the transition, but **they are slated for deprecation soon** — please update any hard-coded references in your application as part of your next deploy. **We strongly recommend upgrading to this SDK release (or later) across every language you use** — every official FastPix SDK is being rolled out with the same migration.
+
+What this means for users of the `Fastpix` C# SDK:
+
+- **If you rely on SDK defaults**, no code change is required. The default server URL is `https://api.fastpix.com/v1/`, so updating the `Fastpix` package to `1.1.3` (e.g. `dotnet add package Fastpix --version 1.1.3`) is enough.
+- **If you have an explicit server URL override** (e.g. `new FastpixSDK(serverUrl: "https://api.fastpix.io/v1/")` or `FastpixSDK.Builder().WithServerUrl("https://api.fastpix.io/v1/")`), change it to `https://api.fastpix.com/v1/`.
+- **If you reference FastPix asset URLs directly** in your app (HLS playback URLs, image CDN, dashboard deep links), update those to the `.com` equivalents before `.io` is decommissioned.
+
+All README and per-SDK doc links in this package have been updated to point at the new `https://fastpix.com/docs/...` URLs.
+
+### Fixed (SDK ↔ API parity)
+
+- `ManageVideos.ListAsync` (`/on-demand`): tracks now include `frameRate`, which was being silently dropped by the previous SDK build (the field was present in the spec but missing from the generated `VideoTrackForGetAll` model).
+- `SigningKeys.DeleteAsync`: response shape now includes the optional `data.message` confirmation string the API has been returning.
+
+### Docs
+
+- All README and per-service documentation pages updated from `docs.fastpix.io/...` and `docs.fastpix.com/...` to the new `https://fastpix.com/docs/...` URL structure.
+
+---
+
 ## [1.1.2]
 
 ### Fixed

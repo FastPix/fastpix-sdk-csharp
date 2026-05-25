@@ -34,11 +34,11 @@ namespace Fastpix
         /// 2. Include the `moderation` object and provide the requried `type` parameter in the request body to specify the media type (for example, video/audio/av).<br/>
         /// 4. The response contains the updated media data, confirming the changes made.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaaimoderationready&quot;&gt;video.mediaAI.moderation.ready&lt;/a&gt; webhook event to track and notify about the detected moderation results.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaimoderationready&quot;&gt;video.mediaAI.moderation.ready&lt;/a&gt; webhook event to track and notify about the detected moderation results.<br/>
         /// <br/>
         /// **Use case:** This is particularly useful when a user uploads a video and later decides to enable moderation detection without the need to re-upload it.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/using-nsfw-and-profanity-filter-for-video-moderation&quot;&gt;Moderate NSFW &amp; Profanity&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/detect-nsfw-content-and-profanity&quot;&gt;Moderate NSFW &amp; Profanity&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

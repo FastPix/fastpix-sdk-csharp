@@ -17,5 +17,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("success")]
         public bool? Success { get; set; }
+
+        /// <summary>
+        /// Displays the result of the request.
+        /// </summary>
+        [JsonProperty("data")]
+        public DeleteSigningKeyResponseData? Data { get; set; }
     }
 }

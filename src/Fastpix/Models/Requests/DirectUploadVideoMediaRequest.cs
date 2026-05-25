@@ -28,7 +28,7 @@ namespace Fastpix.Models.Requests
         /// <remarks>
         /// These settings define how the uploaded video is handled, including access control, resolution, DRM, and optional metadata.  <br/>
         /// For a complete explanation of how media uploads and processing work, refer to the  <br/>
-        /// &lt;a href=&quot;https://docs.fastpix.io/docs/video-on-demand-overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
+        /// &lt;a href=&quot;https://fastpix.com/docs/get-started/overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
         /// 
         /// </remarks>
         /// </summary>

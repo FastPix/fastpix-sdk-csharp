@@ -3,11 +3,11 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Fastpix</PackageId>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>FastPix-dev</Authors>
     <Company>FastPix</Company>
-    <Owners>devs@fastpix.io</Owners>
+    <Owners>devs@fastpix.com</Owners>
     <Copyright>Copyright (c) FastPix 2025</Copyright>
     <Description>FastPix C# SDK: A comprehensive set of APIs for managing on-demand media (video/audio) and live streaming experiences with built-in security through cryptographic signing keys. Covers the full lifecycle of content creation, management, distribution, playback, and secure access for scalable video-first applications.
 

@@ -50,7 +50,7 @@ namespace FastPixSamples
         // Generate streaming URLs
         static void GenerateStreamingUrls(string playbackId)
         {
-            var baseUrl = "https://stream.fastpix.io";
+            var baseUrl = "https://stream.fastpix.com";
             
             Console.WriteLine("Streaming URLs:");
             Console.WriteLine($"- HLS: {baseUrl}/{playbackId}.m3u8");

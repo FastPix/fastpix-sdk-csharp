@@ -38,7 +38,7 @@ namespace Fastpix
         /// **Example:**  <br/>
         /// A media service provider may retrieve DRM configuration for a workspace to create DRM content.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/secure-playback-with-drm&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-security/set-up-drm-encryption&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -55,7 +55,7 @@ namespace Fastpix
         /// 1. Make a GET request to this endpoint, replacing `{drmConfigurationId}` with the UUID of the DRM configuration.  <br/>
         /// 2. The response contains the associated DRM configuration ID.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/secure-playback-with-drm&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-security/set-up-drm-encryption&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

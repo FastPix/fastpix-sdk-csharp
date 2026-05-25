@@ -39,7 +39,7 @@ namespace Fastpix
         /// <br/>
         ///   2. Specify the timespan for which you want to retrieve the video views using the `timespan[]` parameter. <br/>
         /// <br/>
-        ///   3. Filter the views based on dimensions such as browser, device, video title, viewer ID, etc., using the `filterby[]` parameter. Get the dimensions by calling &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;list the dimensions&lt;/a&gt; endpoint. <br/>
+        ///   3. Filter the views based on dimensions such as browser, device, video title, viewer ID, etc., using the `filterby[]` parameter. Get the dimensions by calling &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;list the dimensions&lt;/a&gt; endpoint. <br/>
         /// <br/>
         ///   4. Paginate the results using the `limit` and `offset` parameters. <br/>
         /// <br/>
@@ -47,7 +47,7 @@ namespace Fastpix
         /// <br/>
         ///   6. You receive a response containing the list of video views matching the specified criteria.<br/>
         /// <br/>
-        /// Each view in the response includes a unique `viewId`. You can use this `viewId` with the  &lt;a href=&quot;https://docs.fastpix.io/reference/get_video_view_details&quot;&gt;Get Video View Details&lt;/a&gt; endpoint to retrieve more detailed information about that specific view.<br/>
+        /// Each view in the response includes a unique `viewId`. You can use this `viewId` with the  &lt;a href=&quot;https://fastpix.com/docs/video-data-api/views/get-video-view-details&quot;&gt;Get Video View Details&lt;/a&gt; endpoint to retrieve more detailed information about that specific view.<br/>
         /// <br/>
         /// <br/>
         /// #### Example<br/>
@@ -55,7 +55,7 @@ namespace Fastpix
         /// If you manage a video streaming service and want to analyze content performance across devices and browsers. By calling the List Video Views endpoint with filters such as `browser_name` and `device_type`, you can identify which platforms are most popular with your audience. This information helps optimize content for widely used platforms and troubleshoot playback issues on less common devices.<br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/audience-metrics&quot;&gt;Audience metrics&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/understand-dashboard-ui#1-views-dashboard&quot;&gt;Views dashboard&lt;/a&gt;
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/audience-metrics&quot;&gt;Audience metrics&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#1-views-dashboard&quot;&gt;Views dashboard&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<ListVideoViewsResponse> ListAsync(ListVideoViewsRequest? request = null, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -74,7 +74,7 @@ namespace Fastpix
         /// If a developer receives a report of a poor viewing experience for a specific user. By using this endpoint with the users `viewId`, the developer can retrieve metrics like buffering duration, playback errors, and session length. This data allows the developer to pinpoint issues (such as poor connectivity or a browser-specific problem) and take steps to improve the user experience.<br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/page/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<GetVideoViewDetailsResponse> GetViewDetailsAsync(string viewId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -98,7 +98,7 @@ namespace Fastpix
         ///   5. You receive a response containing the list of top video views matching the specified criteria.<br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://docs.fastpix.io/page/how-to-get-top-performing-content&quot;&gt;Get top-performing content&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/identify-top-performing-content&quot;&gt;Get top-performing content&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

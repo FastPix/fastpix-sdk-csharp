@@ -23,7 +23,7 @@ namespace Fastpix.Models.Requests
         public UpdateMediaChaptersResponseBody? Object { get; set; }
 
         /// <summary>
-        /// See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+        /// See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
         /// </summary>
         public DefaultError? DefaultError { get; set; }
     }

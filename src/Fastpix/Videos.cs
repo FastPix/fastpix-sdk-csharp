@@ -39,7 +39,7 @@ namespace Fastpix
         /// Suppose you’re hosting a live gaming event and want to showcase key moments from the stream — such as top plays or final match highlights. You can use this endpoint to fetch all clips generated from that livestream, display them in your dashboard, or use them for post-event editing and sharing.<br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/instant-live-clipping&quot;&gt;Instant live clipping&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-live-stream/clip-moments-from-a-live-stream&quot;&gt;Instant live clipping&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -60,7 +60,7 @@ namespace Fastpix
         /// <br/>
         /// 3. The response returns the updated media data, confirming the changes. <br/>
         /// <br/>
-        /// 4. Monitor the &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; webhook event to track the update status in your system.<br/>
+        /// 4. Monitor the &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; webhook event to track the update status in your system.<br/>
         /// <br/>
         /// #### Example<br/>
         /// If a user uploads a video and later needs to change the title, add a new description, or update tags, you can use this endpoint to update the media metadata without re-uploading the entire video.<br/>
@@ -88,11 +88,11 @@ namespace Fastpix
         /// <br/>
         /// After updating a track, your system must receive webhook notifications:<br/>
         /// <br/>
-        /// 1. After successfully updating a track, your system must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediatrackupdated&quot;&gt;video.media.track.updated&lt;/a&gt;.<br/>
+        /// 1. After successfully updating a track, your system must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackupdated&quot;&gt;video.media.track.updated&lt;/a&gt;.<br/>
         /// <br/>
-        /// 2. Once the new track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
+        /// 2. Once the new track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
         /// <br/>
-        /// 3. Once the media file is updated with the new track details, a &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
+        /// 3. Once the media file is updated with the new track details, a &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
         /// <br/>
         /// <br/>
         /// #### Example<br/>
@@ -101,7 +101,7 @@ namespace Fastpix
         ///   - The original track file has errors and needs correction.<br/>
         ///   - You want to improve subtitle translations or replace an audio track with a better-quality version.<br/>
         /// <br/>
-        /// Related guides: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-subtitle-tracks&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/manage-audio-tracks&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
+        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

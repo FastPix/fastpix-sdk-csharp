@@ -62,14 +62,14 @@ namespace Fastpix
         /// <br/>
         /// 3. Receive a response containing the unique id for the newly created media item. <br/>
         /// <br/>
-        /// 4. Use the id in subsequent API calls, such as checking the status of the media with the &lt;a href=&quot;https://docs.fastpix.io/reference/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to determine when the media is ready for playback. <br/>
+        /// 4. Use the id in subsequent API calls, such as checking the status of the media with the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to determine when the media is ready for playback. <br/>
         /// <br/>
-        /// FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, after the media file is created (but not yet processed or encoded), FastPix sends a `POST` request to your specified webhook URL with the event &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediacreated&quot;&gt;video.media.created&lt;/a&gt;. <br/>
+        /// FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, after the media file is created (but not yet processed or encoded), FastPix sends a `POST` request to your specified webhook URL with the event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediacreated&quot;&gt;video.media.created&lt;/a&gt;. <br/>
         /// <br/>
         /// <br/>
-        /// After processing completes, monitor the events &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaready&quot;&gt;video.media.ready&lt;/a&gt; and &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediafailed&quot;&gt;video.media.failed&lt;/a&gt; to track the status of the media file.<br/>
+        /// After processing completes, monitor the events &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaready&quot;&gt;video.media.ready&lt;/a&gt; and &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediafailed&quot;&gt;video.media.failed&lt;/a&gt; to track the status of the media file.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/upload-videos-from-url&quot;&gt;Upload videos from URL&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-a-url&quot;&gt;Upload videos from URL&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -83,7 +83,7 @@ namespace Fastpix
         /// <br/>
         /// &gt; **NOTE**<br/>
         /// &gt;<br/>
-        /// &gt; This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the <a href="https://docs.fastpix.io/changelog/api-update-direct-upload-media-from-device">changelog</a>.<br/>
+        /// &gt; This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the <a href="https://fastpix.com/docs/changelog/api-update-direct-upload-media-from-device">changelog</a>.<br/>
         /// <br/>
         /// #### How it works<br/>
         /// <br/>
@@ -91,23 +91,23 @@ namespace Fastpix
         /// <br/>
         /// 2. The response includes an `uploadId` and a signed `url` for direct video file upload.<br/>
         /// <br/>
-        /// 3. Upload your video file to the provided url by making a PUT request. The API accepts the media file from your device and uploads it to the FastPix platform. (Refer to &lt;a href=&quot;https://docs.fastpix.io/docs/upload-videos-directly#step-3-initiate-the-upload&quot;&gt;Step 3: Initiate the upload&lt;/a&gt; for complete instructions.)<br/>
+        /// 3. Upload your video file to the provided url by making a PUT request. The API accepts the media file from your device and uploads it to the FastPix platform. (Refer to &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-device#step-3-initiate-the-upload&quot;&gt;Step 3: Initiate the upload&lt;/a&gt; for complete instructions.)<br/>
         /// <br/>
         /// <br/>
         /// 4. Once uploaded, the media undergoes processing and is assigned a unique ID for tracking. Retain this `uploadId` for any future operations related to this upload. <br/>
         /// <br/>
         /// <br/>
         /// <br/>
-        /// After uploading, you can use the &lt;a href=&quot;https://docs.fastpix.io/reference/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to check the status of the uploaded media asset and see if it has transitioned to a `Ready` status for playback. <br/>
+        /// After uploading, you can use the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to check the status of the uploaded media asset and see if it has transitioned to a `Ready` status for playback. <br/>
         /// <br/>
-        /// To notify your application about the status of this API request check for the webhooks for &lt;a href=&quot;https://docs.fastpix.io/docs/webhooks-collection#media-related-events&quot;&gt;media related events&lt;/a&gt;.  <br/>
+        /// To notify your application about the status of this API request check for the webhooks for &lt;a href=&quot;https://fastpix.com/docs/webhooks/webhook-event-reference#media-related-events&quot;&gt;media related events&lt;/a&gt;.  <br/>
         /// <br/>
         /// <br/>
         /// #### Example<br/>
         /// <br/>
         /// A social media platform allows users to upload video content directly from their phones or computers. This endpoint facilitates the upload process. For example, if you are developing a video-sharing app where users can upload short clips from their mobile devices, this endpoint enables them to select a video, upload it to the platform.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/upload-videos-directly&quot;&gt;Upload videos directly&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-device&quot;&gt;Upload videos directly&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

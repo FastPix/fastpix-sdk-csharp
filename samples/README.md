@@ -47,5 +47,5 @@ Console.WriteLine($"Found {response.Object.Data.Count} media items");
 
 ## Documentation
 
-- [FastPix API Docs](https://docs.fastpix.io)
-- [FastPix Support](https://fastpix.io/support)
+- [FastPix API Docs](https://fastpix.com/docs)
+- [FastPix Support](https://fastpix.com/support)

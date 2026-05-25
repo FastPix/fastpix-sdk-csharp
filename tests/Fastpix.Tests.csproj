@@ -11,7 +11,16 @@
     <ProjectReference Include="..\src\Fastpix\Fastpix.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
+    <PackageReference Include="NJsonSchema" Version="11.1.0" />
+  </ItemGroup>
 
+  <!-- Keep the fixtures next to the binary; the runner resolves them from the project dir anyway. -->
+  <ItemGroup>
+    <None Include="get-endpoints-fixtures.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>
 

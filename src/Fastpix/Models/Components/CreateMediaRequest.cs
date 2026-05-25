@@ -18,7 +18,7 @@ namespace Fastpix.Models.Components
         /// Add one input object at a time. For example, first add a **VideoInput** object.   If you also need a watermark, click **Add item** again and select **WatermarkInput**.   Repeat this process for **AudioInput** or **SubtitleInput** as needed. For a complete explanation of how media uploads from URL and processing work, refer to the  <br/>
         /// 
         /// <remarks>
-        ///         &lt;a href=&quot;https://docs.fastpix.io/docs/video-on-demand-overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
+        ///         &lt;a href=&quot;https://fastpix.com/docs/get-started/overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
         /// 
         /// </remarks>
         /// </summary>

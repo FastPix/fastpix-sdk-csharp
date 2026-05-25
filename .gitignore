@@ -413,3 +413,16 @@ secrets.json
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Local OpenAPI spec used by the validation harness — not part of the published SDK
+fixed 7.yaml
+*.local.yaml
+
+# Endpoint validation harness (tests/) — build output and generated artifacts
+tests/bin/
+tests/obj/
+tests/artifacts/
+tests/artifacts-non-get/
+tests/GET_ENDPOINTS_OPENAPI_RESPONSE_VALIDATION_REPORT.md
+tests/GET_ENDPOINTS_OPENAPI_RESPONSE_FIX_SUGGESTIONS.md
+tests/NON_GET_ENDPOINTS_VALIDATION_REPORT.md

@@ -53,7 +53,7 @@ namespace Fastpix
         /// <br/>
         /// <br/>
         /// **Detailed example:**  You are building a video-on-demand platform that restricts access based on user subscriptions. To ensure only subscribed users can stream content, you generate a signing key using this API. Each time a user logs in, you create a JWT signed with the private key. When the user attempts to play a video, FastPix uses the public key to verify the token and confirms that the user is authorized.&lt;br/&gt;<br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/secure-playback-with-jwts&quot;&gt;Create and use signing keys&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-security/secure-media-access-with-jwts&quot;&gt;Create and use signing keys&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<CreateSigningKeyResponse> CreateAsync(RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -134,7 +134,7 @@ namespace Fastpix
         /// { <br/>
         ///   &quot;kid&quot;: &quot;359302ee-2446-4afe-9348-8b4656b9ddb1&quot;, <br/>
         ///   &quot;aud&quot;: &quot;media:6cee6f85-9334-4a51-9ce3-e0241d94ceef&quot;, <br/>
-        ///   &quot;iss&quot;: &quot;fastpix.io&quot;, <br/>
+        ///   &quot;iss&quot;: &quot;fastpix.com&quot;, <br/>
         ///   &quot;sub&quot;: &quot;&quot;, <br/>
         ///   &quot;iat&quot;: 1706703204, <br/>
         ///   &quot;exp&quot;: 1735626783 <br/>
@@ -146,7 +146,7 @@ namespace Fastpix
         /// <br/>
         /// * **kid:** The key ID of the signing key. <br/>
         /// * **aud:** The audience for which the token is intended, enter the playbackId here.<br/>
-        /// * **iss:**  The issuer of the token (for example, &quot;fastpix.io &quot;). <br/>
+        /// * **iss:**  The issuer of the token (for example, &quot;fastpix.com &quot;). <br/>
         /// * **sub:** The subject of the token, typically representing the user or entity the token is issued for. In this case, use the workspaceId fetched from the &quot;Get Signing Key by ID&quot; endpoint. <br/>
         /// * **groups:** An array of groups the subject belongs to (for example, [&quot;user&quot;]).<br/>
         /// * **iat:** The issued-at timestamp, indicating when the token was created. <br/>

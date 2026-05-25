@@ -34,11 +34,11 @@ namespace Fastpix
         /// 2. Include the `chapters` parameter in the request body to enable.<br/>
         /// 3. The response contains the updated media data, confirming the changes made.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaaichaptersready&quot;&gt;video.mediaAI.chapters.ready&lt;/a&gt; webhook event to track and notify about the chapters generation.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaichaptersready&quot;&gt;video.mediaAI.chapters.ready&lt;/a&gt; webhook event to track and notify about the chapters generation.<br/>
         /// <br/>
         /// **Use case:** This is particularly useful when a user uploads a video and later decides to enable chapters without re-uploading the entire video.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/generate-video-chapters&quot;&gt;Video chapters&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/generate-video-chapters&quot;&gt;Video chapters&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -60,11 +60,11 @@ namespace Fastpix
         /// 2. Include the `namedEntities` parameter in the request body to enable.<br/>
         /// 3. Receive a response containing the updated media data, confirming the changes made.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaainamedentitiesready&quot;&gt;video.mediaAI.named-entities.ready&lt;/a&gt; webhook event to track and notify about the named entities extraction.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaainamedentitiesready&quot;&gt;video.mediaAI.named-entities.ready&lt;/a&gt; webhook event to track and notify about the named entities extraction.<br/>
         /// <br/>
         /// **Use case:** If a user uploads a video and later decides to enable named entity extraction without re-uploading the entire video.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/generate-named-entities&quot;&gt;Named entities&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/extract-named-entities-from-a-video&quot;&gt;Named entities&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

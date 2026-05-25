@@ -30,7 +30,7 @@ namespace Fastpix
         /// Create a playback ID
         /// 
         /// <remarks>
-        /// You can create a new playback ID for a specific media asset. If you have already retrieved an existing `playbackId` using the &lt;a href=&quot;https://docs.fastpix.io/reference/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint for a media asset, you can use this endpoint to generate a new playback ID with a specified access policy. <br/>
+        /// You can create a new playback ID for a specific media asset. If you have already retrieved an existing `playbackId` using the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint for a media asset, you can use this endpoint to generate a new playback ID with a specified access policy. <br/>
         /// <br/>
         /// <br/>
         /// <br/>

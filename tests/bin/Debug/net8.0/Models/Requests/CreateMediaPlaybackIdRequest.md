@@ -1,9 +1,0 @@
-# CreateMediaPlaybackIdRequest
-
-
-## Fields
-
-| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
-| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `MediaId`                                                                                     | *string*                                                                                      | :heavy_check_mark:                                                                            | The unique identifier assigned to the media when created. The value must be a valid UUID.     | dbb8a39a-e4a5-4120-9f22-22f603f1446e                                                          |
-| `Body`                                                                                        | [CreateMediaPlaybackIdRequestBody](../../Models/Requests/CreateMediaPlaybackIdRequestBody.md) | :heavy_minus_sign:                                                                            | Request body for creating playback id for an media                                            |                                                                                               |

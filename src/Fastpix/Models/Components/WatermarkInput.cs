@@ -16,7 +16,7 @@ namespace Fastpix.Models.Components
     /// <remarks>
     /// The watermark is placed over the media content during processing.  <br/>
     /// For detailed setup steps and customization options, refer to the <br/>
-    /// &lt;a href=&quot;https://docs.fastpix.io/docs/watermark-your-videos&quot; target=&quot;_blank&quot;&gt;FastPix Watermark Guide&lt;/a&gt;.<br/>
+    /// &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-videos/add-a-watermark-to-a-video&quot; target=&quot;_blank&quot;&gt;FastPix Watermark Guide&lt;/a&gt;.<br/>
     /// 
     /// </remarks>
     /// </summary>

@@ -34,7 +34,7 @@ namespace Fastpix.Models.Components
         /// </remarks>
         /// </summary>
         [JsonProperty("url")]
-        public string? Url { get; set; } = "https://static.fastpix.io/fp-sample-video.mp4";
+        public string? Url { get; set; } = "https://static.fastpix.com/fp-sample-video.mp4";
 
         /// <summary>
         /// Start time indicates where encoding must begin within the video file. For example, if you want to encode a segment from 3 minutes (180 seconds) to 6 minutes (360 seconds) in a 10-minute (600 seconds) video, the start time is 3 minutes (180 seconds). Note: Start time is always mentioned in seconds.<br/>

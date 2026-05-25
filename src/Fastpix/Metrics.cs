@@ -34,7 +34,7 @@ namespace Fastpix
         /// <br/>
         /// #### How it works<br/>
         /// <br/>
-        ///   1. Before using this endpoint, you can call the &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;List Dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
+        ///   1. Before using this endpoint, you can call the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;List Dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
         /// <br/>
         ///   2. Send a `GET` request to this endpoint with the required `metricId` and other query parameters. <br/>
         /// <br/>
@@ -60,7 +60,7 @@ namespace Fastpix
         ///   * **field:** The grouping field value based on the groupBy parameter. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/metrics-overview&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -74,7 +74,7 @@ namespace Fastpix
         /// <br/>
         /// #### How it works<br/>
         /// <br/>
-        ///   1. Before using this endpoint, you can call the &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
+        ///   1. Before using this endpoint, you can call the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
         /// <br/>
         ///   2. Send a `GET` request to this endpoint with the required `metricId` and other query parameters. <br/>
         /// <br/>
@@ -96,7 +96,7 @@ namespace Fastpix
         ///   * **globalValue:** A global metric value that reflects the overall performance of the specified metric across the entire dataset for the given timespan. This value is not affected by specific filters. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/metrics-overview&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -135,14 +135,14 @@ namespace Fastpix
         /// <br/>
         /// #### How it works <br/>
         /// <br/>
-        ///   1. Before making a request to this endpoint, call the &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to obtain all available dimensions that can be used for comparison. <br/>
+        ///   1. Before making a request to this endpoint, call the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to obtain all available dimensions that can be used for comparison. <br/>
         /// <br/>
         ///   2. Send a `GET` request to this endpoint with the desired metrics specified in the query parameters. <br/>
         /// <br/>
         ///   3. You Receive a response containing the comparison values for the specified metrics across the selected dimensions. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/understand-dashboard-ui#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

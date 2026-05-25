@@ -1,24 +1,34 @@
-using Fastpix;
-using Fastpix.Models.Components;
- using Fastpix.Models.Requests;
-using Fastpix.Utils;
-using Newtonsoft.Json;
+using Fastpix.Tests;
 
-var sdk = new FastpixSDK(security: new Security()
+// Endpoint validation harness for the Fastpix C# SDK.
+//
+//   dotnet run --project tests              # GET endpoints (default, read-only)
+//   dotnet run --project tests -- get       # GET endpoints
+//   dotnet run --project tests -- non-get   # POST/PUT/PATCH/DELETE lifecycle (MUTATES data)
+//   dotnet run --project tests -- all       # both
+//
+// Each mode:
+//   1. calls the live API + validates the raw response against the OpenAPI schema,
+//   2. calls the matching C# SDK method in-process,
+//   3. diffs JSON paths between the raw API body and the SDK-parsed body,
+//   4. writes artifacts + a markdown report under tests/.
+//
+// Requires real BasicAuth credentials:
+//   export FASTPIX_USERNAME=... FASTPIX_PASSWORD=...
+// Optional: FASTPIX_BASE_URL, FASTPIX_SPEC.
+
+var mode = (args.FirstOrDefault() ?? "get").ToLowerInvariant();
+
+return mode switch
 {
-    //  Username = "b9730810-c4e0-4d35-bfa3-c87ea493c433",
-    //  Password = "d2662dba-1173-4e1c-8cfa-3235b012b633",
-        Username = "your-access-token",
-        Password = "your-secret-key",
-});
+    "get" => await EndpointValidator.RunAsync(),
+    "non-get" or "nonget" or "mutate" => await NonGetValidator.RunAsync(),
+    "all" => Math.Max(await EndpointValidator.RunAsync(), await NonGetValidator.RunAsync()),
+    _ => Fail($"Unknown mode '{mode}'. Use: get | non-get | all"),
+};
 
-var res = await sdk.Views.GetViewDetailsAsync(viewId: "your-view-id");
-
-// handle response
-Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
-);
+static int Fail(string msg)
+{
+    Console.Error.WriteLine(msg);
+    return 2;
+}

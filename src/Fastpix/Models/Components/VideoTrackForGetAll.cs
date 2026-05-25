@@ -40,6 +40,12 @@ namespace Fastpix.Models.Components
         public double? Height { get; set; }
 
         /// <summary>
+        /// Frame rate quantifies the speed at which frames are displayed per second. It represents the range of frames available for a specific track. The indeterminable frame rate of the input file is indicated by a value of -1.
+        /// </summary>
+        [JsonProperty("frameRate")]
+        public string? FrameRate { get; set; }
+
+        /// <summary>
         /// Indicates the current state of the track. &apos;available&apos; means the track has been processed successfully and is ready to be used or played.
         /// </summary>
         [JsonProperty("status")]

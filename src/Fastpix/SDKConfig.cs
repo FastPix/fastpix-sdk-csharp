@@ -20,7 +20,7 @@ namespace Fastpix
         /// List of server URLs available to the SDK.
         /// </summary>
         public static readonly string[] ServerList = {
-            "https://api.fastpix.io/v1/",
+            "https://api.fastpix.com/v1/",
         };
 
         public IFastpixHttpClient Client;
