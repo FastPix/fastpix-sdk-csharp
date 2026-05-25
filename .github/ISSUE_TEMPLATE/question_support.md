@@ -138,5 +138,5 @@ Before submitting, please ensure:
 **For urgent issues, please also consider:**
 - [FastPix Documentation](https://fastpix.com/docs)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/fastpix)
-- [GitHub Discussions](https://github.com/FastPix/csharp-language-sdk-server-side/discussions)
+- [GitHub Issues](https://github.com/FastPix/fastpix-sdk-csharp/issues)
 
