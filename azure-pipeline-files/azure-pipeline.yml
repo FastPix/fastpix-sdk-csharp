@@ -1,0 +1,33 @@
+trigger:
+- feature/*
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- checkout: self
+  fetchDepth: 0
+
+# Prepare SonarCloud Analysis
+- task: SonarCloudPrepare@3
+  inputs:
+    SonarCloud: 'sdk_sonar'
+    organization: 'fastpix'
+    scannerMode: 'dotnet'
+    projectKey: 'FastPix_csharp-language-sdk-server-side'
+    projectName: 'csharp-language-sdk-server-side'
+
+# Build required for .NET analysis
+- script: |
+    dotnet restore
+    dotnet build --configuration Release
+  displayName: 'Build Project'
+
+# Run Analysis
+- task: SonarCloudAnalyze@3
+
+# Publish Quality Gate
+- task: SonarCloudPublish@3
+  inputs:
+    pollingTimeoutSec: '300'
