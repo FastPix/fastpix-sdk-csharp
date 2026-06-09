@@ -10,7 +10,7 @@ namespace Fastpix.Utils
     using System.Collections.Generic;
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    internal class FastpixMetadata : Attribute
+    internal class FastpixMetadataAttribute : Attribute
     {
         internal class RequestMetadata
         {
@@ -68,7 +68,7 @@ namespace Fastpix.Utils
         public string Value { get; set; }
         private Dictionary<string, string>? metadata;
 
-        public FastpixMetadata(string value)
+        public FastpixMetadataAttribute(string value)
         {
             Value = value;
         }
@@ -77,11 +77,11 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("request", out var value))
             {
-                var metadata = new RequestMetadata();
+                var result = new RequestMetadata();
 
-                ParseMetadata(value, ref metadata);
+                ParseMetadata(value, ref result);
 
-                return metadata;
+                return result;
             }
 
             return null;
@@ -91,11 +91,11 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("form", out var value))
             {
-                var metadata = new FormMetadata();
+                var result = new FormMetadata();
 
-                ParseMetadata(value, ref metadata);
+                ParseMetadata(value, ref result);
 
-                return metadata;
+                return result;
             }
 
             return null;
@@ -105,11 +105,11 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("multipartForm", out var value))
             {
-                var metadata = new MultipartFormMetadata();
+                var result = new MultipartFormMetadata();
 
-                ParseMetadata(value, ref metadata);
+                ParseMetadata(value, ref result);
 
-                return metadata;
+                return result;
             }
 
             return null;
@@ -119,9 +119,9 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("pathParam", out var value))
             {
-                var metadata = new PathParamMetadata();
-                ParseMetadata(value, ref metadata);
-                return metadata;
+                var result = new PathParamMetadata();
+                ParseMetadata(value, ref result);
+                return result;
             }
 
             return null;
@@ -131,11 +131,11 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("queryParam", out var value))
             {
-                var metadata = new QueryParamMetadata();
+                var result = new QueryParamMetadata();
 
-                ParseMetadata(value, ref metadata);
+                ParseMetadata(value, ref result);
 
-                return metadata;
+                return result;
             }
 
             return null;
@@ -145,11 +145,11 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("header", out var value))
             {
-                var metadata = new HeaderMetadata();
+                var result = new HeaderMetadata();
 
-                ParseMetadata(value, ref metadata);
+                ParseMetadata(value, ref result);
 
-                return metadata;
+                return result;
             }
 
             return null;
@@ -159,11 +159,11 @@ namespace Fastpix.Utils
         {
             if (GetMetadata().TryGetValue("security", out var value))
             {
-                var metadata = new SecurityMetadata();
+                var result = new SecurityMetadata();
 
-                ParseMetadata(value, ref metadata);
+                ParseMetadata(value, ref result);
 
-                return metadata;
+                return result;
             }
 
             return null;
@@ -195,7 +195,7 @@ namespace Fastpix.Utils
             return metadata;
         }
 
-        private void ParseMetadata<T>(string raw, ref T metadata)
+        private static void ParseMetadata<T>(string raw, ref T metadata)
         {
             Dictionary<string, string> values = new Dictionary<string, string>();
 

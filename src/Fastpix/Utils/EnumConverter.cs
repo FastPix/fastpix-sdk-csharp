@@ -49,7 +49,7 @@ namespace Fastpix.Utils
             var method = extensionType.GetMethod("ToEnum");
             if (method == null)
             {
-                throw new Exception($"Unable to find ToEnum method on {extensionType.FullName}");
+                throw new MissingMethodException($"Unable to find ToEnum method on {extensionType.FullName}");
             }
 
             try {

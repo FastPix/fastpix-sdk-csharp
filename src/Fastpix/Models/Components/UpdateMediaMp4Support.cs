@@ -55,14 +55,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is UpdateMediaMp4Support)
+                    if (enumVal is UpdateMediaMp4Support updateMediaMp4Support)
                     {
-                        return (UpdateMediaMp4Support)enumVal;
+                        return updateMediaMp4Support;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum UpdateMediaMp4Support");
+            throw new ArgumentException($"Unknown value {value} for enum UpdateMediaMp4Support", nameof(value));
         }
     }
 

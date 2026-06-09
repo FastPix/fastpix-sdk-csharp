@@ -53,14 +53,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is MaxResolution)
+                    if (enumVal is MaxResolution maxResolution)
                     {
-                        return (MaxResolution)enumVal;
+                        return maxResolution;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum MaxResolution");
+            throw new ArgumentException($"Unknown value {value} for enum MaxResolution", nameof(value));
         }
     }
 

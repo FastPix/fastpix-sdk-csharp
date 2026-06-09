@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is SubtitleTrackType)
+                    if (enumVal is SubtitleTrackType subtitleTrackType)
                     {
-                        return (SubtitleTrackType)enumVal;
+                        return subtitleTrackType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum SubtitleTrackType");
+            throw new ArgumentException($"Unknown value {value} for enum SubtitleTrackType", nameof(value));
         }
     }
 

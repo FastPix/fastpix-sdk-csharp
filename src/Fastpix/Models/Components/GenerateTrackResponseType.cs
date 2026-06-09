@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GenerateTrackResponseType)
+                    if (enumVal is GenerateTrackResponseType generateTrackResponseType)
                     {
-                        return (GenerateTrackResponseType)enumVal;
+                        return generateTrackResponseType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GenerateTrackResponseType");
+            throw new ArgumentException($"Unknown value {value} for enum GenerateTrackResponseType", nameof(value));
         }
     }
 

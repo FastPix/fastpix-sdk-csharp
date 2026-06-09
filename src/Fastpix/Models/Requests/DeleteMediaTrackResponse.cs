@@ -15,7 +15,7 @@ namespace Fastpix.Models.Requests
     {
 
         [JsonProperty("-")]
-        public HTTPMetadata HttpMeta { get; set; } = default!;
+        public HttpMetadata HttpMeta { get; set; } = default!;
 
         /// <summary>
         /// Delete a video media

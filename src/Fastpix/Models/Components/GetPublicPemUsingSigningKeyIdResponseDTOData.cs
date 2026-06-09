@@ -12,7 +12,7 @@ namespace Fastpix.Models.Components
     /// <summary>
     /// Displays the result of the request.
     /// </summary>
-    public class GetPublicPemUsingSigningKeyIdResponseDTOData
+    public class GetPublicPemUsingSigningKeyIdResponseDtoData
     {
 
         /// <summary>

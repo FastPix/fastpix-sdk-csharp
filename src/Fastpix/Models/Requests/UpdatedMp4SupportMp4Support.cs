@@ -51,14 +51,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is UpdatedMp4SupportMp4Support)
+                    if (enumVal is UpdatedMp4SupportMp4Support updatedMp4SupportMp4Support)
                     {
-                        return (UpdatedMp4SupportMp4Support)enumVal;
+                        return updatedMp4SupportMp4Support;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum UpdatedMp4SupportMp4Support");
+            throw new ArgumentException($"Unknown value {value} for enum UpdatedMp4SupportMp4Support", nameof(value));
         }
     }
 

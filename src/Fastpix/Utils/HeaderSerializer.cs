@@ -30,7 +30,7 @@ namespace Fastpix.Utils
                     continue;
                 }
 
-                var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetHeaderMetadata();
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetHeaderMetadata();
                 if (metadata == null || metadata.Name == "")
                 {
                     continue;
@@ -48,78 +48,87 @@ namespace Fastpix.Utils
         {
             if (Utilities.IsClass(value))
             {
-                var items = new List<string>();
-
-                var props = value.GetType().GetProperties();
-
-                foreach (var prop in props)
-                {
-                    var val = prop.GetValue(value);
-                    if (val == null)
-                    {
-                        continue;
-                    }
-
-                    var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetHeaderMetadata();
-                    if (metadata == null || metadata.Name == null)
-                    {
-                        continue;
-                    }
-
-                    if (explode)
-                    {
-                        items.Add($"{metadata.Name}={Utilities.ValueToString(val)}");
-                    }
-                    else
-                    {
-                        items.Add(metadata.Name);
-                        items.Add(Utilities.ValueToString(val));
-                    }
-                }
-
-                return string.Join(",", items);
+                return SerializeClassHeader(value, explode);
             }
-            else if (Utilities.IsDictionary(value))
+
+            if (Utilities.IsDictionary(value))
             {
-                var items = new List<string>();
-
-                foreach (DictionaryEntry entry in (IDictionary)value)
-                {
-                    var key = entry.Key?.ToString();
-
-                    if (key == null)
-                    {
-                        continue;
-                    }
-
-                    if (explode)
-                    {
-                        items.Add($"{key}={Utilities.ValueToString(entry.Value)}");
-                    }
-                    else
-                    {
-                        items.Add(key);
-                        items.Add(Utilities.ValueToString(entry.Value));
-                    }
-                }
-
-                return string.Join(",", items);
+                return SerializeDictionaryHeader((IDictionary)value, explode);
             }
-            else if (Utilities.IsList(value))
+
+            if (Utilities.IsList(value))
             {
-                var items = new List<string>();
+                return SerializeListHeader((IList)value);
+            }
 
-                foreach (var item in (IList)value)
-                {
-                    items.Add(Utilities.ValueToString(item));
-                }
+            return Utilities.ValueToString(value);
+        }
 
-                return string.Join(",", items);
+        private static void AddHeaderItem(List<string> items, string name, object? val, bool explode)
+        {
+            if (explode)
+            {
+                items.Add($"{name}={Utilities.ValueToString(val)}");
             }
             else
             {
-                return Utilities.ValueToString(value);
+                items.Add(name);
+                items.Add(Utilities.ValueToString(val));
             }
+        }
+
+        private static string SerializeClassHeader(object value, bool explode)
+        {
+            var items = new List<string>();
+
+            foreach (var prop in value.GetType().GetProperties())
+            {
+                var val = prop.GetValue(value);
+                if (val == null)
+                {
+                    continue;
+                }
+
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetHeaderMetadata();
+                if (metadata == null || metadata.Name == null)
+                {
+                    continue;
+                }
+
+                AddHeaderItem(items, metadata.Name, val, explode);
+            }
+
+            return string.Join(",", items);
+        }
+
+        private static string SerializeDictionaryHeader(IDictionary value, bool explode)
+        {
+            var items = new List<string>();
+
+            foreach (DictionaryEntry entry in value)
+            {
+                var key = entry.Key?.ToString();
+                if (key == null)
+                {
+                    continue;
+                }
+
+                AddHeaderItem(items, key, entry.Value, explode);
+            }
+
+            return string.Join(",", items);
+        }
+
+        private static string SerializeListHeader(IList value)
+        {
+            var items = new List<string>();
+
+            foreach (var item in value)
+            {
+                items.Add(Utilities.ValueToString(item));
+            }
+
+            return string.Join(",", items);
         }
     }
 }

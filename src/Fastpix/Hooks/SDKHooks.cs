@@ -51,7 +51,7 @@ namespace Fastpix.Hooks
             this.afterErrorHooks.Add(hook);
         }
         
-        public SDKConfig SDKInit(SDKConfig config)
+        public SdkConfig SDKInit(SdkConfig config)
         {
             foreach (var hook in this.sdkInitHooks)
             {

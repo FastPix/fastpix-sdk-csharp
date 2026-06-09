@@ -40,14 +40,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is ListPlaybackIdsDomainsDefaultPolicy)
+                    if (enumVal is ListPlaybackIdsDomainsDefaultPolicy listPlaybackIdsDomainsDefaultPolicy)
                     {
-                        return (ListPlaybackIdsDomainsDefaultPolicy)enumVal;
+                        return listPlaybackIdsDomainsDefaultPolicy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum ListPlaybackIdsDomainsDefaultPolicy");
+            throw new ArgumentException($"Unknown value {value} for enum ListPlaybackIdsDomainsDefaultPolicy", nameof(value));
         }
     }
 

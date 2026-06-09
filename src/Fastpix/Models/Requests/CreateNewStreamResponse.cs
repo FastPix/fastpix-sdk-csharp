@@ -14,12 +14,12 @@ namespace Fastpix.Models.Requests
     {
 
         [JsonProperty("-")]
-        public HTTPMetadata HttpMeta { get; set; } = default!;
+        public HttpMetadata HttpMeta { get; set; } = default!;
 
         /// <summary>
         /// Stream created successfully
         /// </summary>
-        public LiveStreamResponseDTO? LiveStreamResponseDTO { get; set; }
+        public LiveStreamResponseDto? LiveStreamResponseDto { get; set; }
 
         /// <summary>
         /// See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.

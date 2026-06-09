@@ -63,14 +63,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is ListBreakdownValuesTimespan)
+                    if (enumVal is ListBreakdownValuesTimespan listBreakdownValuesTimespan)
                     {
-                        return (ListBreakdownValuesTimespan)enumVal;
+                        return listBreakdownValuesTimespan;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum ListBreakdownValuesTimespan");
+            throw new ArgumentException($"Unknown value {value} for enum ListBreakdownValuesTimespan", nameof(value));
         }
     }
 

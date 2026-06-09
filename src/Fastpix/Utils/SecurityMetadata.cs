@@ -67,7 +67,7 @@ namespace Fastpix.Utils
                     continue;
                 }
 
-                var secMetadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetSecurityMetadata();
+                var secMetadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetSecurityMetadata();
                 if (secMetadata == null)
                 {
                     continue;
@@ -90,8 +90,6 @@ namespace Fastpix.Utils
                     }
                 }
             }
-
-            return;
         }
 
         private void ParseOption(object option)
@@ -104,7 +102,7 @@ namespace Fastpix.Utils
                     continue;
                 }
 
-                var secMetadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetSecurityMetadata();
+                var secMetadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetSecurityMetadata();
                 if (secMetadata == null || !secMetadata.Scheme)
                 {
                     continue;
@@ -114,7 +112,7 @@ namespace Fastpix.Utils
             }
         }
 
-        private void ParseScheme(FastpixMetadata.SecurityMetadata schemeMetadata, object scheme)
+        private void ParseScheme(FastpixMetadataAttribute.SecurityMetadata schemeMetadata, object scheme)
         {
             if (Utilities.IsClass(scheme))
             {
@@ -132,7 +130,7 @@ namespace Fastpix.Utils
                         continue;
                     }
 
-                    var secMetadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetSecurityMetadata();
+                    var secMetadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetSecurityMetadata();
                     if (secMetadata == null || secMetadata.Name == "")
                     {
                         continue;
@@ -148,8 +146,8 @@ namespace Fastpix.Utils
         }
 
         private void ParseSchemeValue(
-            FastpixMetadata.SecurityMetadata schemeMetadata,
-            FastpixMetadata.SecurityMetadata valueMetadata,
+            FastpixMetadataAttribute.SecurityMetadata schemeMetadata,
+            FastpixMetadataAttribute.SecurityMetadata valueMetadata,
             object value
         )
         {
@@ -176,7 +174,7 @@ namespace Fastpix.Utils
                             headerParams.Add("cookie", $"{key}={valStr}");
                             break;
                         default:
-                            throw new Exception($"Unknown apiKey subType: {schemeMetadata.SubType}");
+                            throw new NotSupportedException($"Unknown apiKey subType: {schemeMetadata.SubType}");
                     }
                     break;
                 case "openIdConnect":
@@ -196,11 +194,11 @@ namespace Fastpix.Utils
                         case "custom":
                             break;
                         default:
-                            throw new Exception($"Unknown http subType: {schemeMetadata.SubType}");
+                            throw new NotSupportedException($"Unknown http subType: {schemeMetadata.SubType}");
                     }
                     break;
                 default:
-                    throw new Exception($"Unknown security type: {schemeMetadata.Type}");
+                    throw new NotSupportedException($"Unknown security type: {schemeMetadata.Type}");
             }
         }
 
@@ -218,7 +216,7 @@ namespace Fastpix.Utils
                     continue;
                 }
 
-                var secMetadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetSecurityMetadata();
+                var secMetadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetSecurityMetadata();
                 if (secMetadata == null || secMetadata.Name == "")
                 {
                     continue;

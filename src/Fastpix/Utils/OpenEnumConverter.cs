@@ -30,7 +30,7 @@ namespace Fastpix.Utils
             var method = objectType.GetMethod("Of");
             if (method == null)
             {
-                throw new Exception($"Unable to find Of method on {objectType}");
+                throw new InvalidOperationException($"Unable to find Of method on {objectType}");
             }
             try {
                 return method.Invoke(null, new[] { reader.Value });
@@ -39,21 +39,21 @@ namespace Fastpix.Utils
             }
         }
 
-        public override void WriteJson(JsonWriter writer, object? obj, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            if (obj == null)
+            if (value == null)
             {
                 writer.WriteValue("null");
                 return;
             }
 
-            var valueProp = obj.GetType().GetProperty("Value");
+            var valueProp = value.GetType().GetProperty("Value");
             if (valueProp == null)
             {
-                throw new Exception($"{obj.GetType()} does not have a Value property");
+                throw new InvalidOperationException($"{value.GetType()} does not have a Value property");
             }
 
-            writer.WriteValue(valueProp.GetValue(obj));
+            writer.WriteValue(valueProp.GetValue(value));
         }
     }
 }

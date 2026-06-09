@@ -43,14 +43,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is UpdateDomainRestrictionsDefaultPolicy)
+                    if (enumVal is UpdateDomainRestrictionsDefaultPolicy updateDomainRestrictionsDefaultPolicy)
                     {
-                        return (UpdateDomainRestrictionsDefaultPolicy)enumVal;
+                        return updateDomainRestrictionsDefaultPolicy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum UpdateDomainRestrictionsDefaultPolicy");
+            throw new ArgumentException($"Unknown value {value} for enum UpdateDomainRestrictionsDefaultPolicy", nameof(value));
         }
     }
 

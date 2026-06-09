@@ -23,6 +23,6 @@ namespace Fastpix.Models.Components
         /// Displays the result of the request.
         /// </summary>
         [JsonProperty("data")]
-        public CreateSigningKeyResponseDTO? Data { get; set; }
+        public CreateSigningKeyResponseDto? Data { get; set; }
     }
 }

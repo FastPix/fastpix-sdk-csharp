@@ -45,14 +45,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is MediaType)
+                    if (enumVal is MediaType mediaType)
                     {
-                        return (MediaType)enumVal;
+                        return mediaType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum MediaType");
+            throw new ArgumentException($"Unknown value {value} for enum MediaType", nameof(value));
         }
     }
 

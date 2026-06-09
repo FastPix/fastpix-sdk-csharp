@@ -15,7 +15,7 @@ namespace Fastpix.Models.Components
     /// <summary>
     /// Displays the result of the request.
     /// </summary>
-    public class GetCreateLiveStreamResponseDTO
+    public class GetCreateLiveStreamResponseDto
     {
 
         /// <summary>

@@ -15,14 +15,14 @@ namespace Fastpix.Hooks
 
     public class HookContext
     {
-        public SDKConfig SDKConfiguration { get; set; }
+        public SdkConfig SDKConfiguration { get; set; }
         public string BaseURL { get; set; } = "";
         public string OperationID { get; set; }
         public List<string>? Oauth2Scopes { get; set; }
         public Func<object>? SecuritySource { get; set; }
         public CancellationToken? CancellationToken { get; set; }
 
-        public HookContext(SDKConfig config, string baseURL, string operationID, List<string>? oauth2Scopes, Func<object>? securitySource, CancellationToken? cancellationToken = null)
+        public HookContext(SdkConfig config, string baseURL, string operationID, List<string>? oauth2Scopes, Func<object>? securitySource, CancellationToken? cancellationToken = null)
         {
             SDKConfiguration = config;
             BaseURL = baseURL;
@@ -67,7 +67,7 @@ namespace Fastpix.Hooks
     /// </summary>
     public interface ISDKInitHook
     {
-        SDKConfig SDKInit(SDKConfig config);
+        SdkConfig SDKInit(SdkConfig config);
     }
 
     /// <summary>

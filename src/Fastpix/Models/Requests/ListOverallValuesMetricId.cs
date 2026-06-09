@@ -95,14 +95,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is ListOverallValuesMetricId)
+                    if (enumVal is ListOverallValuesMetricId listOverallValuesMetricId)
                     {
-                        return (ListOverallValuesMetricId)enumVal;
+                        return listOverallValuesMetricId;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum ListOverallValuesMetricId");
+            throw new ArgumentException($"Unknown value {value} for enum ListOverallValuesMetricId", nameof(value));
         }
     }
 

@@ -49,14 +49,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is DomainsDefaultPolicy)
+                    if (enumVal is DomainsDefaultPolicy domainsDefaultPolicy)
                     {
-                        return (DomainsDefaultPolicy)enumVal;
+                        return domainsDefaultPolicy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum DomainsDefaultPolicy");
+            throw new ArgumentException($"Unknown value {value} for enum DomainsDefaultPolicy", nameof(value));
         }
     }
 

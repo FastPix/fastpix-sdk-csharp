@@ -45,14 +45,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is AccessPolicy)
+                    if (enumVal is AccessPolicy accessPolicy)
                     {
-                        return (AccessPolicy)enumVal;
+                        return accessPolicy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum AccessPolicy");
+            throw new ArgumentException($"Unknown value {value} for enum AccessPolicy", nameof(value));
         }
     }
 

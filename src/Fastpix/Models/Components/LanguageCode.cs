@@ -161,14 +161,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is LanguageCode)
+                    if (enumVal is LanguageCode languageCode)
                     {
-                        return (LanguageCode)enumVal;
+                        return languageCode;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum LanguageCode");
+            throw new ArgumentException($"Unknown value {value} for enum LanguageCode", nameof(value));
         }
     }
 

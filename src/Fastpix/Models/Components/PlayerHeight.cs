@@ -146,10 +146,6 @@ namespace Fastpix.Models.Components
                         {
                             // try next fallback option
                         }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
                     }
                 }
 
@@ -180,7 +176,6 @@ namespace Fastpix.Models.Components
                 if (res.Integer != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.Integer));
-                    return;
                 }
             }
 

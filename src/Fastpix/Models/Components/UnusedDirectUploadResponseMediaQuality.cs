@@ -45,14 +45,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is UnusedDirectUploadResponseMediaQuality)
+                    if (enumVal is UnusedDirectUploadResponseMediaQuality unusedDirectUploadResponseMediaQuality)
                     {
-                        return (UnusedDirectUploadResponseMediaQuality)enumVal;
+                        return unusedDirectUploadResponseMediaQuality;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum UnusedDirectUploadResponseMediaQuality");
+            throw new ArgumentException($"Unknown value {value} for enum UnusedDirectUploadResponseMediaQuality", nameof(value));
         }
     }
 

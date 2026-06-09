@@ -95,14 +95,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is ListBreakdownValuesMetricId)
+                    if (enumVal is ListBreakdownValuesMetricId listBreakdownValuesMetricId)
                     {
-                        return (ListBreakdownValuesMetricId)enumVal;
+                        return listBreakdownValuesMetricId;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum ListBreakdownValuesMetricId");
+            throw new ArgumentException($"Unknown value {value} for enum ListBreakdownValuesMetricId", nameof(value));
         }
     }
 

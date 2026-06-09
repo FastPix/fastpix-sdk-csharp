@@ -13,7 +13,7 @@ namespace Fastpix.Models.Components
     /// <summary>
     /// Displays the result of the request.
     /// </summary>
-    public class GetPublicPemUsingSigningKeyIdResponseDTO
+    public class GetPublicPemUsingSigningKeyIdResponseDto
     {
 
         /// <summary>
@@ -26,6 +26,6 @@ namespace Fastpix.Models.Components
         /// Displays the result of the request.
         /// </summary>
         [JsonProperty("data")]
-        public GetPublicPemUsingSigningKeyIdResponseDTOData? Data { get; set; }
+        public GetPublicPemUsingSigningKeyIdResponseDtoData? Data { get; set; }
     }
 }

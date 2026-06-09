@@ -11,7 +11,7 @@ namespace Fastpix.Models.Components
     using System;
     using System.Net.Http;
     
-    public class HTTPMetadata
+    public class HttpMetadata
     {
 
         /// <summary>

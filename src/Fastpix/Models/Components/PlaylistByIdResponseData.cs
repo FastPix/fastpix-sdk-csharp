@@ -69,7 +69,6 @@ namespace Fastpix.Models.Components
         public static PlaylistByIdResponseData CreateManual(PlaylistByIdResponseDataManual manual)
         {
             PlaylistByIdResponseDataType typ = PlaylistByIdResponseDataType.Manual;
-            string typStr = PlaylistByIdResponseDataType.Manual.ToString();
             manual.Type = PlaylistByIdResponseDataManualTypeExtension.ToEnum(PlaylistByIdResponseDataType.Manual.ToString());
             PlaylistByIdResponseData res = new PlaylistByIdResponseData(typ);
             res.PlaylistByIdResponseDataManual = manual;
@@ -79,7 +78,6 @@ namespace Fastpix.Models.Components
         public static PlaylistByIdResponseData CreateSmart(PlaylistByIdResponseDataSmart smart)
         {
             PlaylistByIdResponseDataType typ = PlaylistByIdResponseDataType.Smart;
-            string typStr = PlaylistByIdResponseDataType.Smart.ToString();
             smart.Type = PlaylistByIdResponseDataSmartTypeExtension.ToEnum(PlaylistByIdResponseDataType.Smart.ToString());
             PlaylistByIdResponseData res = new PlaylistByIdResponseData(typ);
             res.PlaylistByIdResponseDataSmart = smart;
@@ -100,7 +98,7 @@ namespace Fastpix.Models.Components
                 }
 
                 JObject jo = JObject.Load(reader);
-                string discriminator = jo.GetValue("type")?.ToString() ?? throw new ArgumentNullException("Could not find discriminator field.");
+                string discriminator = jo.GetValue("type")?.ToString() ?? throw new InvalidOperationException("Could not find discriminator field.");
                 if (discriminator == PlaylistByIdResponseDataType.Manual.ToString())
                 {
                     PlaylistByIdResponseDataManual playlistByIDResponseDataManual = ResponseBodyDeserializer.DeserializeNotNull<PlaylistByIdResponseDataManual>(jo.ToString());
@@ -133,7 +131,6 @@ namespace Fastpix.Models.Components
                 if (res.PlaylistByIdResponseDataSmart != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.PlaylistByIdResponseDataSmart));
-                    return;
                 }
             }
 

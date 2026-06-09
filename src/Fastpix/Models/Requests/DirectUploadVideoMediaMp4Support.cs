@@ -49,14 +49,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is DirectUploadVideoMediaMp4Support)
+                    if (enumVal is DirectUploadVideoMediaMp4Support directUploadVideoMediaMp4Support)
                     {
-                        return (DirectUploadVideoMediaMp4Support)enumVal;
+                        return directUploadVideoMediaMp4Support;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum DirectUploadVideoMediaMp4Support");
+            throw new ArgumentException($"Unknown value {value} for enum DirectUploadVideoMediaMp4Support", nameof(value));
         }
     }
 

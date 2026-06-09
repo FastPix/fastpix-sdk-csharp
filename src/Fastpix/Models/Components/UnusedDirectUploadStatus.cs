@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is UnusedDirectUploadStatus)
+                    if (enumVal is UnusedDirectUploadStatus unusedDirectUploadStatus)
                     {
-                        return (UnusedDirectUploadStatus)enumVal;
+                        return unusedDirectUploadStatus;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum UnusedDirectUploadStatus");
+            throw new ArgumentException($"Unknown value {value} for enum UnusedDirectUploadStatus", nameof(value));
         }
     }
 

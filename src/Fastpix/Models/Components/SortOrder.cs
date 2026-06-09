@@ -43,14 +43,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is SortOrder)
+                    if (enumVal is SortOrder sortOrder)
                     {
-                        return (SortOrder)enumVal;
+                        return sortOrder;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum SortOrder");
+            throw new ArgumentException($"Unknown value {value} for enum SortOrder", nameof(value));
         }
     }
 

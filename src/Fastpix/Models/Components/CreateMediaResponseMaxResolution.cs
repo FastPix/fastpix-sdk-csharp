@@ -49,14 +49,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is CreateMediaResponseMaxResolution)
+                    if (enumVal is CreateMediaResponseMaxResolution createMediaResponseMaxResolution)
                     {
-                        return (CreateMediaResponseMaxResolution)enumVal;
+                        return createMediaResponseMaxResolution;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum CreateMediaResponseMaxResolution");
+            throw new ArgumentException($"Unknown value {value} for enum CreateMediaResponseMaxResolution", nameof(value));
         }
     }
 

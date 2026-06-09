@@ -157,14 +157,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GenerateTrackResponseLanguageCode)
+                    if (enumVal is GenerateTrackResponseLanguageCode generateTrackResponseLanguageCode)
                     {
-                        return (GenerateTrackResponseLanguageCode)enumVal;
+                        return generateTrackResponseLanguageCode;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GenerateTrackResponseLanguageCode");
+            throw new ArgumentException($"Unknown value {value} for enum GenerateTrackResponseLanguageCode", nameof(value));
         }
     }
 

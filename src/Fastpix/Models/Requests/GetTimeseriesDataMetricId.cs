@@ -95,14 +95,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GetTimeseriesDataMetricId)
+                    if (enumVal is GetTimeseriesDataMetricId getTimeseriesDataMetricId)
                     {
-                        return (GetTimeseriesDataMetricId)enumVal;
+                        return getTimeseriesDataMetricId;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GetTimeseriesDataMetricId");
+            throw new ArgumentException($"Unknown value {value} for enum GetTimeseriesDataMetricId", nameof(value));
         }
     }
 
