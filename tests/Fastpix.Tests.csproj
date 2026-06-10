@@ -17,6 +17,13 @@
     <PackageReference Include="NJsonSchema" Version="11.1.0" />
   </ItemGroup>
 
+  <!-- Manual scratch scripts each have their own top-level statements; exclude them
+       from the build so they don't clash with Program.cs (CS8802). -->
+  <ItemGroup>
+    <Compile Remove="manual/**/*.cs" />
+    <None Include="manual/**/*.cs" />
+  </ItemGroup>
+
   <!-- Keep the fixtures next to the binary; the runner resolves them from the project dir anyway. -->
   <ItemGroup>
     <None Include="get-endpoints-fixtures.json" CopyToOutputDirectory="PreserveNewest" />

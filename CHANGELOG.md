@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.1.4]
+
+### Changed
+
+- **SDK version bump: `1.1.3` → `1.1.4`.**
+  A maintenance release that updates the SDK's internal version identifiers.
+  It contains no functional, API, or behavioral changes and is fully
+  backward compatible with `1.1.3`.
+
+  Updated identifiers:
+  - Package `<Version>` — bumped `1.1.3` → `1.1.4`.
+  - `SdkVersion` constant — now reports `1.1.4` (kept in sync with the package
+    version).
+  - `User-Agent` header — outbound requests now identify as
+    `fastpix-sdk/csharp 1.1.4`. This value was previously lagging at `1.1.2`
+    and is now aligned with the package version.
+
+### Compatibility
+
+- No changes to public types, method signatures, request/response models,
+  default server URLs, hooks, or retry logic.
+- No action required for existing integrations — update the dependency and
+  rebuild.
+
+---
+
 ## [1.1.3]
 
 ### ⚠️ Important — FastPix is migrating from `.io` to `.com`
