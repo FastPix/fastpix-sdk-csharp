@@ -17,7 +17,7 @@ namespace Fastpix.Hooks
         /// <remarks>
         /// Add hooks by calling `Fastpix.Hooks.Register&lt;HookInterface&gt;(myHook);`
         /// where `I&lt;HookInterface&gt;` is one of the following interfaces defined in HookTypes.cs:
-        ///   - ISDKInitHook
+        ///   - ISdkInitHook
         ///   - IBeforeRequestHook
         ///   - IAfterSuccess
         ///   - IAfterError

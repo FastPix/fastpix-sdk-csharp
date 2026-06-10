@@ -126,84 +126,15 @@ namespace Fastpix.Models.Requests
                 var json = JRaw.Create(reader).ToString();
                 var fallbackCandidates = new List<(System.Type, object, string)>();
 
-                try
-                {
-                    return new Input(InputType.AudioInput)
-                    {
-                        AudioInput = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<AudioInput>(json)
-                    };
-                }
-                catch (ResponseBodyDeserializer.MissingMemberException)
-                {
-                    fallbackCandidates.Add((typeof(AudioInput), new Input(InputType.AudioInput), "AudioInput"));
-                }
-                catch (ResponseBodyDeserializer.DeserializationException)
-                {
-                    // try next option
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+                var result =
+                    TryReadMember<AudioInput>(json, InputType.AudioInput, (input, member) => input.AudioInput = member, "AudioInput", fallbackCandidates)
+                    ?? TryReadMember<SubtitleInput>(json, InputType.SubtitleInput, (input, member) => input.SubtitleInput = member, "SubtitleInput", fallbackCandidates)
+                    ?? TryReadMember<VideoInput>(json, InputType.VideoInput, (input, member) => input.VideoInput = member, "VideoInput", fallbackCandidates)
+                    ?? TryReadMember<WatermarkInput>(json, InputType.WatermarkInput, (input, member) => input.WatermarkInput = member, "WatermarkInput", fallbackCandidates);
 
-                try
+                if (result != null)
                 {
-                    return new Input(InputType.SubtitleInput)
-                    {
-                        SubtitleInput = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<SubtitleInput>(json)
-                    };
-                }
-                catch (ResponseBodyDeserializer.MissingMemberException)
-                {
-                    fallbackCandidates.Add((typeof(SubtitleInput), new Input(InputType.SubtitleInput), "SubtitleInput"));
-                }
-                catch (ResponseBodyDeserializer.DeserializationException)
-                {
-                    // try next option
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-
-                try
-                {
-                    return new Input(InputType.VideoInput)
-                    {
-                        VideoInput = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<VideoInput>(json)
-                    };
-                }
-                catch (ResponseBodyDeserializer.MissingMemberException)
-                {
-                    fallbackCandidates.Add((typeof(VideoInput), new Input(InputType.VideoInput), "VideoInput"));
-                }
-                catch (ResponseBodyDeserializer.DeserializationException)
-                {
-                    // try next option
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-
-                try
-                {
-                    return new Input(InputType.WatermarkInput)
-                    {
-                        WatermarkInput = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<WatermarkInput>(json)
-                    };
-                }
-                catch (ResponseBodyDeserializer.MissingMemberException)
-                {
-                    fallbackCandidates.Add((typeof(WatermarkInput), new Input(InputType.WatermarkInput), "WatermarkInput"));
-                }
-                catch (ResponseBodyDeserializer.DeserializationException)
-                {
-                    // try next option
-                }
-                catch (Exception)
-                {
-                    throw;
+                    return result;
                 }
 
                 if (fallbackCandidates.Count > 0)
@@ -219,14 +150,36 @@ namespace Fastpix.Models.Requests
                         {
                             // try next fallback option
                         }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
                     }
                 }
 
                 throw new InvalidOperationException("Could not deserialize into any supported types.");
+            }
+
+            private static Input? TryReadMember<T>(
+                string json,
+                InputType type,
+                Action<Input, T?> setMember,
+                string propertyName,
+                List<(System.Type, object, string)> fallbackCandidates)
+            {
+                try
+                {
+                    var member = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<T>(json);
+                    var input = new Input(type);
+                    setMember(input, member);
+                    return input;
+                }
+                catch (ResponseBodyDeserializer.MissingMemberException)
+                {
+                    fallbackCandidates.Add((typeof(T), new Input(type), propertyName));
+                }
+                catch (ResponseBodyDeserializer.DeserializationException)
+                {
+                    // try next option
+                }
+
+                return null;
             }
 
             public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
@@ -259,7 +212,6 @@ namespace Fastpix.Models.Requests
                 if (res.SubtitleInput != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.SubtitleInput));
-                    return;
                 }
             }
 

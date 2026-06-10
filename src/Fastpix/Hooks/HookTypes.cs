@@ -16,7 +16,7 @@ namespace Fastpix.Hooks
     public class HookContext
     {
         public SdkConfig SDKConfiguration { get; set; }
-        public string BaseURL { get; set; } = "";
+        public string BaseURL { get; set; }
         public string OperationID { get; set; }
         public List<string>? Oauth2Scopes { get; set; }
         public Func<object>? SecuritySource { get; set; }
@@ -65,7 +65,7 @@ namespace Fastpix.Hooks
     /// SDKInit hook is called when the SDK is initializing.
     /// The hook can modify and return a new baseUrl and HTTP client to be used by the SDK.
     /// </summary>
-    public interface ISDKInitHook
+    public interface ISdkInitHook
     {
         SdkConfig SDKInit(SdkConfig config);
     }
@@ -101,7 +101,7 @@ namespace Fastpix.Hooks
 
     public interface IHooks
     {
-       void RegisterSDKInitHook(ISDKInitHook hook);
+       void RegisterSDKInitHook(ISdkInitHook hook);
 
        void RegisterBeforeRequestHook(IBeforeRequestHook hook);
 

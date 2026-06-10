@@ -28,7 +28,7 @@ namespace Fastpix
         public int ServerIndex { get; set; }
         public string UserAgent { get; set; }
         public Func<Fastpix.Models.Components.Security>? SecuritySource { get; set; }
-        public SDKHooks Hooks { get; set; }
+        public SdkHooks Hooks { get; set; }
         public RetryConfig? RetryConfig { get; set; }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Fastpix
             ServerIndex = 0;
             UserAgent = "fastpix-sdk/csharp 1.1.2 2.788.7 1.0.0 Fastpix";
             SecuritySource = null;
-            Hooks = new SDKHooks();
+            Hooks = new SdkHooks();
             RetryConfig = null;
         }
 

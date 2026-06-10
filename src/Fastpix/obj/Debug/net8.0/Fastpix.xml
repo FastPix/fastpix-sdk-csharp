@@ -266,14 +266,14 @@
             <remarks>
             Add hooks by calling `Fastpix.Hooks.Register&lt;HookInterface&gt;(myHook);`
             where `I&lt;HookInterface&gt;` is one of the following interfaces defined in HookTypes.cs:
-              - ISDKInitHook
+              - ISdkInitHook
               - IBeforeRequestHook
               - IAfterSuccess
               - IAfterError
             and `myHook` an instance that implements that specific interface.
             </remarks>
         </member>
-        <member name="T:Fastpix.Hooks.ISDKInitHook">
+        <member name="T:Fastpix.Hooks.ISdkInitHook">
             <summary>
             SDKInit hook is called when the SDK is initializing.
             The hook can modify and return a new baseUrl and HTTP client to be used by the SDK.
