@@ -150,7 +150,7 @@ namespace Fastpix.Utils
             return list;
         }
 
-        private static HttpContent SerializeForm(object request, string requestFieldName)
+        private static FormUrlEncodedContent SerializeForm(object request, string requestFieldName)
         {
             Dictionary<string, List<string>> form = new Dictionary<string, List<string>>();
 

@@ -10,7 +10,9 @@ steps:
   fetchDepth: 0
 
 # Prepare SonarCloud Analysis
-- task: SonarCloudPrepare@3
+# NOSONAR - Azure DevOps task references support only the major version (@3);
+# a full semver (@3.x.y) is not valid syntax, so the version is left as-is.
+- task: SonarCloudPrepare@3 # NOSONAR
   inputs:
     SonarCloud: 'sdk_sonar'
     organization: 'fastpix'
@@ -25,9 +27,9 @@ steps:
   displayName: 'Build Project'
 
 # Run Analysis
-- task: SonarCloudAnalyze@3
+- task: SonarCloudAnalyze@3 # NOSONAR
 
 # Publish Quality Gate
-- task: SonarCloudPublish@3
+- task: SonarCloudPublish@3 # NOSONAR
   inputs:
     pollingTimeoutSec: '300'
