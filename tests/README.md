@@ -97,7 +97,7 @@ and there are no JSON-path discrepancies in either direction.
 ## Latest consolidated report
 
 <!-- BEGIN GET_ENDPOINTS_CONSOLIDATED -->
-Last generated: 2026-06-09T13:26:03.9194110Z
+Last generated: 2026-06-10T05:55:25.0508500Z
 
 - **Total GET endpoints**: 30
 - **PASS**: 25

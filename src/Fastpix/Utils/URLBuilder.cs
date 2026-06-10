@@ -137,12 +137,13 @@ namespace Fastpix.Utils
 
         private static void AddToParams(Dictionary<string, List<string>> parameters, string key, string value)
         {
-            if (!parameters.ContainsKey(key))
+            if (!parameters.TryGetValue(key, out var values))
             {
-                parameters.Add(key, new List<string>());
+                values = new List<string>();
+                parameters.Add(key, values);
             }
 
-            parameters[key].Add(value);
+            values.Add(value);
         }
 
         private static void MergeInto(Dictionary<string, List<string>> parameters, Dictionary<string, List<string>> source)

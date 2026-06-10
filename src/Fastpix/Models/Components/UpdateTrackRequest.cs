@@ -19,7 +19,7 @@ namespace Fastpix.Models.Components
         /// The direct URL of the track file. It must point to a valid audio or subtitle file.
         /// </summary>
         [JsonProperty("url")]
-        public string? Url { get; set; } = "http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.vtt";
+        public string? Url { get; set; } = "https://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.vtt";
 
         /// <summary>
         /// The BCP 47 language code representing the track’s language.

@@ -119,7 +119,7 @@ namespace Fastpix.Utils
 
             if (missingA == missingB)
             {
-                return typeB.GetProperties().Count().CompareTo(typeA.GetProperties().Count());
+                return typeB.GetProperties().Length.CompareTo(typeA.GetProperties().Length);
             }
 
             return missingA.CompareTo(missingB);

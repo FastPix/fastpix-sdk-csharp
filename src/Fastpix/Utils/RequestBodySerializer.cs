@@ -134,19 +134,20 @@ namespace Fastpix.Utils
             }
         }
 
-        private static HttpContent SerializeJson(object request, string mediaType, string format = "")
+        private static StringContent SerializeJson(object request, string mediaType, string format = "")
         {
             return new StringContent(Utilities.SerializeJSON(request, format), Encoding.UTF8, mediaType);
         }
 
         private static List<string> GetOrAddList(Dictionary<string, List<string>> form, string key)
         {
-            if (!form.ContainsKey(key))
+            if (!form.TryGetValue(key, out var list))
             {
-                form[key] = new List<string>();
+                list = new List<string>();
+                form[key] = list;
             }
 
-            return form[key];
+            return list;
         }
 
         private static HttpContent SerializeForm(object request, string requestFieldName)
@@ -232,7 +233,7 @@ namespace Fastpix.Utils
             }
         }
 
-        private static HttpContent BuildFormContent(Dictionary<string, List<string>> form)
+        private static FormUrlEncodedContent BuildFormContent(Dictionary<string, List<string>> form)
         {
             var formData = new List<KeyValuePair<string?, string?>>();
 
@@ -252,7 +253,7 @@ namespace Fastpix.Utils
             return new FormUrlEncodedContent(formData);
         }
 
-        private static HttpContent SerializeMultipart(object request)
+        private static MultipartFormDataContent SerializeMultipart(object request)
         {
             var formData = new MultipartFormDataContent();
 
@@ -345,14 +346,14 @@ namespace Fastpix.Utils
             formData.Add(fileContent, fieldName, fileName);
         }
 
-        private static HttpContent SerializeRaw(byte[] request, string mediaType)
+        private static ByteArrayContent SerializeRaw(byte[] request, string mediaType)
         {
             var content = new ByteArrayContent(request);
             content.Headers.Add("Content-Type", mediaType);
             return content;
         }
 
-        private static HttpContent SerializeString(string request, string mediaType)
+        private static StringContent SerializeString(string request, string mediaType)
         {
             return new StringContent(request, Encoding.UTF8, mediaType);
         }

@@ -15,7 +15,7 @@ namespace Fastpix.Utils
     using Newtonsoft.Json;
     using System.Collections;
 
-    public static class Utilities
+    public static partial class Utilities
     {
         public static JsonConverter[] GetDefaultJsonSerializers()
         {
@@ -161,10 +161,12 @@ namespace Fastpix.Utils
         public static bool IsDate(object? obj) =>
             obj is DateTime || obj is DateOnly;
 
+        [GeneratedRegex("^\"(.*)\"$", RegexOptions.None, 1000)]
+        private static partial Regex SurroundingQuotesRegex();
+
         private static string StripSurroundingQuotes(string input)
         {
-            Regex surroundingQuotesRegex = new Regex("^\"(.*)\"$");
-            var match = surroundingQuotesRegex.Match(input);
+            var match = SurroundingQuotesRegex().Match(input);
             if(match.Groups.Values.Count() == 2)
             {
                 return match.Groups.Values.Last().ToString();

@@ -91,7 +91,7 @@ namespace Fastpix.Utils.Retries
         {
             foreach (var statusCode in statusCodes)
             {
-                if (statusCode.ToUpper().Contains("X"))
+                if (statusCode.ToUpper().Contains('X'))
                 {
                     var codeRange = int.Parse(statusCode.Substring(0, 1));
                     var statusMajor = (int)responseStatus / 100;
@@ -147,7 +147,8 @@ namespace Fastpix.Utils.Retries
 
                     var intervalMs = backoff.InitialIntervalMs * Math.Pow(backoff.BaseFactor, numAttempts);
                     var jitterMs = backoff.JitterFactor * intervalMs;
-                    intervalMs = intervalMs - jitterMs + new Random().NextDouble() * (2 * jitterMs + 1);
+                    var randomFactor = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, int.MaxValue) / (double)int.MaxValue;
+                    intervalMs = intervalMs - jitterMs + randomFactor * (2 * jitterMs + 1);
                     intervalMs = Math.Min(intervalMs, backoff.MaxIntervalMs);
 
                     await Task.Delay((int)intervalMs);

@@ -191,12 +191,12 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.APIException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.APIException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
@@ -215,7 +215,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.APIException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
         }
 
         public async Task<DisableLiveStreamResponse> DisableAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -279,12 +279,12 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.APIException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.APIException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
@@ -303,7 +303,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.APIException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
         }
     }
 }
