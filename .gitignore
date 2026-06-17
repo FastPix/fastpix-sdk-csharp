@@ -426,3 +426,6 @@ tests/artifacts-non-get/
 tests/GET_ENDPOINTS_OPENAPI_RESPONSE_VALIDATION_REPORT.md
 tests/GET_ENDPOINTS_OPENAPI_RESPONSE_FIX_SUGGESTIONS.md
 tests/NON_GET_ENDPOINTS_VALIDATION_REPORT.md
+
+# Standalone example snippets (file-based programs, not part of the build)
+tests/examples/
