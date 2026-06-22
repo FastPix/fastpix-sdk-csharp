@@ -14,9 +14,9 @@ namespace Fastpix.Utils.Retries
 
     public class Retries
     {
-        private Func<Task<HttpResponseMessage>> action;
-        private RetryConfig retryConfig;
-        private List<string> statusCodes;
+        private readonly Func<Task<HttpResponseMessage>> action;
+        private readonly RetryConfig retryConfig;
+        private readonly List<string> statusCodes;
 
         public Retries(Func<Task<HttpResponseMessage>> action, RetryConfig retryConfig, List<string> statusCodes)
         {
@@ -37,11 +37,11 @@ namespace Fastpix.Utils.Retries
 
         public sealed class RetryableException : Exception
         {
-            public HttpResponseMessage? Response = null;
+            public HttpResponseMessage? Response { get; private set; }
 
             public RetryableException(HttpResponseMessage response) {
                 Response = response;
-                                                                    }
+            }
 
             public RetryableException(Exception innerException) : base("An error occurred.", innerException) { }
         }
@@ -50,7 +50,7 @@ namespace Fastpix.Utils.Retries
         {
             switch(retryConfig.Strategy) {
                 case RetryConfig.RetryStrategy.BACKOFF:
-                    return await retryWithBackoff(retryConfig.RetryConnectionErrors);
+                    return await retryWithBackoff();
 
                 case RetryConfig.RetryStrategy.NONE:
                     return await action();
@@ -60,31 +60,15 @@ namespace Fastpix.Utils.Retries
             }
         }
 
-        private async Task<HttpResponseMessage> GetResponseAsync(bool retryConnectionErrors)
+        private async Task<HttpResponseMessage> GetResponseAsync()
         {
             try
             {
                 var response = await action();
 
-                foreach (var statusCode in statusCodes)
+                if (IsRetryableStatusCode(response.StatusCode))
                 {
-                    if (statusCode.ToUpper().Contains("X"))
-                    {
-                        var codeRange = int.Parse(statusCode.Substring(0, 1));
-                        var statusMajor = (int)response.StatusCode / 100;
-                        if (codeRange == statusMajor)
-                        {
-                            throw new RetryableException(response);
-                        }
-                    }
-                    else
-                    {
-                        var code = int.Parse(statusCode);
-                        if (code == (int)response.StatusCode)
-                        {
-                            throw new RetryableException(response);
-                        }
-                    }
+                    throw new RetryableException(response);
                 }
 
                 return response;
@@ -103,7 +87,33 @@ namespace Fastpix.Utils.Retries
             }
         }
 
-        private async Task<HttpResponseMessage> retryWithBackoff(bool retryConnectionErrors)
+        private bool IsRetryableStatusCode(System.Net.HttpStatusCode responseStatus)
+        {
+            foreach (var statusCode in statusCodes)
+            {
+                if (statusCode.ToUpper().Contains('X'))
+                {
+                    var codeRange = int.Parse(statusCode.Substring(0, 1));
+                    var statusMajor = (int)responseStatus / 100;
+                    if (codeRange == statusMajor)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    var code = int.Parse(statusCode);
+                    if (code == (int)responseStatus)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private async Task<HttpResponseMessage> retryWithBackoff()
         {
             var backoff = retryConfig.Backoff;
             if(backoff == null){
@@ -117,7 +127,7 @@ namespace Fastpix.Utils.Retries
             {
                 try
                 {
-                    return await GetResponseAsync(retryConnectionErrors);
+                    return await GetResponseAsync();
                 }
                 catch (PermanentException ex)
                 {
@@ -137,15 +147,16 @@ namespace Fastpix.Utils.Retries
 
                     var intervalMs = backoff.InitialIntervalMs * Math.Pow(backoff.BaseFactor, numAttempts);
                     var jitterMs = backoff.JitterFactor * intervalMs;
-                    intervalMs = intervalMs - jitterMs + new Random().NextDouble() * (2 * jitterMs + 1);
+                    var randomFactor = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, int.MaxValue) / (double)int.MaxValue;
+                    intervalMs = intervalMs - jitterMs + randomFactor * (2 * jitterMs + 1);
                     intervalMs = Math.Min(intervalMs, backoff.MaxIntervalMs);
 
                     await Task.Delay((int)intervalMs);
                     numAttempts += 1;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw new Exception("Unexpected error occurred.");
+                    throw new InvalidOperationException("Unexpected error occurred.", ex);
                 }
             }
         }

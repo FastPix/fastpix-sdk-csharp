@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is PlaylistByIdResponseDataManualType)
+                    if (enumVal is PlaylistByIdResponseDataManualType playlistByIdResponseDataManualType)
                     {
-                        return (PlaylistByIdResponseDataManualType)enumVal;
+                        return playlistByIdResponseDataManualType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum PlaylistByIdResponseDataManualType");
+            throw new ArgumentException($"Unknown value {value} for enum PlaylistByIdResponseDataManualType", nameof(value));
         }
     }
 

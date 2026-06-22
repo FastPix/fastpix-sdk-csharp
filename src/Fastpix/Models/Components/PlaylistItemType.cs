@@ -43,14 +43,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is PlaylistItemType)
+                    if (enumVal is PlaylistItemType playlistItemType)
                     {
-                        return (PlaylistItemType)enumVal;
+                        return playlistItemType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum PlaylistItemType");
+            throw new ArgumentException($"Unknown value {value} for enum PlaylistItemType", nameof(value));
         }
     }
 

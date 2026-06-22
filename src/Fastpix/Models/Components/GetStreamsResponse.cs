@@ -27,7 +27,7 @@ namespace Fastpix.Models.Components
         /// Displays the result of the request.
         /// </summary>
         [JsonProperty("data")]
-        public List<GetCreateLiveStreamResponseDTO>? Data { get; set; }
+        public List<GetCreateLiveStreamResponseDto>? Data { get; set; }
 
         /// <summary>
         /// Pagination organizes content into pages for better readability and navigation.

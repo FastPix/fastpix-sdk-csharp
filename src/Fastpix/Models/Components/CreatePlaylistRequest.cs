@@ -69,7 +69,6 @@ namespace Fastpix.Models.Components
         public static CreatePlaylistRequest CreateManual(CreatePlaylistRequestManual manual)
         {
             CreatePlaylistRequestType typ = CreatePlaylistRequestType.Manual;
-            string typStr = CreatePlaylistRequestType.Manual.ToString();
             manual.Type = CreatePlaylistRequestManualTypeExtension.ToEnum(CreatePlaylistRequestType.Manual.ToString());
             CreatePlaylistRequest res = new CreatePlaylistRequest(typ);
             res.CreatePlaylistRequestManual = manual;
@@ -79,7 +78,6 @@ namespace Fastpix.Models.Components
         public static CreatePlaylistRequest CreateSmart(CreatePlaylistRequestSmart smart)
         {
             CreatePlaylistRequestType typ = CreatePlaylistRequestType.Smart;
-            string typStr = CreatePlaylistRequestType.Smart.ToString();
             smart.Type = CreatePlaylistRequestSmartTypeExtension.ToEnum(CreatePlaylistRequestType.Smart.ToString());
             CreatePlaylistRequest res = new CreatePlaylistRequest(typ);
             res.CreatePlaylistRequestSmart = smart;
@@ -100,7 +98,7 @@ namespace Fastpix.Models.Components
                 }
 
                 JObject jo = JObject.Load(reader);
-                string discriminator = jo.GetValue("type")?.ToString() ?? throw new ArgumentNullException("Could not find discriminator field.");
+                string discriminator = jo.GetValue("type")?.ToString() ?? throw new InvalidOperationException("Could not find discriminator field.");
                 if (discriminator == CreatePlaylistRequestType.Manual.ToString())
                 {
                     CreatePlaylistRequestManual createPlaylistRequestManual = ResponseBodyDeserializer.DeserializeNotNull<CreatePlaylistRequestManual>(jo.ToString());
@@ -133,7 +131,6 @@ namespace Fastpix.Models.Components
                 if (res.CreatePlaylistRequestSmart != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.CreatePlaylistRequestSmart));
-                    return;
                 }
             }
 

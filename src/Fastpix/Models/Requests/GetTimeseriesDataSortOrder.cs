@@ -47,14 +47,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GetTimeseriesDataSortOrder)
+                    if (enumVal is GetTimeseriesDataSortOrder getTimeseriesDataSortOrder)
                     {
-                        return (GetTimeseriesDataSortOrder)enumVal;
+                        return getTimeseriesDataSortOrder;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GetTimeseriesDataSortOrder");
+            throw new ArgumentException($"Unknown value {value} for enum GetTimeseriesDataSortOrder", nameof(value));
         }
     }
 

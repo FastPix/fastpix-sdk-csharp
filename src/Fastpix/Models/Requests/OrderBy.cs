@@ -43,14 +43,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is OrderBy)
+                    if (enumVal is OrderBy orderBy)
                     {
-                        return (OrderBy)enumVal;
+                        return orderBy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum OrderBy");
+            throw new ArgumentException($"Unknown value {value} for enum OrderBy", nameof(value));
         }
     }
 

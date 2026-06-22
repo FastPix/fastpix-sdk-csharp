@@ -17,7 +17,7 @@ namespace Fastpix.Utils
     using Newtonsoft.Json.Linq;
 
 
-    internal class ResponseBodyDeserializer
+    public class ResponseBodyDeserializer
     {
 
         public static T? Deserialize<T>(string json, NullValueHandling nullValueHandling=NullValueHandling.Ignore, MissingMemberHandling missingMemberHandling=MissingMemberHandling.Ignore)
@@ -28,9 +28,9 @@ namespace Fastpix.Utils
         public static T DeserializeNotNull<T>(string json, NullValueHandling nullValueHandling=NullValueHandling.Ignore, MissingMemberHandling missingMemberHandling=MissingMemberHandling.Ignore)
         {
             var result = ResponseBodyDeserializer.Deserialize<T>(json, nullValueHandling, missingMemberHandling);
-            if (result == null)
+            if (result is null)
             {
-                throw new Exception($"Deserialization error: {typeof(T).Name} cannot be null.");
+                throw new InvalidOperationException($"Deserialization error: {typeof(T).Name} cannot be null.");
             }
             return result!;
         }
@@ -104,7 +104,7 @@ namespace Fastpix.Utils
             foreach (var attr in jsonPropertyAttributes)
             {
                 string propertyName = attr!.PropertyName!;
-                if (!jo.TryGetValue(propertyName, out var _value)){
+                if (!jo.TryGetValue(propertyName, out _)){
                     missing++;
                 }
             }
@@ -119,7 +119,7 @@ namespace Fastpix.Utils
 
             if (missingA == missingB)
             {
-                return typeB.GetProperties().Count().CompareTo(typeA.GetProperties().Count());
+                return typeB.GetProperties().Length.CompareTo(typeA.GetProperties().Length);
             }
 
             return missingA.CompareTo(missingB);

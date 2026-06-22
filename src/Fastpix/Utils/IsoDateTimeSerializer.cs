@@ -37,7 +37,6 @@ namespace Fastpix.Utils
             }
 
             DateTime time = (DateTime)value;
-            // The built-in Iso converter coerces to local time;
             // This standardizes to UTC.
             writer.WriteValue(time.ToUniversalTime().ToString("o", CultureInfo.InvariantCulture));
         }

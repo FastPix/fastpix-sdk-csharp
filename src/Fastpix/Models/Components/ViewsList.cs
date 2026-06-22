@@ -129,7 +129,7 @@ namespace Fastpix.Models.Components
         /// 
         /// </remarks>
         /// </summary>
-        [JsonProperty("QoeScore")]
+        [JsonProperty(nameof(QoeScore))]
         public double? QoeScore { get; set; } = null;
     }
 }

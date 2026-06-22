@@ -45,14 +45,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GetPlaybackIdAccessPolicy)
+                    if (enumVal is GetPlaybackIdAccessPolicy getPlaybackIdAccessPolicy)
                     {
-                        return (GetPlaybackIdAccessPolicy)enumVal;
+                        return getPlaybackIdAccessPolicy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GetPlaybackIdAccessPolicy");
+            throw new ArgumentException($"Unknown value {value} for enum GetPlaybackIdAccessPolicy", nameof(value));
         }
     }
 

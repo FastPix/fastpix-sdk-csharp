@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is CreatePlaylistRequestSmartType)
+                    if (enumVal is CreatePlaylistRequestSmartType createPlaylistRequestSmartType)
                     {
-                        return (CreatePlaylistRequestSmartType)enumVal;
+                        return createPlaylistRequestSmartType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum CreatePlaylistRequestSmartType");
+            throw new ArgumentException($"Unknown value {value} for enum CreatePlaylistRequestSmartType", nameof(value));
         }
     }
 

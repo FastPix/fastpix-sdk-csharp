@@ -15,23 +15,23 @@ namespace Fastpix.Hooks
 
     public sealed class FailEarlyException : Exception {}
 
-    public class SDKHooks: IHooks
+    public class SdkHooks: IHooks
     {
-        public List<ISDKInitHook> sdkInitHooks;
-        public List<IBeforeRequestHook> beforeRequestHooks;
-        public List<IAfterSuccessHook> afterSuccessHooks;
-        public List<IAfterErrorHook> afterErrorHooks;
+        private readonly List<ISdkInitHook> sdkInitHooks;
+        private readonly List<IBeforeRequestHook> beforeRequestHooks;
+        private readonly List<IAfterSuccessHook> afterSuccessHooks;
+        private readonly List<IAfterErrorHook> afterErrorHooks;
 
-        public SDKHooks()
+        public SdkHooks()
         {
-            this.sdkInitHooks = new List<ISDKInitHook>();
+            this.sdkInitHooks = new List<ISdkInitHook>();
             this.beforeRequestHooks = new List<IBeforeRequestHook>();
             this.afterSuccessHooks = new List<IAfterSuccessHook>();
             this.afterErrorHooks = new List<IAfterErrorHook>();
             HookRegistration.InitHooks(this);
         }
 
-        public void RegisterSDKInitHook(ISDKInitHook hook)
+        public void RegisterSDKInitHook(ISdkInitHook hook)
         {
             this.sdkInitHooks.Add(hook);
         }
@@ -51,7 +51,7 @@ namespace Fastpix.Hooks
             this.afterErrorHooks.Add(hook);
         }
         
-        public SDKConfig SDKInit(SDKConfig config)
+        public SdkConfig SDKInit(SdkConfig config)
         {
             foreach (var hook in this.sdkInitHooks)
             {
@@ -60,7 +60,7 @@ namespace Fastpix.Hooks
                     config = hook.SDKInit(config);
                 } catch (Exception ex)
                 {
-                    throw new Exception("An error occurred while calling SDKInit hook.", ex);
+                    throw new InvalidOperationException("An error occurred while calling SDKInit hook.", ex);
                 }
             }
             return config;
@@ -81,7 +81,7 @@ namespace Fastpix.Hooks
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("An error occurred while calling BeforeRequestAsync hook", ex);
+                    throw new InvalidOperationException("An error occurred while calling BeforeRequestAsync hook", ex);
                 }
             }
             return request;
@@ -102,7 +102,7 @@ namespace Fastpix.Hooks
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("An error occurred while calling AfterSuccessAsync hook.", ex);
+                    throw new InvalidOperationException("An error occurred while calling AfterSuccessAsync hook.", ex);
                 }
             }
             return response;
@@ -123,7 +123,7 @@ namespace Fastpix.Hooks
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("An error occurred while calling AfterErrorAsync hook", ex);
+                    throw new InvalidOperationException("An error occurred while calling AfterErrorAsync hook", ex);
                 }
             }
 

@@ -65,16 +65,72 @@ namespace Fastpix
 
     public class LivePlayback: ILivePlayback
     {
-        public SDKConfig SDKConfiguration { get; private set; }
+        public SdkConfig SDKConfiguration { get; private set; }
 
-        private const string _language = Constants.Language;
-        private const string _sdkVersion = Constants.SdkVersion;
-        private const string _sdkGenVersion = Constants.SdkGenVersion;
-        private const string _openapiDocVersion = Constants.OpenApiDocVersion;
+        private const string ContentTypeJson = "application/json";
+        private const string UnknownContentTypeMessage = "Unknown content type received";
+        private const string ApiErrorMessage = "API error occurred";
 
-        public LivePlayback(SDKConfig config)
+        public LivePlayback(SdkConfig config)
         {
             SDKConfiguration = config;
+        }
+
+        private static RetryConfig BuildDefaultRetryConfig()
+        {
+            var backoff = new BackoffStrategy(
+                initialIntervalMs: 1000L,
+                maxIntervalMs: 10000L,
+                maxElapsedTimeMs: 3600000L,
+                exponent: 1.5
+            );
+            return new RetryConfig(
+                strategy: RetryConfig.RetryStrategy.BACKOFF,
+                backoff: backoff,
+                retryConnectionErrors: true
+            );
+        }
+
+        private async Task<HttpResponseMessage> SendWithHooksAsync(Fastpix.Utils.Retries.Retries retries, HookContext hookCtx)
+        {
+            HttpResponseMessage httpResponse;
+            try
+            {
+                httpResponse = await retries.Run();
+                int statusCode = (int)httpResponse.StatusCode;
+
+                if (statusCode >= 400 && statusCode < 600)
+                {
+                    var hooked = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
+                    if (hooked != null)
+                    {
+                        httpResponse = hooked;
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                var hooked = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), null, error);
+                if (hooked == null)
+                {
+                    throw;
+                }
+                httpResponse = hooked;
+            }
+
+            return await this.SDKConfiguration.Hooks.AfterSuccessAsync(new AfterSuccessContext(hookCtx), httpResponse);
+        }
+
+        private static T DeserializeOrThrow<T>(string body, HttpRequestMessage httpRequest, HttpResponseMessage httpResponse, NullValueHandling nullValueHandling, string typeName)
+        {
+            try
+            {
+                return ResponseBodyDeserializer.DeserializeNotNull<T>(body, nullValueHandling);
+            }
+            catch (Exception ex)
+            {
+                throw new ResponseValidationException($"Failed to deserialize response body into {typeName}.", httpRequest, httpResponse, body, ex);
+            }
         }
 
         public async Task<CreatePlaybackIdOfStreamResponse> CreateAsync(string streamId, PlaybackIdRequest body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -85,7 +141,7 @@ namespace Fastpix
                 Body = body,
             };
             string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
-            var urlString = URLBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids", request, null);
+            var urlString = UrlBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids", request, null);
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, urlString);
             httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
@@ -104,27 +160,7 @@ namespace Fastpix
             var hookCtx = new HookContext(SDKConfiguration, baseUrl, "create-playbackId-of-stream", null, SDKConfiguration.SecuritySource, cancellationToken);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
-            if (retryConfig == null)
-            {
-                if (this.SDKConfiguration.RetryConfig != null)
-                {
-                    retryConfig = this.SDKConfiguration.RetryConfig;
-                }
-                else
-                {
-                    var backoff = new BackoffStrategy(
-                        initialIntervalMs: 1000L,
-                        maxIntervalMs: 10000L,
-                        maxElapsedTimeMs: 3600000L,
-                        exponent: 1.5
-                    );
-                    retryConfig = new RetryConfig(
-                        strategy: RetryConfig.RetryStrategy.BACKOFF,
-                        backoff: backoff,
-                        retryConnectionErrors: true
-                    );
-                }
-            }
+            retryConfig ??= this.SDKConfiguration.RetryConfig ?? BuildDefaultRetryConfig();
 
             List<string> statusCodes = new List<string>
             {
@@ -143,104 +179,53 @@ namespace Fastpix
             };
             var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, statusCodes);
 
-            HttpResponseMessage httpResponse;
-            try
-            {
-                httpResponse = await retries.Run();
-                int _statusCode = (int)httpResponse.StatusCode;
-
-                if (_statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
-                {
-                    var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
-                    if (_httpResponse != null)
-                    {
-                        httpResponse = _httpResponse;
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), null, error);
-                if (_httpResponse != null)
-                {
-                    httpResponse = _httpResponse;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            httpResponse = await this.SDKConfiguration.Hooks.AfterSuccessAsync(new AfterSuccessContext(hookCtx), httpResponse);
+            HttpResponseMessage httpResponse = await SendWithHooksAsync(retries, hookCtx);
 
             var contentType = httpResponse.Content.Headers.ContentType?.MediaType;
             int responseStatusCode = (int)httpResponse.StatusCode;
-            if(responseStatusCode == 201)
+            if (responseStatusCode == 201)
             {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
                     var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    PlaybackIdSuccessResponse obj;
-                    try
-                    {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<PlaybackIdSuccessResponse>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into PlaybackIdSuccessResponse.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
+                    var obj = DeserializeOrThrow<PlaybackIdSuccessResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "PlaybackIdSuccessResponse");
 
-                    var response = new CreatePlaybackIdOfStreamResponse()
+                    return new CreatePlaybackIdOfStreamResponse()
                     {
-                        HttpMeta = new Models.Components.HTTPMetadata()
+                        HttpMeta = new Models.Components.HttpMetadata()
                         {
                             Response = httpResponse,
                             Request = httpRequest
-                        }
+                        },
+                        PlaybackIdSuccessResponse = obj
                     };
-                    response.PlaybackIdSuccessResponse = obj;
-                    return response;
                 }
 
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 400 && responseStatusCode < 500)
+
+            if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 500 && responseStatusCode < 600)
+
+            if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
-            }
-            else
-            {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
+
+                return new CreatePlaybackIdOfStreamResponse()
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    DefaultError obj;
-                    try
+                    HttpMeta = new Models.Components.HttpMetadata()
                     {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<DefaultError>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into DefaultError.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
-
-                    var response = new CreatePlaybackIdOfStreamResponse()
-                    {
-                        HttpMeta = new Models.Components.HTTPMetadata()
-                        {
-                            Response = httpResponse,
-                            Request = httpRequest
-                        }
-                    };
-                    response.DefaultError = obj;
-                    return response;
-                }
-
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                        Response = httpResponse,
+                        Request = httpRequest
+                    },
+                    DefaultError = obj
+                };
             }
+
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
         }
 
         public async Task<DeletePlaybackIdOfStreamResponse> DeletePlaybackIdAsync(string streamId, string playbackId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -251,7 +236,7 @@ namespace Fastpix
                 PlaybackId = playbackId,
             };
             string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
-            var urlString = URLBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids", request, null);
+            var urlString = UrlBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids", request, null);
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Delete, urlString);
             httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
@@ -264,27 +249,7 @@ namespace Fastpix
             var hookCtx = new HookContext(SDKConfiguration, baseUrl, "delete-playbackId-of-stream", null, SDKConfiguration.SecuritySource, cancellationToken);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
-            if (retryConfig == null)
-            {
-                if (this.SDKConfiguration.RetryConfig != null)
-                {
-                    retryConfig = this.SDKConfiguration.RetryConfig;
-                }
-                else
-                {
-                    var backoff = new BackoffStrategy(
-                        initialIntervalMs: 1000L,
-                        maxIntervalMs: 10000L,
-                        maxElapsedTimeMs: 3600000L,
-                        exponent: 1.5
-                    );
-                    retryConfig = new RetryConfig(
-                        strategy: RetryConfig.RetryStrategy.BACKOFF,
-                        backoff: backoff,
-                        retryConnectionErrors: true
-                    );
-                }
-            }
+            retryConfig ??= this.SDKConfiguration.RetryConfig ?? BuildDefaultRetryConfig();
 
             List<string> statusCodes = new List<string>
             {
@@ -303,104 +268,53 @@ namespace Fastpix
             };
             var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, statusCodes);
 
-            HttpResponseMessage httpResponse;
-            try
-            {
-                httpResponse = await retries.Run();
-                int _statusCode = (int)httpResponse.StatusCode;
-
-                if (_statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
-                {
-                    var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
-                    if (_httpResponse != null)
-                    {
-                        httpResponse = _httpResponse;
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), null, error);
-                if (_httpResponse != null)
-                {
-                    httpResponse = _httpResponse;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            httpResponse = await this.SDKConfiguration.Hooks.AfterSuccessAsync(new AfterSuccessContext(hookCtx), httpResponse);
+            HttpResponseMessage httpResponse = await SendWithHooksAsync(retries, hookCtx);
 
             var contentType = httpResponse.Content.Headers.ContentType?.MediaType;
             int responseStatusCode = (int)httpResponse.StatusCode;
-            if(responseStatusCode == 200)
+            if (responseStatusCode == 200)
             {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
                     var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    LiveStreamDeleteResponse obj;
-                    try
-                    {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<LiveStreamDeleteResponse>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into LiveStreamDeleteResponse.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
+                    var obj = DeserializeOrThrow<LiveStreamDeleteResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "LiveStreamDeleteResponse");
 
-                    var response = new DeletePlaybackIdOfStreamResponse()
+                    return new DeletePlaybackIdOfStreamResponse()
                     {
-                        HttpMeta = new Models.Components.HTTPMetadata()
+                        HttpMeta = new Models.Components.HttpMetadata()
                         {
                             Response = httpResponse,
                             Request = httpRequest
-                        }
+                        },
+                        LiveStreamDeleteResponse = obj
                     };
-                    response.LiveStreamDeleteResponse = obj;
-                    return response;
                 }
 
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 400 && responseStatusCode < 500)
+
+            if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 500 && responseStatusCode < 600)
+
+            if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
-            }
-            else
-            {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
+
+                return new DeletePlaybackIdOfStreamResponse()
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    DefaultError obj;
-                    try
+                    HttpMeta = new Models.Components.HttpMetadata()
                     {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<DefaultError>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into DefaultError.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
-
-                    var response = new DeletePlaybackIdOfStreamResponse()
-                    {
-                        HttpMeta = new Models.Components.HTTPMetadata()
-                        {
-                            Response = httpResponse,
-                            Request = httpRequest
-                        }
-                    };
-                    response.DefaultError = obj;
-                    return response;
-                }
-
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                        Response = httpResponse,
+                        Request = httpRequest
+                    },
+                    DefaultError = obj
+                };
             }
+
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
         }
 
         public async Task<GetLiveStreamPlaybackIdResponse> GetPlaybackDetailsAsync(string streamId, string playbackId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -411,7 +325,7 @@ namespace Fastpix
                 PlaybackId = playbackId,
             };
             string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
-            var urlString = URLBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids/{playbackId}", request, null);
+            var urlString = UrlBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids/{playbackId}", request, null);
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, urlString);
             httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
@@ -424,27 +338,7 @@ namespace Fastpix
             var hookCtx = new HookContext(SDKConfiguration, baseUrl, "get-live-stream-playback-id", null, SDKConfiguration.SecuritySource, cancellationToken);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
-            if (retryConfig == null)
-            {
-                if (this.SDKConfiguration.RetryConfig != null)
-                {
-                    retryConfig = this.SDKConfiguration.RetryConfig;
-                }
-                else
-                {
-                    var backoff = new BackoffStrategy(
-                        initialIntervalMs: 1000L,
-                        maxIntervalMs: 10000L,
-                        maxElapsedTimeMs: 3600000L,
-                        exponent: 1.5
-                    );
-                    retryConfig = new RetryConfig(
-                        strategy: RetryConfig.RetryStrategy.BACKOFF,
-                        backoff: backoff,
-                        retryConnectionErrors: true
-                    );
-                }
-            }
+            retryConfig ??= this.SDKConfiguration.RetryConfig ?? BuildDefaultRetryConfig();
 
             List<string> statusCodes = new List<string>
             {
@@ -463,104 +357,53 @@ namespace Fastpix
             };
             var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, statusCodes);
 
-            HttpResponseMessage httpResponse;
-            try
-            {
-                httpResponse = await retries.Run();
-                int _statusCode = (int)httpResponse.StatusCode;
-
-                if (_statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
-                {
-                    var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
-                    if (_httpResponse != null)
-                    {
-                        httpResponse = _httpResponse;
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), null, error);
-                if (_httpResponse != null)
-                {
-                    httpResponse = _httpResponse;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            httpResponse = await this.SDKConfiguration.Hooks.AfterSuccessAsync(new AfterSuccessContext(hookCtx), httpResponse);
+            HttpResponseMessage httpResponse = await SendWithHooksAsync(retries, hookCtx);
 
             var contentType = httpResponse.Content.Headers.ContentType?.MediaType;
             int responseStatusCode = (int)httpResponse.StatusCode;
-            if(responseStatusCode == 200)
+            if (responseStatusCode == 200)
             {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
                     var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    PlaybackIdSuccessResponse obj;
-                    try
-                    {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<PlaybackIdSuccessResponse>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into PlaybackIdSuccessResponse.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
+                    var obj = DeserializeOrThrow<PlaybackIdSuccessResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "PlaybackIdSuccessResponse");
 
-                    var response = new GetLiveStreamPlaybackIdResponse()
+                    return new GetLiveStreamPlaybackIdResponse()
                     {
-                        HttpMeta = new Models.Components.HTTPMetadata()
+                        HttpMeta = new Models.Components.HttpMetadata()
                         {
                             Response = httpResponse,
                             Request = httpRequest
-                        }
+                        },
+                        PlaybackIdSuccessResponse = obj
                     };
-                    response.PlaybackIdSuccessResponse = obj;
-                    return response;
                 }
 
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 400 && responseStatusCode < 500)
+
+            if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 500 && responseStatusCode < 600)
+
+            if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
-            }
-            else
-            {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
+
+                return new GetLiveStreamPlaybackIdResponse()
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    DefaultError obj;
-                    try
+                    HttpMeta = new Models.Components.HttpMetadata()
                     {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<DefaultError>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into DefaultError.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
-
-                    var response = new GetLiveStreamPlaybackIdResponse()
-                    {
-                        HttpMeta = new Models.Components.HTTPMetadata()
-                        {
-                            Response = httpResponse,
-                            Request = httpRequest
-                        }
-                    };
-                    response.DefaultError = obj;
-                    return response;
-                }
-
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                        Response = httpResponse,
+                        Request = httpRequest
+                    },
+                    DefaultError = obj
+                };
             }
+
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
         }
     }
 }

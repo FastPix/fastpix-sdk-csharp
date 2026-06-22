@@ -32,7 +32,7 @@ namespace Fastpix.Utils.Retries
 
             if (strategy == RetryStrategy.BACKOFF && backoff == null)
             {
-                throw new System.ArgumentNullException("Backoff strategy configuration was not provided");
+                throw new System.ArgumentNullException(nameof(backoff), "Backoff strategy configuration was not provided");
             }
 
             Strategy = strategy;

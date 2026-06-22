@@ -10,12 +10,12 @@ namespace Fastpix.Models.Errors
     using System;
     using System.Net.Http;
 
-    public class APIException : FastpixException
+    public class ApiException : FastpixException
     {
         /// <summary>
         /// Default API exception.
         /// </summary>
-        public APIException(
+        public ApiException(
             string message,
             HttpRequestMessage request,
             HttpResponseMessage response,

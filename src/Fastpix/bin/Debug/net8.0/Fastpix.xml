@@ -16,9 +16,9 @@
             <remarks>
             Retrieves a list of dimensions that can be used as query parameters across various data endpoints. Each dimension has a unique id that can be used to filter data effectively. <br/>
             <br/>
-            The dimensions retrieved from this endpoint can be used in conjunction with the &lt;a href=&quot;https://docs.fastpix.io/reference/list_video_views&quot;&gt;list video views&lt;/a&gt; and &lt;a href=&quot;https://docs.fastpix.io/reference/list_by_top_content&quot;&gt;list by top content&lt;/a&gt; endpoints to filter results based on specific criteria. For example, you can filter views by `browser_name`, `os_name`, `device_type`, and more.<br/>
+            The dimensions retrieved from this endpoint can be used in conjunction with the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/views/list-video-views&quot;&gt;list video views&lt;/a&gt; and &lt;a href=&quot;https://fastpix.com/docs/video-data-api/views/list-by-top-content&quot;&gt;list by top content&lt;/a&gt; endpoints to filter results based on specific criteria. For example, you can filter views by `browser_name`, `os_name`, `device_type`, and more.<br/>
             <br/>
-            Related guides: &lt;a href=&quot;https://docs.fastpix.io/page/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt; ,   &lt;a href=&quot;https://docs.fastpix.io/docs/user-passable-metadata-1&quot;&gt;Use passable dimensions&lt;/a&gt;<br/>
+            Related guides: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt; ,   &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/pass-custom-metadata-to-metrics&quot;&gt;Use passable dimensions&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -31,14 +31,14 @@
             This endpoint returns the filter values associated with a specific dimension, along with the total number of video views for each value. For example, it can list all `browser_name` (dimension) and show how many views occurred for all available browsers like Chrome, Safari (filter values). <br/>
             <br/>
             <br/>
-            In order to use the &lt;a href=&quot;https://docs.fastpix.io/docs/custom-business-metadata&quot;&gt;Custom Dimensions&lt;/a&gt;, you must enable them in the dashboard under settings option based on the plan you have opted for.<br/>
+            In order to use the &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/use-custom-dimensions&quot;&gt;Custom Dimensions&lt;/a&gt;, you must enable them in the dashboard under settings option based on the plan you have opted for.<br/>
             <br/>
             #### Example<br/>
             <br/>
             A developer wants to know how their video content performs across different browsers. By calling this endpoint for the `device_type` dimension, they can retrieve a breakdown of video views by each device (for example, Desktop, Mobile, Tablet). This data helps the developer understand where optimizations or troubleshooting is necessary.<br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/understand-dashboard-ui#filters-and-timeframes&quot;&gt;Filters and timespan&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#filters-and-timeframes&quot;&gt;Filters and timespan&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -64,7 +64,7 @@
             **Example:**  <br/>
             A media service provider may retrieve DRM configuration for a workspace to create DRM content.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/secure-playback-with-drm&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-security/set-up-drm-encryption&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -81,7 +81,7 @@
             1. Make a GET request to this endpoint, replacing `{drmConfigurationId}` with the UUID of the DRM configuration.  <br/>
             2. The response contains the associated DRM configuration ID.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/secure-playback-with-drm&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-security/set-up-drm-encryption&quot;&gt;Manage DRM configuration&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -112,7 +112,7 @@
             * **code:** The error code associated with the specific error. <br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/track-playback-errors&quot;&gt;Troubleshoot errors&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/troubleshoot-playback-errors&quot;&gt;Troubleshoot errors&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -237,6 +237,18 @@
             <param name="retryConfig">Configuration for retry behavior when API requests fail. Defines retry strategies, backoff policies, and maximum retry attempts.</param>
             <exception cref="T:System.Exception">Thrown when the serverIndex is out of range (less than 0 or greater than or equal to the server list length).</exception>
         </member>
+        <member name="T:Fastpix.Hooks.EventsFieldRemapHook">
+            <summary>
+            Rewrites abbreviated wire keys in the get_video_view_details response body
+            so the generated deserializer sees the spec-shaped payload.
+            </summary>
+            <remarks>
+            The live API emits pt/e/d/vt/et on each event (and br/h/w/cd/host/txt/c/err/t/u
+            inside event_details) while the OpenAPI spec documents the fully spelled-out
+            names. Without this remap, data.events[] entries deserialize as empty objects.
+            Unknown keys pass through unchanged so new server fields aren't silently dropped.
+            </remarks>
+        </member>
         <member name="T:Fastpix.Hooks.HookRegistration">
             <summary>
             Hook Registration File.
@@ -254,14 +266,14 @@
             <remarks>
             Add hooks by calling `Fastpix.Hooks.Register&lt;HookInterface&gt;(myHook);`
             where `I&lt;HookInterface&gt;` is one of the following interfaces defined in HookTypes.cs:
-              - ISDKInitHook
+              - ISdkInitHook
               - IBeforeRequestHook
               - IAfterSuccess
               - IAfterError
             and `myHook` an instance that implements that specific interface.
             </remarks>
         </member>
-        <member name="T:Fastpix.Hooks.ISDKInitHook">
+        <member name="T:Fastpix.Hooks.ISdkInitHook">
             <summary>
             SDKInit hook is called when the SDK is initializing.
             The hook can modify and return a new baseUrl and HTTP client to be used by the SDK.
@@ -327,14 +339,14 @@
             <br/>
             3. Receive a response containing the unique id for the newly created media item. <br/>
             <br/>
-            4. Use the id in subsequent API calls, such as checking the status of the media with the &lt;a href=&quot;https://docs.fastpix.io/reference/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to determine when the media is ready for playback. <br/>
+            4. Use the id in subsequent API calls, such as checking the status of the media with the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to determine when the media is ready for playback. <br/>
             <br/>
-            FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, after the media file is created (but not yet processed or encoded), FastPix sends a `POST` request to your specified webhook URL with the event &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediacreated&quot;&gt;video.media.created&lt;/a&gt;. <br/>
+            FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, after the media file is created (but not yet processed or encoded), FastPix sends a `POST` request to your specified webhook URL with the event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediacreated&quot;&gt;video.media.created&lt;/a&gt;. <br/>
             <br/>
             <br/>
-            After processing completes, monitor the events &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaready&quot;&gt;video.media.ready&lt;/a&gt; and &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediafailed&quot;&gt;video.media.failed&lt;/a&gt; to track the status of the media file.<br/>
+            After processing completes, monitor the events &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaready&quot;&gt;video.media.ready&lt;/a&gt; and &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediafailed&quot;&gt;video.media.failed&lt;/a&gt; to track the status of the media file.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/upload-videos-from-url&quot;&gt;Upload videos from URL&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-a-url&quot;&gt;Upload videos from URL&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -348,7 +360,7 @@
             <br/>
             &gt; **NOTE**<br/>
             &gt;<br/>
-            &gt; This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the <a href="https://docs.fastpix.io/changelog/api-update-direct-upload-media-from-device">changelog</a>.<br/>
+            &gt; This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the <a href="https://fastpix.com/docs/changelog/api-update-direct-upload-media-from-device">changelog</a>.<br/>
             <br/>
             #### How it works<br/>
             <br/>
@@ -356,23 +368,23 @@
             <br/>
             2. The response includes an `uploadId` and a signed `url` for direct video file upload.<br/>
             <br/>
-            3. Upload your video file to the provided url by making a PUT request. The API accepts the media file from your device and uploads it to the FastPix platform. (Refer to &lt;a href=&quot;https://docs.fastpix.io/docs/upload-videos-directly#step-3-initiate-the-upload&quot;&gt;Step 3: Initiate the upload&lt;/a&gt; for complete instructions.)<br/>
+            3. Upload your video file to the provided url by making a PUT request. The API accepts the media file from your device and uploads it to the FastPix platform. (Refer to &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-device#step-3-initiate-the-upload&quot;&gt;Step 3: Initiate the upload&lt;/a&gt; for complete instructions.)<br/>
             <br/>
             <br/>
             4. Once uploaded, the media undergoes processing and is assigned a unique ID for tracking. Retain this `uploadId` for any future operations related to this upload. <br/>
             <br/>
             <br/>
             <br/>
-            After uploading, you can use the &lt;a href=&quot;https://docs.fastpix.io/reference/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to check the status of the uploaded media asset and see if it has transitioned to a `Ready` status for playback. <br/>
+            After uploading, you can use the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to check the status of the uploaded media asset and see if it has transitioned to a `Ready` status for playback. <br/>
             <br/>
-            To notify your application about the status of this API request check for the webhooks for &lt;a href=&quot;https://docs.fastpix.io/docs/webhooks-collection#media-related-events&quot;&gt;media related events&lt;/a&gt;.  <br/>
+            To notify your application about the status of this API request check for the webhooks for &lt;a href=&quot;https://fastpix.com/docs/webhooks/webhook-event-reference#media-related-events&quot;&gt;media related events&lt;/a&gt;.  <br/>
             <br/>
             <br/>
             #### Example<br/>
             <br/>
             A social media platform allows users to upload video content directly from their phones or computers. This endpoint facilitates the upload process. For example, if you are developing a video-sharing app where users can upload short clips from their mobile devices, this endpoint enables them to select a video, upload it to the platform.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/upload-videos-directly&quot;&gt;Upload videos directly&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-device&quot;&gt;Upload videos directly&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -389,11 +401,11 @@
             2. Include the `chapters` parameter in the request body to enable.<br/>
             3. The response contains the updated media data, confirming the changes made.<br/>
             <br/>
-            You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaaichaptersready&quot;&gt;video.mediaAI.chapters.ready&lt;/a&gt; webhook event to track and notify about the chapters generation.<br/>
+            You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaichaptersready&quot;&gt;video.mediaAI.chapters.ready&lt;/a&gt; webhook event to track and notify about the chapters generation.<br/>
             <br/>
             **Use case:** This is particularly useful when a user uploads a video and later decides to enable chapters without re-uploading the entire video.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/generate-video-chapters&quot;&gt;Video chapters&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/generate-video-chapters&quot;&gt;Video chapters&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -415,11 +427,11 @@
             2. Include the `namedEntities` parameter in the request body to enable.<br/>
             3. Receive a response containing the updated media data, confirming the changes made.<br/>
             <br/>
-            You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaainamedentitiesready&quot;&gt;video.mediaAI.named-entities.ready&lt;/a&gt; webhook event to track and notify about the named entities extraction.<br/>
+            You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaainamedentitiesready&quot;&gt;video.mediaAI.named-entities.ready&lt;/a&gt; webhook event to track and notify about the named entities extraction.<br/>
             <br/>
             **Use case:** If a user uploads a video and later decides to enable named entity extraction without re-uploading the entire video.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/generate-named-entities&quot;&gt;Named entities&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/extract-named-entities-from-a-video&quot;&gt;Named entities&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -437,7 +449,7 @@
             3. Include the `summaryLength` parameter, specify the desired length of the summary in words (for example, 120 words), this determines how concise or detailed the summary will be. If no specific summary length is provided, the default length will be 100 words.<br/>
             4. The response includes the updated media data and confirmation of the changes applied.<br/>
             <br/>
-            You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaaisummaryready&quot;&gt;video.mediaAI.summary.ready&lt;/a&gt; webhook event to track and notify about the summary generation.<br/>
+            You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaisummaryready&quot;&gt;video.mediaAI.summary.ready&lt;/a&gt; webhook event to track and notify about the summary generation.<br/>
             <br/>
             <br/>
             <br/>
@@ -445,7 +457,7 @@
             <br/>
             **Use case**: This is particularly useful when a user uploads a video and later chooses to generate a summary without needing to re-upload the video.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/generate-video-summary&quot;&gt;Video summary&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/generate-a-video-summary&quot;&gt;Video summary&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -494,7 +506,7 @@
             Create a new stream
             
             <remarks>
-            Creates a new &lt;a href=&quot;https://docs.fastpix.io/docs/get-started-with-live-streaming&quot;&gt;RTMPS&lt;/a&gt; or &lt;a href=&quot;https://docs.fastpix.io/docs/using-srt-to-live-stream&quot;&gt;SRT&lt;/a&gt; live stream in FastPix. When you create a stream, FastPix generates a unique `streamKey` and `srtSecret` that you can use with broadcasting software such as OBS to connect to FastPix RTMPS or SRT servers. Use SRT for live streaming in unstable network conditions, as it provides error correction and encryption for a more reliable and secure broadcast.<br/>
+            Creates a new &lt;a href=&quot;https://fastpix.com/docs/get-started/live-quickstart&quot;&gt;RTMPS&lt;/a&gt; or &lt;a href=&quot;https://fastpix.com/docs/broadcast/live-stream-with-srt&quot;&gt;SRT&lt;/a&gt; live stream in FastPix. When you create a stream, FastPix generates a unique `streamKey` and `srtSecret` that you can use with broadcasting software such as OBS to connect to FastPix RTMPS or SRT servers. Use SRT for live streaming in unstable network conditions, as it provides error correction and encryption for a more reliable and secure broadcast.<br/>
             <br/>
             Leverage SRT for live streaming in environments with unstable networks, taking advantage of its error correction and encryption features for a resilient and secure broadcast. <br/>
             <br/>
@@ -504,7 +516,7 @@
             <br/>
             2. FastPix returns the stream details for both RTMPS and SRT configurations. These keys and IDs from the stream details are essential for connecting the broadcasting software to FastPix’s servers and transmitting the live stream to viewers.<br/>
             <br/>
-            3. After the live stream is created, FastPix sends a `POST` request to your specified webhook endpoint with the event &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamcreated&quot;&gt;video.live_stream.created&lt;/a&gt;.<br/>
+            3. After the live stream is created, FastPix sends a `POST` request to your specified webhook endpoint with the event &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamcreated&quot;&gt;video.live_stream.created&lt;/a&gt;.<br/>
             <br/>
             <br/>
             **Example:**<br/>
@@ -513,7 +525,7 @@
               Imagine a gaming platform that allows users to live stream gameplay directly from their dashboard. The API creates a new stream, provides the necessary stream key, and sets it to &quot;private&quot; so that only specific viewers can access it. <br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/how-to-livestream&quot;&gt;How to live stream&lt;/a&gt;
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/get-started/live-quickstart&quot;&gt;How to live stream&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -544,7 +556,7 @@
             <br/>
             Suppose a content creator is hosting a live concert and wants to display the number of live viewers on their dashboard. This endpoint can be queried to show up-to-date viewer statistics.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -559,7 +571,7 @@
               Suppose a news agency is broadcasting a live event and wants to track the configurations set for the live stream while also checking the stream&apos;s status.<br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -570,14 +582,14 @@
             <remarks>
             Permanently deletes a specified live stream from the workspace. If the stream is active, the encoder is disconnected and ingestion stops immediately. This action is irreversible, and any future playback attempts fail as a result.<br/>
             <br/>
-              Provide the `streamId` in the request to terminate active connections and remove the stream from the workspace. You can further look for &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamdeleted&quot;&gt;video.live_stream.deleted&lt;/a&gt; webhook to notify your system about the status.<br/>
+              Provide the `streamId` in the request to terminate active connections and remove the stream from the workspace. You can further look for &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamdeleted&quot;&gt;video.live_stream.deleted&lt;/a&gt; webhook to notify your system about the status.<br/>
             <br/>
               #### Example<br/>
             <br/>
               For an online concert platform, a trial stream was mistakenly made public. The event manager deletes the stream before the concert begins to avoid confusion among viewers. <br/>
             <br/>
             <br/>
-              Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+              Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -596,7 +608,7 @@
             <br/>
             A virtual event ends, and the system or host needs to close the livestream to prevent further streaming. This endpoint ensures the livestream status is changed from `active` to `idle`, indicating it&apos;s officially completed.<br/>
             <br/>
-            Related guide &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+            Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -615,7 +627,7 @@
             <br/>
             A creator disables a livestream to pause it temporarily. Later, they decide to continue the session. By calling this endpoint with the stream&apos;s ID, they can re-enable and restart the same livestream.<br/>
             <br/>
-            Related guide &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+            Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -632,7 +644,7 @@
             <br/>
             A speaker finishes their live session and wants to prevent the stream from being mistakenly started again. By calling this endpoint, the stream is transitioned to a `disabled` state, ensuring it&apos;s permanently stopped (unless re-enabled on a paid plan).<br/>
             <br/>
-            Related guide &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+            Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -673,7 +685,7 @@
                - **status** – Indicates whether the media is still *Processing* or has transitioned to *Ready*.<br/>
                - **playbackId** – A unique identifier that allows you to stream the media once it is *Ready*.  <br/>
                  You can construct the stream URL as follows:  <br/>
-                 `https://stream.fastpix.io/&lt;playbackId&gt;.m3u8`<br/>
+                 `https://stream.fastpix.com/&lt;playbackId&gt;.m3u8`<br/>
             <br/>
             #### Example<br/>
             <br/>
@@ -697,7 +709,7 @@
             <br/>
             2. This action is irreversible. Make sure you no longer need the media before proceeding. Once deleted, the media can’t be retrieved or played back. <br/>
             <br/>
-            3. Monitor the following webhook event: &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediadeleted&quot;&gt;video.media.deleted&lt;/a&gt;<br/>
+            3. Monitor the following webhook event: &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediadeleted&quot;&gt;video.media.deleted&lt;/a&gt;<br/>
             <br/>
             #### Example<br/>
             A user on a video-sharing platform decides to remove an old video from their profile, or suppose you&apos;re running a content moderation system, and one of the videos uploaded by a user violates your platform&apos;s policies. Using this endpoint, the media is permanently deleted from your library, ensuring it&apos;s no longer accessible or viewable by other users.<br/>
@@ -724,17 +736,17 @@
             <br/>
             #### Webhook events<br/>
             <br/>
-            1. After successfully adding a track, your system must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediatrackcreated&quot;&gt;video.media.track.created&lt;/a&gt;.<br/>
+            1. After successfully adding a track, your system must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackcreated&quot;&gt;video.media.track.created&lt;/a&gt;.<br/>
             <br/>
-            2. Once the track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
+            2. Once the track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
             <br/>
-            3. Finally, an update event &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; must notify your system about the media&apos;s updated status.<br/>
+            3. Finally, an update event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; must notify your system about the media&apos;s updated status.<br/>
             <br/>
             <br/>
             #### Example<br/>
-            Suppose you have a video uploaded to the FastPix platform, and you want to add an Italian audio track to it. By calling this API, you can attach an external audio file (https://static.fastpix.io/music-1.mp3) to the media file. Similarly, if you need to add subtitles in different languages, you can specify type: `subtitle` with the corresponding subtitle `url`, `languageCode` and `languageName`.<br/>
+            Suppose you have a video uploaded to the FastPix platform, and you want to add an Italian audio track to it. By calling this API, you can attach an external audio file (https://static.fastpix.com/music-1.mp3) to the media file. Similarly, if you need to add subtitles in different languages, you can specify type: `subtitle` with the corresponding subtitle `url`, `languageCode` and `languageName`.<br/>
             <br/>
-            Related guides: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-subtitle-tracks&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/manage-audio-tracks&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
+            Related guides: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -753,7 +765,7 @@
             <br/>
             #### Webhook Events<br/>
             <br/>
-            Once the upload is cancelled, you must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediauploadcancelled&quot;&gt;video.media.upload.cancelled&lt;/a&gt;.<br/>
+            Once the upload is cancelled, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediauploadcancelled&quot;&gt;video.media.upload.cancelled&lt;/a&gt;.<br/>
             <br/>
             #### Example<br/>
             <br/>
@@ -779,11 +791,11 @@
             <br/>
             #### Webhook Events<br/>
             <br/>
-            1. After the subtitle track is generated and ready, you receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediasubtitlegeneratedready&quot;&gt;video.media.subtitle.generated.ready&lt;/a&gt;.<br/>
+            1. After the subtitle track is generated and ready, you receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediasubtitlegeneratedready&quot;&gt;video.media.subtitle.generated.ready&lt;/a&gt;.<br/>
             <br/>
-            2. Finally the &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event notifies your system about the media’s updated status.<br/>
+            2. Finally the &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event notifies your system about the media’s updated status.<br/>
             <br/>
-            &lt;/br&gt; Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/add-auto-generated-subtitles-to-videos&quot;&gt;Add auto-generated subtitles&lt;/a&gt;<br/>
+            &lt;/br&gt; Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/generate-subtitles-automatically&quot;&gt;Add auto-generated subtitles&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -802,7 +814,7 @@
             2. Include the updated `sourceAccess` parameter in the request body.<br/>
             <br/>
             3. You receive a response confirming the update to the media’s source access status.<br/>
-            4. Webhook events: &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediasourceready&quot;&gt;video.media.source.ready&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediasourcedeleted&quot;&gt;video.media.source.deleted&lt;/a&gt;<br/>
+            4. Webhook events: &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediasourceready&quot;&gt;video.media.source.ready&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediasourcedeleted&quot;&gt;video.media.source.deleted&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -834,13 +846,13 @@
             <br/>
             #### Webhook events<br/>
             <br/>
-            - &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediamp4supportready&quot;&gt;video.media.mp4Support.ready&lt;/a&gt; – Triggered when the MP4 support setting is successfully updated.<br/>
+            - &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediamp4supportready&quot;&gt;video.media.mp4Support.ready&lt;/a&gt; – Triggered when the MP4 support setting is successfully updated.<br/>
             <br/>
             #### Example<br/>
-            Suppose you have a video uploaded to the FastPix platform, and you want to allow users to download the video in MP4 format. By setting &quot;mp4Support&quot;: &quot;capped_4k&quot;, the system generates an MP4 rendition of the video up to 4K resolution, making it available for download through the stream URL(`https://stream.fastpix.io/{playbackId}/{capped-4k.mp4 | audio.m4a}`). If you want users to stream only the audio from the media file, you can set &quot;mp4Support&quot;: &quot;audioOnly&quot;. This provides an audio-only stream URL that allows users to listen to the media without video. By setting &quot;mp4Support&quot;: &quot;audioOnly,capped_4k&quot;, both options are enabled. Users can download the MP4 video and also stream just the audio version of the media. <br/>
+            Suppose you have a video uploaded to the FastPix platform, and you want to allow users to download the video in MP4 format. By setting &quot;mp4Support&quot;: &quot;capped_4k&quot;, the system generates an MP4 rendition of the video up to 4K resolution, making it available for download through the stream URL(`https://stream.fastpix.com/{playbackId}/{capped-4k.mp4 | audio.m4a}`). If you want users to stream only the audio from the media file, you can set &quot;mp4Support&quot;: &quot;audioOnly&quot;. This provides an audio-only stream URL that allows users to listen to the media without video. By setting &quot;mp4Support&quot;: &quot;audioOnly,capped_4k&quot;, both options are enabled. Users can download the MP4 video and also stream just the audio version of the media. <br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/mp4-support-for-offline-viewing&quot;&gt;Use MP4 support for offline viewing&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/playback-and-delivery/enable-mp4-support-for-offline-viewing&quot;&gt;Use MP4 support for offline viewing&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -892,7 +904,7 @@
             <br/>
             Imagine you’re managing a video editing platform where users upload full-length videos and create short clips for social media sharing. To keep track of all clips linked to a particular video, you call this API with the sourceMediaId. The response provides a list of all associated clips, allowing you to manage, edit, or repurpose them as needed.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/create-clips-from-existing-media&quot;&gt;Create clips from existing media&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-videos/clip-and-trim-videos&quot;&gt;Create clips from existing media&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -911,7 +923,7 @@
             <br/>
             #### How it works<br/>
             <br/>
-              1. Before using this endpoint, you can call the &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;List Dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
+              1. Before using this endpoint, you can call the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;List Dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
             <br/>
               2. Send a `GET` request to this endpoint with the required `metricId` and other query parameters. <br/>
             <br/>
@@ -937,7 +949,7 @@
               * **field:** The grouping field value based on the groupBy parameter. <br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/metrics-overview&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -951,7 +963,7 @@
             <br/>
             #### How it works<br/>
             <br/>
-              1. Before using this endpoint, you can call the &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
+              1. Before using this endpoint, you can call the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to retrieve all available dimensions that can be used in your query. <br/>
             <br/>
               2. Send a `GET` request to this endpoint with the required `metricId` and other query parameters. <br/>
             <br/>
@@ -973,7 +985,7 @@
               * **globalValue:** A global metric value that reflects the overall performance of the specified metric across the entire dataset for the given timespan. This value is not affected by specific filters. <br/>
             <br/>
             <br/>
-              Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/metrics-overview&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+              Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -1012,14 +1024,14 @@
             <br/>
             #### How it works <br/>
             <br/>
-              1. Before making a request to this endpoint, call the &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to obtain all available dimensions that can be used for comparison. <br/>
+              1. Before making a request to this endpoint, call the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;list dimensions&lt;/a&gt; endpoint to obtain all available dimensions that can be used for comparison. <br/>
             <br/>
               2. Send a `GET` request to this endpoint with the desired metrics specified in the query parameters. <br/>
             <br/>
               3. You Receive a response containing the comparison values for the specified metrics across the selected dimensions. <br/>
             <br/>
             <br/>
-              Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/understand-dashboard-ui#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
+              Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -1231,92 +1243,92 @@
             </remarks>
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.CreateLiveStreamResponseDTO">
+        <member name="T:Fastpix.Models.Components.CreateLiveStreamResponseDto">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.StreamId">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.StreamId">
             <summary>
             Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.StreamKey">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.StreamKey">
             <summary>
             A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.SrtSecret">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.SrtSecret">
             <summary>
             A secret used for securing the SRT stream. This ensures that only authorized users can access the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.Trial">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.Trial">
             <summary>
             FastPix allows for a to trial the live stream for free. The duration of trial streams is five minutes. After five minutes of activity, the trial stream is turned off, and the recorded asset is removed after a day.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.Status">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.Status">
             <summary>
             The current live stream status can be one of four values:Idle, Preparing, Active or Disabled.The Idle status signifies that there isn&quot;t a broadcast in progress.The preparing status indicates that the stream is getting prepared. while, the Active status indicates that a broadcast is currently in progress. The Disabled status means that no more RTMPS streams can be published.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.MaxResolution">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.MaxResolution">
             <summary>
             Max resolution can be used to control the maximum resolution your media is encoded, stored, and streamed at.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.MaxDuration">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.MaxDuration">
             <summary>
             The maximum duration in seconds that a live stream can have before it ends the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.CreatedAt">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.CreatedAt">
             <summary>
             It is the moment when the stream was created Time the media was generated, defined as a localDateTime (UTC Time).
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.ReconnectWindow">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.ReconnectWindow">
             <summary>
             In case the software streaming the live, gets disrupted for any reason and gets disconnected from FastPix, the reconnect window specifies the time span FastPix will wait before ending the stream. Before starting the stream, you can set the reconnect window time which is up to 1800 seconds.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.EnableRecording">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.EnableRecording">
             <summary>
             When set to true, the livestream will be recorded and stored for later viewing purposes. If set to false, the livestream will not be recorded.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.EnableDvrMode">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.EnableDvrMode">
             <summary>
             Enables DVR (Digital Video Recorder) functionality for the live stream. When set to true, viewers can pause, rewind, and resume playback during the live broadcast. This allows time-shifted viewing of the stream while it is still ongoing.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.MediaPolicy">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.MediaPolicy">
             <summary>
             Determines whether the recorded stream should be publicly accessible or private in Live to VOD (Video on Demand).
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.Metadata">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.Metadata">
             <summary>
             You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.LowLatency">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.LowLatency">
             <summary>
             Enables low-latency streaming mode to reduce playback delay.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.ClosedCaptions">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.ClosedCaptions">
             <summary>
             when provided true Enables closed captions for the livestream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.PlaybackIds">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.PlaybackIds">
             <summary>
             A collection of Playback ID objects utilized for crafting HLS playback urls.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDTO.SrtPlaybackResponse">
+        <member name="P:Fastpix.Models.Components.CreateLiveStreamResponseDto.SrtPlaybackResponse">
             <summary>
             This object contains the livestream playback response details for SRT Protocol
             </summary>
@@ -1326,7 +1338,7 @@
             Add one input object at a time. For example, first add a **VideoInput** object.   If you also need a watermark, click **Add item** again and select **WatermarkInput**.   Repeat this process for **AudioInput** or **SubtitleInput** as needed. For a complete explanation of how media uploads from URL and processing work, refer to the  <br/>
             
             <remarks>
-                    &lt;a href=&quot;https://docs.fastpix.io/docs/video-on-demand-overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
+                    &lt;a href=&quot;https://fastpix.com/docs/get-started/overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
             
             </remarks>
             </summary>
@@ -1806,22 +1818,22 @@
             Displays the result of the request.
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.CreateSigningKeyResponseDTO">
+        <member name="T:Fastpix.Models.Components.CreateSigningKeyResponseDto">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateSigningKeyResponseDTO.Id">
+        <member name="P:Fastpix.Models.Components.CreateSigningKeyResponseDto.Id">
             <summary>
             A unique identifier is generated by FastPix for the signing keys.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateSigningKeyResponseDTO.PrivateKey">
+        <member name="P:Fastpix.Models.Components.CreateSigningKeyResponseDto.PrivateKey">
             <summary>
             A private key is a byte encoded secret key used to create a signed JSON Web Token (JWT) for authentication.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.CreateSigningKeyResponseDTO.CreatedAt">
+        <member name="P:Fastpix.Models.Components.CreateSigningKeyResponseDto.CreatedAt">
             <summary>
             Time the Signing key was generated, defined as a localDateTime (UTC Time).
             </summary>
@@ -1919,6 +1931,16 @@
         <member name="P:Fastpix.Models.Components.DeleteSigningKeyResponse.Success">
             <summary>
             Shows the request status. Returns true for success and false for failure.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DeleteSigningKeyResponse.Data">
+            <summary>
+            Displays the result of the request.
+            </summary>
+        </member>
+        <member name="P:Fastpix.Models.Components.DeleteSigningKeyResponseData.Message">
+            <summary>
+            A message describing the result of the delete operation.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Components.DirectUpload">
@@ -2424,102 +2446,102 @@
             Time the Signing key was generated, defined as a localDateTime (UTC Time).
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO">
+        <member name="T:Fastpix.Models.Components.GetCreateLiveStreamResponseDto">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.StreamId">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.StreamId">
             <summary>
             Upon creating a new live stream, FastPix assigns a unique identifier to the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.StreamKey">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.StreamKey">
             <summary>
             A unique stream key is generated for streaming, allowing the user to start streaming on any third-party platform using this key.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.SrtSecret">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.SrtSecret">
             <summary>
             A secret used for securing the SRT stream. This ensures that only authorized users can access the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.Trial">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.Trial">
             <summary>
             FastPix allows for a to trial the live stream for free. The duration of trial streams is five minutes. After five minutes of activity, the trial stream is turned off, and the recorded asset is removed after a day.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.Status">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.Status">
             <summary>
             The current live stream status can be one of four values:Idle, Preparing, Active or Disabled.The Idle status signifies that there isn&quot;t a broadcast in progress.The preparing status indicates that the stream is getting prepared. while, the Active status indicates that a broadcast is currently in progress. The Disabled status means that no more RTMPS streams can be published.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MaxResolution">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.MaxResolution">
             <summary>
             Max resolution can be used to control the maximum resolution your media is encoded, stored, and streamed at.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MaxDuration">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.MaxDuration">
             <summary>
             The maximum duration in seconds that a live stream can have before it ends the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.CreatedAt">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.CreatedAt">
             <summary>
             It is the moment when the stream was created Time the media was generated, defined as a localDateTime (UTC Time).
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.ReconnectWindow">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.ReconnectWindow">
             <summary>
             In case the software streaming the live, gets disrupted for any reason and gets disconnected from FastPix, the reconnect window specifies the time span FastPix will wait before ending the stream. Before starting the stream, you can set the reconnect window time which is up to 1800 seconds.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.EnableRecording">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.EnableRecording">
             <summary>
             When set to true, FastPix records and stores the livestream for on-demand viewing. When set to false, the livestream is not recorded.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.EnableDvrMode">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.EnableDvrMode">
             <summary>
             Enables DVR (Digital Video Recorder) functionality for the live stream. When set to true, viewers can pause, rewind, and resume playback during the live broadcast. This allows time-shifted viewing of the stream while it is still ongoing.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MediaPolicy">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.MediaPolicy">
             <summary>
             Determines whether the recorded stream must be publicly accessible or private in Live to VOD (Video on Demand).
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.Metadata">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.Metadata">
             <summary>
             You can search for videos with specific key value pairs using metadata, when you tag a video in &quot;key&quot;:&quot;value&quot;s pairs. Dynamic metadata allows you to define a key that allows any value pair. You can have maximum of 255 characters and upto 10 entries are allowed.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.LowLatency">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.LowLatency">
             <summary>
             Enables low-latency streaming mode to reduce playback delay.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.ClosedCaptions">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.ClosedCaptions">
             <summary>
             when provided true Enables closed captions for the livestream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.PlaybackIds">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.PlaybackIds">
             <summary>
             A collection of Playback ID objects utilized for crafting HLS playback urls.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.SimulcastResponses">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.SimulcastResponses">
             <summary>
             A list of simulcast responses created for the livestream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.MediaIds">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.MediaIds">
             <summary>
             A list of media IDs created when recording is enabled. Each media ID represents a recorded video (Live to VOD). If the stream is stopped and started again outside the reconnect window, a new media ID is generated for each session.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDTO.SrtPlaybackResponse">
+        <member name="P:Fastpix.Models.Components.GetCreateLiveStreamResponseDto.SrtPlaybackResponse">
             <summary>
             This object contains the livestream playback response details for SRT Protocol
             </summary>
@@ -2709,32 +2731,32 @@
             Determines the media&apos;s status, which can be one of the possible values.
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDTO">
+        <member name="T:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDto">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDTO.Success">
+        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDto.Success">
             <summary>
             Shows the request status. Returns true for success and false for failure.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDTO.Data">
+        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDto.Data">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDTOData">
+        <member name="T:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDtoData">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDTOData.WorkspaceId">
+        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDtoData.WorkspaceId">
             <summary>
             FastPix generates a unique identifier for each workspace.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDTOData.PublicKey">
+        <member name="P:Fastpix.Models.Components.GetPublicPemUsingSigningKeyIdResponseDtoData.PublicKey">
             <summary>
             A public key is a byte encoded key used to create a signed JSON Web Token (JWT) for authentication.
             </summary>
@@ -2759,12 +2781,12 @@
             Pagination organizes content into pages for better readability and navigation.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.HTTPMetadata.Response">
+        <member name="P:Fastpix.Models.Components.HttpMetadata.Response">
             <summary>
             Raw HTTP response; suitable for custom response parsing
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.HTTPMetadata.Request">
+        <member name="P:Fastpix.Models.Components.HttpMetadata.Request">
             <summary>
             Raw HTTP request; suitable for debugging
             </summary>
@@ -3047,17 +3069,17 @@
             The offset count is expressed as total records by limit.
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.LiveStreamResponseDTO">
+        <member name="T:Fastpix.Models.Components.LiveStreamResponseDto">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.LiveStreamResponseDTO.Success">
+        <member name="P:Fastpix.Models.Components.LiveStreamResponseDto.Success">
             <summary>
             Shows the request status. Returns true for success and false for failure.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.LiveStreamResponseDTO.Data">
+        <member name="P:Fastpix.Models.Components.LiveStreamResponseDto.Data">
             <summary>
             Displays the result of the request.
             </summary>
@@ -3659,17 +3681,17 @@
             This object contains the livestream playback response details for SRT Protocol
             </summary>
         </member>
-        <member name="T:Fastpix.Models.Components.PatchResponseDTO">
+        <member name="T:Fastpix.Models.Components.PatchResponseDto">
             <summary>
             Displays the result of the request.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.PatchResponseDTO.Success">
+        <member name="P:Fastpix.Models.Components.PatchResponseDto.Success">
             <summary>
             Shows the request status. Returns true for success and false for failure.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Components.PatchResponseDTO.Data">
+        <member name="P:Fastpix.Models.Components.PatchResponseDto.Data">
             <summary>
             Displays the result of the request.
             </summary>
@@ -5258,6 +5280,11 @@
             Track height denotes the range of height applicable to a specific track. Currently, this setting can be modified only for video tracks.
             </summary>
         </member>
+        <member name="P:Fastpix.Models.Components.VideoTrackForGetAll.FrameRate">
+            <summary>
+            Frame rate quantifies the speed at which frames are displayed per second. It represents the range of frames available for a specific track. The indeterminable frame rate of the input file is indicated by a value of -1.
+            </summary>
+        </member>
         <member name="P:Fastpix.Models.Components.VideoTrackForGetAll.Status">
             <summary>
             Indicates the current state of the track. &apos;available&apos; means the track has been processed successfully and is ready to be used or played.
@@ -5900,7 +5927,7 @@
         </member>
         <member name="P:Fastpix.Models.Components.Views.PlayerSourceDomain">
             <summary>
-            Specifies the domain or source from which the player was loaded or embedded (for example, stream.fastpix.io or a customer’s custom domain). This helps identify the playback origin and differentiate between various deployment environments.<br/>
+            Specifies the domain or source from which the player was loaded or embedded (for example, stream.fastpix.com or a customer’s custom domain). This helps identify the playback origin and differentiate between various deployment environments.<br/>
             
             <remarks>
             
@@ -6539,7 +6566,7 @@
             <remarks>
             The watermark is placed over the media content during processing.  <br/>
             For detailed setup steps and customization options, refer to the <br/>
-            &lt;a href=&quot;https://docs.fastpix.io/docs/watermark-your-videos&quot; target=&quot;_blank&quot;&gt;FastPix Watermark Guide&lt;/a&gt;.<br/>
+            &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-videos/add-a-watermark-to-a-video&quot; target=&quot;_blank&quot;&gt;FastPix Watermark Guide&lt;/a&gt;.<br/>
             
             </remarks>
             </summary>
@@ -6584,7 +6611,7 @@
             Vertical alignment of the watermark.
             </summary>
         </member>
-        <member name="M:Fastpix.Models.Errors.APIException.#ctor(System.String,System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.String)">
+        <member name="M:Fastpix.Models.Errors.ApiException.#ctor(System.String,System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.String)">
             <summary>
             Default API exception.
             </summary>
@@ -6631,7 +6658,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.AddMediaToPlaylistResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.AddMediaTrackRequest.MediaId">
@@ -6651,7 +6678,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.AddMediaTrackResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.AddMediaTrackResponseBody">
@@ -6681,7 +6708,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CancelUploadResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.CancelUploadResponseBody">
@@ -6711,7 +6738,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ChangeMediaOrderInPlaylistResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.CompleteLiveStreamRequest.StreamId">
@@ -6726,7 +6753,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CompleteLiveStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.Configuration">
@@ -6750,7 +6777,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CreateAPlaylistResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdAccessRestrictions.Domains">
@@ -6800,7 +6827,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CreateMediaPlaybackIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.CreateMediaPlaybackIdResponseBody">
@@ -6825,17 +6852,17 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CreateMediaResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Requests.CreateNewStreamResponse.LiveStreamResponseDTO">
+        <member name="P:Fastpix.Models.Requests.CreateNewStreamResponse.LiveStreamResponseDto">
             <summary>
             Stream created successfully
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.CreateNewStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.CreatePlaybackIdOfStreamRequest.StreamId">
@@ -6850,7 +6877,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CreatePlaybackIdOfStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.CreateSigningKeyResponse.CreateResponse">
@@ -6860,7 +6887,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CreateSigningKeyResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.CreateSimulcastOfStreamRequest.StreamId">
@@ -6875,7 +6902,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.CreateSimulcastOfStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteAPlaylistRequest.PlaylistId">
@@ -6890,7 +6917,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteAPlaylistResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteLiveStreamRequest.StreamId">
@@ -6905,7 +6932,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteLiveStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteMediaFromPlaylistRequest.PlaylistId">
@@ -6920,7 +6947,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteMediaFromPlaylistResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteMediaPlaybackIdRequest.MediaId">
@@ -6940,7 +6967,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteMediaPlaybackIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.DeleteMediaPlaybackIdResponseBody">
@@ -6965,7 +6992,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteMediaResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.DeleteMediaResponseBody">
@@ -6995,7 +7022,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteMediaTrackResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.DeleteMediaTrackResponseBody">
@@ -7025,7 +7052,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeletePlaybackIdOfStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteSigningKeyRequest.SigningKeyId">
@@ -7040,7 +7067,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteSigningKeyResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteSimulcastOfStreamRequest.StreamId">
@@ -7060,7 +7087,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DeleteSimulcastOfStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.Dimension">
@@ -7163,7 +7190,7 @@
             <remarks>
             These settings define how the uploaded video is handled, including access control, resolution, DRM, and optional metadata.  <br/>
             For a complete explanation of how media uploads and processing work, refer to the  <br/>
-            &lt;a href=&quot;https://docs.fastpix.io/docs/video-on-demand-overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
+            &lt;a href=&quot;https://fastpix.com/docs/get-started/overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
             
             </remarks>
             </summary>
@@ -7175,7 +7202,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DirectUploadVideoMediaResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.DirectUploadVideoMediaResponseBody">
@@ -7247,7 +7274,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.DisableLiveStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.EnableLiveStreamRequest.StreamId">
@@ -7262,7 +7289,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.EnableLiveStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.File">
@@ -7297,7 +7324,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GenerateSubtitleTrackResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GenerateSubtitleTrackResponseBody">
@@ -7332,7 +7359,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetAllPlaylistsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetAllStreamsRequest.Limit">
@@ -7357,7 +7384,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetAllStreamsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetDrmConfigurationByIdRequest.DrmConfigurationId">
@@ -7372,7 +7399,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetDrmConfigurationByIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetDrmConfigurationByIdResponseBody">
@@ -7402,7 +7429,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetDrmConfigurationResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetDrmConfigurationResponseBody">
@@ -7432,7 +7459,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetLiveStreamByIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetLiveStreamPlaybackIdRequest.StreamId">
@@ -7452,7 +7479,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetLiveStreamPlaybackIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetLiveStreamViewerCountByIdRequest.StreamId">
@@ -7467,7 +7494,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetLiveStreamViewerCountByIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetMediaClipsRequest.MediaId">
@@ -7497,7 +7524,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetMediaClipsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetMediaRequest.MediaId">
@@ -7512,7 +7539,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetMediaResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetMediaResponseBody">
@@ -7537,7 +7564,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetMediaSummaryResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetMediaSummaryResponseBody">
@@ -7587,7 +7614,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetPlaybackIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetPlaybackIdResponseBody">
@@ -7612,7 +7639,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetPlaylistByIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetSigningKeyByIdRequest.SigningKeyId">
@@ -7620,14 +7647,14 @@
             When creating the signing key, FastPix assigns a universally unique identifier with a maximum length of 255 characters. 
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Requests.GetSigningKeyByIdResponse.GetPublicPemUsingSigningKeyIdResponseDTO">
+        <member name="P:Fastpix.Models.Requests.GetSigningKeyByIdResponse.GetPublicPemUsingSigningKeyIdResponseDto">
             <summary>
             successfully fetched signing key
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetSigningKeyByIdResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.GetSpecificSimulcastOfStreamRequest.StreamId">
@@ -7647,7 +7674,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetSpecificSimulcastOfStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetTimeseriesDataMetricId">
@@ -7730,7 +7757,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetTimeseriesDataResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetTimeseriesDataResponseBody">
@@ -7800,7 +7827,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.GetVideoViewDetailsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.GetVideoViewDetailsResponseBody">
@@ -7944,7 +7971,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListBreakdownValuesResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListBreakdownValuesResponseBody">
@@ -8050,7 +8077,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListByTopContentResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListByTopContentResponseBody">
@@ -8149,7 +8176,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListComparisonValuesResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListComparisonValuesResponseBody">
@@ -8204,7 +8231,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListDimensionsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListDimensionsResponseBody">
@@ -8280,7 +8307,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListErrorsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListErrorsResponseBody">
@@ -8367,7 +8394,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListFilterValuesForDimensionResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListFilterValuesForDimensionResponseBody">
@@ -8438,7 +8465,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListLiveClipsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListLiveClipsResponseBody">
@@ -8483,7 +8510,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListMediaResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListMediaResponseBody">
@@ -8568,7 +8595,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListOverallValuesResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListOverallValuesResponseBody">
@@ -8649,7 +8676,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListPlaybackIdsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListPlaybackIdsResponseBody">
@@ -8679,7 +8706,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListSigningKeysResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.ListUploadsRequest.Limit">
@@ -8704,7 +8731,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListUploadsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListUploadsResponseBody">
@@ -8815,7 +8842,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.ListVideoViewsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.ListVideoViewsResponseBody">
@@ -8890,7 +8917,7 @@
             <remarks>
             These settings define how the uploaded video is handled, including access control, resolution, DRM, and optional metadata.  <br/>
             For a complete explanation of how media uploads and processing work, refer to the  <br/>
-            &lt;a href=&quot;https://docs.fastpix.io/docs/video-on-demand-overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
+            &lt;a href=&quot;https://fastpix.com/docs/get-started/overview&quot; target=&quot;_blank&quot;&gt;FastPix Video on Demand Overview&lt;/a&gt;.<br/>
             
             </remarks>
             </summary>
@@ -9039,7 +9066,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.RetrieveMediaInputInfoResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.RetrieveMediaInputInfoResponseBody">
@@ -9129,7 +9156,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateAPlaylistResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.UpdatedMediaRequest.MediaId">
@@ -9154,7 +9181,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdatedMediaResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdatedMediaResponseBody">
@@ -9201,7 +9228,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdatedMp4SupportResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdatedMp4SupportResponseBody">
@@ -9256,7 +9283,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateDomainRestrictionsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateDomainRestrictionsResponseBody">
@@ -9290,7 +9317,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdatedSourceAccessResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdatedSourceAccessResponseBody">
@@ -9308,14 +9335,14 @@
             After creating a new live stream, FastPix assigns a unique identifier to the stream.
             </summary>
         </member>
-        <member name="P:Fastpix.Models.Requests.UpdateLiveStreamResponse.PatchResponseDTO">
+        <member name="P:Fastpix.Models.Requests.UpdateLiveStreamResponse.PatchResponseDto">
             <summary>
             Stream details updated successfully
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateLiveStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateMediaChaptersRequest.MediaId">
@@ -9343,7 +9370,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateMediaChaptersResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateMediaChaptersResponseBody">
@@ -9377,7 +9404,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateMediaModerationResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateMediaModerationResponseBody">
@@ -9415,7 +9442,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateMediaNamedEntitiesResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateMediaNamedEntitiesResponseBody">
@@ -9463,7 +9490,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateMediaSummaryResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateMediaSummaryResponseBody">
@@ -9493,7 +9520,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateMediaTrackResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateMediaTrackResponseBody">
@@ -9528,7 +9555,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateSpecificSimulcastOfStreamResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateUserAgentRestrictionsData.DefaultPolicy">
@@ -9573,7 +9600,7 @@
         </member>
         <member name="P:Fastpix.Models.Requests.UpdateUserAgentRestrictionsResponse.DefaultError">
             <summary>
-            See the range of possible &lt;a href=&quot;https://docs.fastpix.io/reference/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
+            See the range of possible &lt;a href=&quot;https://fastpix.com/docs/error-codes&quot;&gt;error&lt;/a&gt; responses and their status codes.
             </summary>
         </member>
         <member name="T:Fastpix.Models.Requests.UpdateUserAgentRestrictionsResponseBody">
@@ -9598,11 +9625,11 @@
             2. Include the `moderation` object and provide the requried `type` parameter in the request body to specify the media type (for example, video/audio/av).<br/>
             4. The response contains the updated media data, confirming the changes made.<br/>
             <br/>
-            You can use the &lt;a href=&quot;https://docs.fastpix.io/docs/ai-events#videomediaaimoderationready&quot;&gt;video.mediaAI.moderation.ready&lt;/a&gt; webhook event to track and notify about the detected moderation results.<br/>
+            You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaimoderationready&quot;&gt;video.mediaAI.moderation.ready&lt;/a&gt; webhook event to track and notify about the detected moderation results.<br/>
             <br/>
             **Use case:** This is particularly useful when a user uploads a video and later decides to enable moderation detection without the need to re-upload it.<br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/using-nsfw-and-profanity-filter-for-video-moderation&quot;&gt;Moderate NSFW &amp; Profanity&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/detect-nsfw-content-and-profanity&quot;&gt;Moderate NSFW &amp; Profanity&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -9617,7 +9644,7 @@
             Create a playback ID
             
             <remarks>
-            You can create a new playback ID for a specific media asset. If you have already retrieved an existing `playbackId` using the &lt;a href=&quot;https://docs.fastpix.io/reference/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint for a media asset, you can use this endpoint to generate a new playback ID with a specified access policy. <br/>
+            You can create a new playback ID for a specific media asset. If you have already retrieved an existing `playbackId` using the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint for a media asset, you can use this endpoint to generate a new playback ID with a specified access policy. <br/>
             <br/>
             <br/>
             <br/>
@@ -9751,7 +9778,7 @@
             - **Manual:** Creates an empty playlist without any initial media items. Use this mode for manual curation, where you add items later in a user-defined sequence.<br/>
             - **Smart:** Auto-populates the playlist at creation time based on the filter criteria (for example, a video creation date range) that you provide in the request.<br/>
             <br/>
-            For more details, see &lt;a href=&quot;https://docs.fastpix.io/docs/create-and-manage-playlist&quot;&gt;Create and manage playlist&lt;/a&gt;.<br/>
+            For more details, see &lt;a href=&quot;https://fastpix.com/docs/playback-and-delivery/create-and-manage-playlists&quot;&gt;Create and manage playlist&lt;/a&gt;.<br/>
             <br/>
             #### How it works <br/>
             <br/>
@@ -9872,14 +9899,14 @@
             </remarks>
             </summary>
         </member>
-        <member name="F:Fastpix.SDKConfig.ServerList">
+        <member name="F:Fastpix.SdkConfig.ServerList">
             <summary>
             List of server URLs available to the SDK.
             </summary>
         </member>
-        <member name="M:Fastpix.SDKConfig.#ctor(Fastpix.Utils.IFastpixHttpClient)">
+        <member name="M:Fastpix.SdkConfig.#ctor(Fastpix.Utils.IFastpixHttpClient)">
             <summary>
-            Initializes a new instance of the SDKConfig struct with default values.
+            Initializes a new instance of the SdkConfig struct with default values.
             </summary>
         </member>
         <member name="M:Fastpix.ISigningKeys.CreateAsync(Fastpix.Utils.Retries.RetryConfig,System.Nullable{System.Threading.CancellationToken})">
@@ -9913,7 +9940,7 @@
             <br/>
             <br/>
             **Detailed example:**  You are building a video-on-demand platform that restricts access based on user subscriptions. To ensure only subscribed users can stream content, you generate a signing key using this API. Each time a user logs in, you create a JWT signed with the private key. When the user attempts to play a video, FastPix uses the public key to verify the token and confirms that the user is authorized.&lt;br/&gt;<br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/secure-playback-with-jwts&quot;&gt;Create and use signing keys&lt;/a&gt;
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-security/secure-media-access-with-jwts&quot;&gt;Create and use signing keys&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -9994,7 +10021,7 @@
             { <br/>
               &quot;kid&quot;: &quot;359302ee-2446-4afe-9348-8b4656b9ddb1&quot;, <br/>
               &quot;aud&quot;: &quot;media:6cee6f85-9334-4a51-9ce3-e0241d94ceef&quot;, <br/>
-              &quot;iss&quot;: &quot;fastpix.io&quot;, <br/>
+              &quot;iss&quot;: &quot;fastpix.com&quot;, <br/>
               &quot;sub&quot;: &quot;&quot;, <br/>
               &quot;iat&quot;: 1706703204, <br/>
               &quot;exp&quot;: 1735626783 <br/>
@@ -10006,7 +10033,7 @@
             <br/>
             * **kid:** The key ID of the signing key. <br/>
             * **aud:** The audience for which the token is intended, enter the playbackId here.<br/>
-            * **iss:**  The issuer of the token (for example, &quot;fastpix.io &quot;). <br/>
+            * **iss:**  The issuer of the token (for example, &quot;fastpix.com &quot;). <br/>
             * **sub:** The subject of the token, typically representing the user or entity the token is issued for. In this case, use the workspaceId fetched from the &quot;Get Signing Key by ID&quot; endpoint. <br/>
             * **groups:** An array of groups the subject belongs to (for example, [&quot;user&quot;]).<br/>
             * **iat:** The issued-at timestamp, indicating when the token was created. <br/>
@@ -10038,12 +10065,12 @@
             <br/>
             1. Change to: When you call this endpoint, provide the parent `streamId` along with the simulcast target details (such as platform and credentials). The API returns a unique `simulcastId`, which you can use to manage the simulcast later.  <br/>
             <br/>
-            2. To notify your application about the status of simulcast related events check for the &lt;a href=&quot;https://docs.fastpix.io/docs/webhooks-collection#simulcast-target-events&quot;&gt;webhooks for simulcast&lt;/a&gt; target events. <br/>
+            2. To notify your application about the status of simulcast related events check for the &lt;a href=&quot;https://fastpix.com/docs/webhooks/webhook-event-reference#simulcast-target-events&quot;&gt;webhooks for simulcast&lt;/a&gt; target events. <br/>
             <br/>
             #### Example<br/>
             An event manager sets up a live stream for a virtual conference and wants to simulcast the stream on YouTube and Facebook Live. They first create the primary live stream in FastPix, ensuring it&apos;s in the idle state. Then, they use the API to create a simulcast target for YouTube. <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/simulcast-to-3rd-party-platforms&quot;&gt;Simulcast to 3rd party platforms&lt;/a&gt;
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-live-stream/simulcast-to-multiple-platforms&quot;&gt;Simulcast to 3rd party platforms&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -10054,7 +10081,7 @@
             <remarks>
             Deletes a simulcast using its unique simulcastId, which you received during the simulcast creation process. Deleting a simulcast stops the broadcast to the associated platform, while the parent stream continues if it’s live. This action can’t be undone, and you must create a new simulcast to resume streaming to the same platform.<br/>
             <br/>
-            Webhook event: &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamsimulcast_targetdeleted&quot;&gt;video.live_stream.simulcast_target.deleted&lt;/a&gt;<br/>
+            Webhook event: &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamsimulcast_targetdeleted&quot;&gt;video.live_stream.simulcast_target.deleted&lt;/a&gt;<br/>
             <br/>
             <br/>
             #### Example<br/>
@@ -10069,7 +10096,7 @@
             <remarks>
             Updates the status of a specific simulcast linked to a parent live stream. You can enable or disable the simulcast at any time while the parent stream is active or idle. After the live stream is disabled, the simulcast can no longer be modified.<br/>
             <br/>
-            Webhook event: &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamsimulcast_targetupdated&quot;&gt;video.live_stream.simulcast_target.updated&lt;/a&gt;<br/>
+            Webhook event: &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamsimulcast_targetupdated&quot;&gt;video.live_stream.simulcast_target.updated&lt;/a&gt;<br/>
             <br/>
             #### Example<br/>
             When a `PATCH` request is made to this endpoint, the API updates the status of the simulcast. This can be useful for pausing or resuming a simulcast on a particular platform without stopping the parent live stream.
@@ -10096,7 +10123,7 @@
             This endpoint allows you to modify the parameters of an existing live stream, such as its `metadata` (title, description) or the `reconnectWindow`. It’s useful for making changes to a stream that has already been created but not yet ended. After the live stream is disabled, you cannot update a stream. <br/>
             <br/>
             <br/>
-              The updated stream parameters and the `streamId` needs to be shared in the request, and FastPix returns the updated stream details. After the update, &lt;a href=&quot;https://docs.fastpix.io/docs/live-events#videolive_streamupdated&quot;&gt;video.live_stream.updated&lt;/a&gt; webhook event notifies your system.<br/>
+              The updated stream parameters and the `streamId` needs to be shared in the request, and FastPix returns the updated stream details. After the update, &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamupdated&quot;&gt;video.live_stream.updated&lt;/a&gt; webhook event notifies your system.<br/>
             <br/>
              #### Example<br/>
             <br/>
@@ -10104,7 +10131,7 @@
             <br/>
             <br/>
             <br/>
-              Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-streams&quot;&gt;Manage streams&lt;/a&gt;
+              Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -10127,7 +10154,7 @@
             <br/>
             1. After successfully deleting a track, your system must receive the webhook event **video.media.track.deleted**.<br/>
             <br/>
-            2. Once the media file is updated to reflect the track removal, a &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
+            2. Once the media file is updated to reflect the track removal, a &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
             <br/>
             <br/>
             #### Example<br/>
@@ -10137,7 +10164,7 @@
               - The content owner requests the removal of a specific subtitle or audio track.<br/>
               - A new version of the track gets uploaded to replace the existing one.<br/>
             <br/>
-            Related guides: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-subtitle-tracks&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/manage-audio-tracks&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
+            Related guides: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -10217,6 +10244,21 @@
             To disable retries, set the strategy to NONE.
             </remarks>
         </member>
+        <member name="M:Fastpix.Utils.Utilities.SurroundingQuotesRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^"(.*)"$</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ Match '"'.<br/>
+            ○ 1st capture group.<br/>
+                ○ Match a character other than '\n' greedily any number of times.<br/>
+            ○ Match '"'.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
         <member name="M:Fastpix.IVideos.ListLiveClipsAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Fastpix.Models.Components.SortOrder},Fastpix.Utils.Retries.RetryConfig,System.Nullable{System.Threading.CancellationToken})">
             <summary>
             Get all clips of a live stream
@@ -10234,7 +10276,7 @@
             Suppose you’re hosting a live gaming event and want to showcase key moments from the stream — such as top plays or final match highlights. You can use this endpoint to fetch all clips generated from that livestream, display them in your dashboard, or use them for post-event editing and sharing.<br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/instant-live-clipping&quot;&gt;Instant live clipping&lt;/a&gt;<br/>
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-live-stream/clip-moments-from-a-live-stream&quot;&gt;Instant live clipping&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -10255,7 +10297,7 @@
             <br/>
             3. The response returns the updated media data, confirming the changes. <br/>
             <br/>
-            4. Monitor the &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; webhook event to track the update status in your system.<br/>
+            4. Monitor the &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; webhook event to track the update status in your system.<br/>
             <br/>
             #### Example<br/>
             If a user uploads a video and later needs to change the title, add a new description, or update tags, you can use this endpoint to update the media metadata without re-uploading the entire video.<br/>
@@ -10283,11 +10325,11 @@
             <br/>
             After updating a track, your system must receive webhook notifications:<br/>
             <br/>
-            1. After successfully updating a track, your system must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediatrackupdated&quot;&gt;video.media.track.updated&lt;/a&gt;.<br/>
+            1. After successfully updating a track, your system must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackupdated&quot;&gt;video.media.track.updated&lt;/a&gt;.<br/>
             <br/>
-            2. Once the new track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://docs.fastpix.io/docs/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
+            2. Once the new track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
             <br/>
-            3. Once the media file is updated with the new track details, a &lt;a href=&quot;https://docs.fastpix.io/docs/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
+            3. Once the media file is updated with the new track details, a &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
             <br/>
             <br/>
             #### Example<br/>
@@ -10296,7 +10338,7 @@
               - The original track file has errors and needs correction.<br/>
               - You want to improve subtitle translations or replace an audio track with a better-quality version.<br/>
             <br/>
-            Related guides: &lt;a href=&quot;https://docs.fastpix.io/docs/manage-subtitle-tracks&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/manage-audio-tracks&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
+            Related guides: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -10364,7 +10406,7 @@
             <br/>
               2. Specify the timespan for which you want to retrieve the video views using the `timespan[]` parameter. <br/>
             <br/>
-              3. Filter the views based on dimensions such as browser, device, video title, viewer ID, etc., using the `filterby[]` parameter. Get the dimensions by calling &lt;a href=&quot;https://docs.fastpix.io/reference/list_dimensions&quot;&gt;list the dimensions&lt;/a&gt; endpoint. <br/>
+              3. Filter the views based on dimensions such as browser, device, video title, viewer ID, etc., using the `filterby[]` parameter. Get the dimensions by calling &lt;a href=&quot;https://fastpix.com/docs/video-data-api/dimensions/list-dimensions&quot;&gt;list the dimensions&lt;/a&gt; endpoint. <br/>
             <br/>
               4. Paginate the results using the `limit` and `offset` parameters. <br/>
             <br/>
@@ -10372,7 +10414,7 @@
             <br/>
               6. You receive a response containing the list of video views matching the specified criteria.<br/>
             <br/>
-            Each view in the response includes a unique `viewId`. You can use this `viewId` with the  &lt;a href=&quot;https://docs.fastpix.io/reference/get_video_view_details&quot;&gt;Get Video View Details&lt;/a&gt; endpoint to retrieve more detailed information about that specific view.<br/>
+            Each view in the response includes a unique `viewId`. You can use this `viewId` with the  &lt;a href=&quot;https://fastpix.com/docs/video-data-api/views/get-video-view-details&quot;&gt;Get Video View Details&lt;/a&gt; endpoint to retrieve more detailed information about that specific view.<br/>
             <br/>
             <br/>
             #### Example<br/>
@@ -10380,7 +10422,7 @@
             If you manage a video streaming service and want to analyze content performance across devices and browsers. By calling the List Video Views endpoint with filters such as `browser_name` and `device_type`, you can identify which platforms are most popular with your audience. This information helps optimize content for widely used platforms and troubleshoot playback issues on less common devices.<br/>
             <br/>
             <br/>
-              Related guide: &lt;a href=&quot;https://docs.fastpix.io/docs/audience-metrics&quot;&gt;Audience metrics&lt;/a&gt;, &lt;a href=&quot;https://docs.fastpix.io/docs/understand-dashboard-ui#1-views-dashboard&quot;&gt;Views dashboard&lt;/a&gt;
+              Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/audience-metrics&quot;&gt;Audience metrics&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#1-views-dashboard&quot;&gt;Views dashboard&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -10399,7 +10441,7 @@
             If a developer receives a report of a poor viewing experience for a specific user. By using this endpoint with the users `viewId`, the developer can retrieve metrics like buffering duration, playback errors, and session length. This data allows the developer to pinpoint issues (such as poor connectivity or a browser-specific problem) and take steps to improve the user experience.<br/>
             <br/>
             <br/>
-            Related guide: &lt;a href=&quot;https://docs.fastpix.io/page/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt;
+            Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt;
             </remarks>
             </summary>
         </member>
@@ -10423,7 +10465,7 @@
               5. You receive a response containing the list of top video views matching the specified criteria.<br/>
             <br/>
             <br/>
-              Related guide: &lt;a href=&quot;https://docs.fastpix.io/page/how-to-get-top-performing-content&quot;&gt;Get top-performing content&lt;/a&gt;<br/>
+              Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/identify-top-performing-content&quot;&gt;Get top-performing content&lt;/a&gt;<br/>
             
             </remarks>
             </summary>
@@ -10432,6 +10474,38 @@
             <summary>
             Operations involving views
             </summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the SurroundingQuotesRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SurroundingQuotesRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
         </member>
     </members>
 </doc>

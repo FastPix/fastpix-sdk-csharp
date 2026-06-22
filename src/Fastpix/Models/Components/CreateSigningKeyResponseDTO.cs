@@ -13,7 +13,7 @@ namespace Fastpix.Models.Components
     /// <summary>
     /// Displays the result of the request.
     /// </summary>
-    public class CreateSigningKeyResponseDTO
+    public class CreateSigningKeyResponseDto
     {
 
         /// <summary>

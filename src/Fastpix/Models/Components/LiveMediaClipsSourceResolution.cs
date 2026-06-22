@@ -59,14 +59,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is LiveMediaClipsSourceResolution)
+                    if (enumVal is LiveMediaClipsSourceResolution liveMediaClipsSourceResolution)
                     {
-                        return (LiveMediaClipsSourceResolution)enumVal;
+                        return liveMediaClipsSourceResolution;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum LiveMediaClipsSourceResolution");
+            throw new ArgumentException($"Unknown value {value} for enum LiveMediaClipsSourceResolution", nameof(value));
         }
     }
 

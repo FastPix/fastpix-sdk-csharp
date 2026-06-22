@@ -57,14 +57,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is CreateMediaRequestLanguageCode)
+                    if (enumVal is CreateMediaRequestLanguageCode createMediaRequestLanguageCode)
                     {
-                        return (CreateMediaRequestLanguageCode)enumVal;
+                        return createMediaRequestLanguageCode;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum CreateMediaRequestLanguageCode");
+            throw new ArgumentException($"Unknown value {value} for enum CreateMediaRequestLanguageCode", nameof(value));
         }
     }
 

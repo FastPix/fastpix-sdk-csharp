@@ -49,14 +49,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is DirectUploadVideoMediaDomainsDefaultPolicy)
+                    if (enumVal is DirectUploadVideoMediaDomainsDefaultPolicy directUploadVideoMediaDomainsDefaultPolicy)
                     {
-                        return (DirectUploadVideoMediaDomainsDefaultPolicy)enumVal;
+                        return directUploadVideoMediaDomainsDefaultPolicy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum DirectUploadVideoMediaDomainsDefaultPolicy");
+            throw new ArgumentException($"Unknown value {value} for enum DirectUploadVideoMediaDomainsDefaultPolicy", nameof(value));
         }
     }
 

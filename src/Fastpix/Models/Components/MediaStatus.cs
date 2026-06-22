@@ -55,14 +55,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is MediaStatus)
+                    if (enumVal is MediaStatus mediaStatus)
                     {
-                        return (MediaStatus)enumVal;
+                        return mediaStatus;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum MediaStatus");
+            throw new ArgumentException($"Unknown value {value} for enum MediaStatus", nameof(value));
         }
     }
 

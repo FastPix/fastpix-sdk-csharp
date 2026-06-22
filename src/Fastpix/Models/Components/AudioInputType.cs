@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is AudioInputType)
+                    if (enumVal is AudioInputType audioInputType)
                     {
-                        return (AudioInputType)enumVal;
+                        return audioInputType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum AudioInputType");
+            throw new ArgumentException($"Unknown value {value} for enum AudioInputType", nameof(value));
         }
     }
 

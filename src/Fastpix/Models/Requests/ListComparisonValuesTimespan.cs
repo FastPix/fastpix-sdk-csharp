@@ -63,14 +63,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is ListComparisonValuesTimespan)
+                    if (enumVal is ListComparisonValuesTimespan listComparisonValuesTimespan)
                     {
-                        return (ListComparisonValuesTimespan)enumVal;
+                        return listComparisonValuesTimespan;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum ListComparisonValuesTimespan");
+            throw new ArgumentException($"Unknown value {value} for enum ListComparisonValuesTimespan", nameof(value));
         }
     }
 

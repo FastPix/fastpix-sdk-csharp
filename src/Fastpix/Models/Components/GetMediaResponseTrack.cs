@@ -127,10 +127,6 @@ namespace Fastpix.Models.Components
                 {
                     // try next option
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
 
                 try
                 {
@@ -146,10 +142,6 @@ namespace Fastpix.Models.Components
                 catch (ResponseBodyDeserializer.DeserializationException)
                 {
                     // try next option
-                }
-                catch (Exception)
-                {
-                    throw;
                 }
 
                 try
@@ -167,10 +159,6 @@ namespace Fastpix.Models.Components
                 {
                     // try next option
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
 
                 if (fallbackCandidates.Count > 0)
                 {
@@ -184,10 +172,6 @@ namespace Fastpix.Models.Components
                         catch (ResponseBodyDeserializer.DeserializationException)
                         {
                             // try next fallback option
-                        }
-                        catch (Exception)
-                        {
-                            throw;
                         }
                     }
                 }
@@ -219,7 +203,6 @@ namespace Fastpix.Models.Components
                 if (res.SubtitleTrack != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.SubtitleTrack));
-                    return;
                 }
             }
 

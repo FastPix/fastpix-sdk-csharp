@@ -12,13 +12,13 @@ namespace Fastpix.Utils
     using System.Net;
     using System.Reflection;
 
-    internal static class URLBuilder
+    internal static class UrlBuilder
     {
         public static string Build(string baseUrl, string relativeUrl, object? request, List<string>? allowEmptyValue = null)
         {
             var url = baseUrl;
 
-            if (url.EndsWith("/"))
+            if (url.EndsWith('/'))
             {
                 url = url.Substring(0, url.Length - 1);
             }
@@ -81,70 +81,80 @@ namespace Fastpix.Utils
                 return parameters;
             }
 
-            var props = request.GetType().GetProperties();
-
-            foreach (var prop in props)
+            foreach (var prop in request.GetType().GetProperties())
             {
-                var val = prop.GetValue(request);
-
-
-                if (prop.GetCustomAttribute<FastpixMetadata>()?.GetRequestMetadata() != null)
-                {
-                    continue;
-                }
-
-                var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetPathParamMetadata();
-
-                if (metadata == null)
-                {
-                    continue;
-                }
-
-                // Handle null values and empty arrays as empty query parameters
-                if (val == null || (Utilities.IsList(val) && ((IList)val).Count == 0))
-                {
-                    parameters.Add(metadata.Name ?? prop.Name, "");
-                    continue;
-                }
-
-                if (metadata.Serialization != null)
-                {
-                    switch (metadata.Serialization)
-                    {
-                        case "json":
-                            parameters.Add(
-                                metadata.Name ?? prop.Name,
-                                Utilities.SerializeJSON(val)
-                            );
-                            break;
-                        default:
-                            throw new Exception(
-                                $"Unknown serialization type: {metadata.Serialization}"
-                            );
-                    }
-                }
-                else
-                {
-                    switch (metadata.Style)
-                    {
-                        case "simple":
-                            var simpleParams = SerializeSimplePathParams(
-                                metadata.Name ?? prop.Name,
-                                val,
-                                metadata.Explode
-                            );
-                            foreach (var key in simpleParams.Keys)
-                            {
-                                parameters.Add(key, simpleParams[key]);
-                            }
-                            break;
-                        default:
-                            throw new Exception($"Unsupported path param style: {metadata.Style}");
-                    }
-                }
+                AddPathParameter(parameters, prop, prop.GetValue(request));
             }
 
             return parameters;
+        }
+
+        private static void AddPathParameter(Dictionary<string, string> parameters, PropertyInfo prop, object? val)
+        {
+            if (prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetRequestMetadata() != null)
+            {
+                return;
+            }
+
+            var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetPathParamMetadata();
+
+            if (metadata == null)
+            {
+                return;
+            }
+
+            var name = metadata.Name ?? prop.Name;
+
+            // Handle null values and empty arrays as empty query parameters
+            if (val == null || (Utilities.IsList(val) && ((IList)val).Count == 0))
+            {
+                parameters.Add(name, "");
+                return;
+            }
+
+            if (metadata.Serialization != null)
+            {
+                if (metadata.Serialization == "json")
+                {
+                    parameters.Add(name, Utilities.SerializeJSON(val));
+                    return;
+                }
+
+                throw new NotSupportedException($"Unknown serialization type: {metadata.Serialization}");
+            }
+
+            if (metadata.Style != "simple")
+            {
+                throw new NotSupportedException($"Unsupported path param style: {metadata.Style}");
+            }
+
+            var simpleParams = SerializeSimplePathParams(name, val, metadata.Explode);
+            foreach (var key in simpleParams.Keys)
+            {
+                parameters.Add(key, simpleParams[key]);
+            }
+        }
+
+        private static void AddToParams(Dictionary<string, List<string>> parameters, string key, string value)
+        {
+            if (!parameters.TryGetValue(key, out var values))
+            {
+                values = new List<string>();
+                parameters.Add(key, values);
+            }
+
+            values.Add(value);
+        }
+
+        private static void MergeInto(Dictionary<string, List<string>> parameters, Dictionary<string, List<string>> source)
+        {
+            foreach (var key in source.Keys)
+            {
+                foreach (var v in source[key])
+                {
+                    AddToParams(parameters, key, v);
+                }
+            }
         }
 
         private static Dictionary<string, List<string>> TrySerializeQueryParams(object? request, List<string>? allowEmptyValue = null)
@@ -156,129 +166,67 @@ namespace Fastpix.Utils
                 return parameters;
             }
 
-            var props = request.GetType().GetProperties();
-
-            foreach (var prop in props)
+            foreach (var prop in request.GetType().GetProperties())
             {
-                var val = prop.GetValue(request);
-                var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetQueryParamMetadata();
-                
-                if (val == null)
-                {
-                    // If this parameter is in allowEmptyValue and val is null, include it as empty
-                    if (metadata != null && allowEmptyValue?.Contains(metadata.Name ?? prop.Name) == true)
-                    {
-                        var paramName = metadata.Name ?? prop.Name;
-                        if (!parameters.ContainsKey(paramName))
-                        {
-                            parameters.Add(paramName, new List<string>());
-                        }
-                        parameters[paramName].Add("");
-                    }
-                    continue;
-                }
-
-                if (prop.GetCustomAttribute<FastpixMetadata>()?.GetRequestMetadata() != null)
-                {
-                    continue;
-                }
-
-                if (metadata == null)
-                {
-                    continue;
-                }
-
-                if (metadata.Serialization != null)
-                {
-                    switch (metadata.Serialization)
-                    {
-                        case "json":
-                            if (!parameters.ContainsKey(metadata.Name ?? prop.Name))
-                            {
-                                parameters.Add(metadata.Name ?? prop.Name, new List<string>());
-                            }
-
-                            parameters[metadata.Name ?? prop.Name].Add(
-                                Utilities.SerializeJSON(val)
-                            );
-                            break;
-                        default:
-                            throw new Exception(
-                                $"Unknown serialization type: {metadata.Serialization}"
-                            );
-                    }
-                }
-                else
-                {
-                    switch (metadata.Style)
-                    {
-                        case "form":
-                            var formParams = SerializeFormQueryParams(
-                                metadata.Name ?? prop.Name,
-                                val,
-                                metadata.Explode,
-                                ",",
-                                allowEmptyValue
-                            );
-                            foreach (var key in formParams.Keys)
-                            {
-                                if (!parameters.ContainsKey(key))
-                                {
-                                    parameters.Add(key, new List<string>());
-                                }
-
-                                foreach (var v in formParams[key])
-                                {
-                                    parameters[key].Add(v);
-                                }
-                            }
-                            break;
-                        case "deepObject":
-                            var deepObjParams = SerializeDeepObjectQueryParams(
-                                metadata.Name ?? prop.Name,
-                                val
-                            );
-                            foreach (var key in deepObjParams.Keys)
-                            {
-                                if (!parameters.ContainsKey(key))
-                                {
-                                    parameters.Add(key, new List<string>());
-                                }
-
-                                foreach (var v in deepObjParams[key])
-                                {
-                                    parameters[key].Add(v);
-                                }
-                            }
-                            break;
-                        case "pipeDelimited":
-                            var pipeParams = SerializeFormQueryParams(
-                                metadata.Name ?? prop.Name,
-                                val,
-                                metadata.Explode,
-                                "|",
-                                allowEmptyValue
-                            );
-                            foreach (var key in pipeParams.Keys)
-                            {
-                                if (!parameters.ContainsKey(key))
-                                {
-                                    parameters.Add(key, new List<string>());
-                                }
-
-                                foreach (var v in pipeParams[key])
-                                {
-                                    parameters[key].Add(v);
-                                }
-                            }
-                            break;
-                        default:
-                            throw new Exception($"Unsupported query param style: {metadata.Style}");
-                    }
-                }
+                AddQueryParameter(parameters, prop, prop.GetValue(request), allowEmptyValue);
             }
 
             return parameters;
+        }
+
+        private static void AddQueryParameter(Dictionary<string, List<string>> parameters, PropertyInfo prop, object? val, List<string>? allowEmptyValue)
+        {
+            var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetQueryParamMetadata();
+
+            if (val == null)
+            {
+                // If this parameter is in allowEmptyValue and val is null, include it as empty
+                if (metadata != null && allowEmptyValue?.Contains(metadata.Name ?? prop.Name) == true)
+                {
+                    AddToParams(parameters, metadata.Name ?? prop.Name, "");
+                }
+                return;
+            }
+
+            if (prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetRequestMetadata() != null)
+            {
+                return;
+            }
+
+            if (metadata == null)
+            {
+                return;
+            }
+
+            var name = metadata.Name ?? prop.Name;
+
+            if (metadata.Serialization != null)
+            {
+                if (metadata.Serialization == "json")
+                {
+                    AddToParams(parameters, name, Utilities.SerializeJSON(val));
+                    return;
+                }
+
+                throw new NotSupportedException($"Unknown serialization type: {metadata.Serialization}");
+            }
+
+            MergeInto(parameters, SerializeByStyle(name, val, metadata.Explode, metadata.Style, allowEmptyValue));
+        }
+
+        private static Dictionary<string, List<string>> SerializeByStyle(string name, object val, bool explode, string style, List<string>? allowEmptyValue)
+        {
+            switch (style)
+            {
+                case "form":
+                    return SerializeFormQueryParams(name, val, explode, ",", allowEmptyValue);
+                case "deepObject":
+                    return SerializeDeepObjectQueryParams(name, val);
+                case "pipeDelimited":
+                    return SerializeFormQueryParams(name, val, explode, "|", allowEmptyValue);
+                default:
+                    throw new NotSupportedException($"Unsupported query param style: {style}");
+            }
         }
 
         private static Dictionary<string, string> SerializeSimplePathParams(
@@ -291,72 +239,15 @@ namespace Fastpix.Utils
 
             if (Utilities.IsClass(value))
             {
-                var vals = new List<string>();
-
-                var props = value.GetType().GetProperties();
-
-                foreach (var prop in props)
-                {
-                    var val = prop.GetValue(value);
-
-                    if (val == null)
-                    {
-                        continue;
-                    }
-
-                    var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetPathParamMetadata();
-                    if (metadata == null)
-                    {
-                        continue;
-                    }
-
-                    if (explode)
-                    {
-                        vals.Add($"{metadata.Name}={Utilities.ToString(val)}");
-                    }
-                    else
-                    {
-                        vals.Add($"{metadata.Name},{Utilities.ToString(val)}");
-                    }
-                }
-
-                parameters.Add(parentName, string.Join(",", vals));
+                parameters.Add(parentName, SerializeSimpleClass(value, explode));
             }
             else if (Utilities.IsDictionary(value))
             {
-                var vals = new List<string>();
-
-                foreach (var key in ((IDictionary)value).Keys)
-                {
-                    if (key == null)
-                    {
-                        continue;
-                    }
-
-                    var val = ((IDictionary)value)[key];
-
-                    if (explode)
-                    {
-                        vals.Add($"{key}={Utilities.ToString(val)}");
-                    }
-                    else
-                    {
-                        vals.Add($"{key},{Utilities.ToString(val)}");
-                    }
-                }
-
-                parameters.Add(parentName, string.Join(",", vals));
+                parameters.Add(parentName, SerializeSimpleDictionary((IDictionary)value, explode));
             }
             else if (Utilities.IsList(value))
             {
-                var vals = new List<string>();
-
-                foreach (var val in (IEnumerable)value)
-                {
-                    vals.Add(Utilities.ToString(val));
-                }
-
-                parameters.Add(parentName, string.Join(",", vals));
+                parameters.Add(parentName, SerializeSimpleList((IEnumerable)value));
             }
             else
             {
@@ -364,6 +255,66 @@ namespace Fastpix.Utils
             }
 
             return parameters;
+        }
+
+        private static string SerializeSimpleClass(object value, bool explode)
+        {
+            var vals = new List<string>();
+
+            foreach (var prop in value.GetType().GetProperties())
+            {
+                var val = prop.GetValue(value);
+
+                if (val == null)
+                {
+                    continue;
+                }
+
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetPathParamMetadata();
+                if (metadata == null)
+                {
+                    continue;
+                }
+
+                vals.Add(explode
+                    ? $"{metadata.Name}={Utilities.ToString(val)}"
+                    : $"{metadata.Name},{Utilities.ToString(val)}");
+            }
+
+            return string.Join(",", vals);
+        }
+
+        private static string SerializeSimpleDictionary(IDictionary value, bool explode)
+        {
+            var vals = new List<string>();
+
+            foreach (var key in value.Keys)
+            {
+                if (key == null)
+                {
+                    continue;
+                }
+
+                var val = value[key];
+
+                vals.Add(explode
+                    ? $"{key}={Utilities.ToString(val)}"
+                    : $"{key},{Utilities.ToString(val)}");
+            }
+
+            return string.Join(",", vals);
+        }
+
+        private static string SerializeSimpleList(IEnumerable value)
+        {
+            var vals = new List<string>();
+
+            foreach (var val in value)
+            {
+                vals.Add(Utilities.ToString(val));
+            }
+
+            return string.Join(",", vals);
         }
 
         private static Dictionary<string, List<string>> SerializeFormQueryParams(
@@ -374,161 +325,145 @@ namespace Fastpix.Utils
             List<string>? allowEmptyValue = null
         )
         {
-            var parameters = new Dictionary<string, List<string>>();
-
             if (Utilities.IsClass(value) && !Utilities.IsDate(value))
             {
-                var props = value.GetType().GetProperties();
-
-                var items = new List<string>();
-
-                foreach (var prop in props)
-                {
-                    var val = prop.GetValue(value);
-                    if (val == null)
-                    {
-                        continue;
-                    }
-
-                    var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetQueryParamMetadata();
-                    if (metadata == null || metadata.Name == null)
-                    {
-                        continue;
-                    }
-
-                    if (explode)
-                    {
-                        if (!parameters.ContainsKey(metadata.Name))
-                        {
-                            parameters.Add(metadata.Name, new List<string>());
-                        }
-
-                        parameters[metadata.Name].Add(
-                            Utilities.ToString(val)
-                        );
-                    }
-                    else
-                    {
-                        items.Add(
-                            $"{metadata.Name}{delimiter}{Utilities.ValueToString(val)}"
-                        );
-                    }
-                }
-
-                if (items.Count > 0)
-                {
-                    if (!parameters.ContainsKey(parentName))
-                    {
-                        parameters.Add(parentName, new List<string>());
-                    }
-
-                    parameters[parentName].Add(string.Join(delimiter, items));
-                }
+                return SerializeFormClass(parentName, value, explode, delimiter);
             }
-            else if (Utilities.IsDictionary(value))
+
+            if (Utilities.IsDictionary(value))
             {
-                var items = new List<string>();
-
-                foreach (var k in ((IDictionary)value).Keys)
-                {
-                    var key = k?.ToString();
-
-                    if (key == null)
-                    {
-                        continue;
-                    }
-
-                    if (explode)
-                    {
-                        if (!parameters.ContainsKey(key))
-                        {
-                            parameters.Add(key, new List<string>());
-                        }
-
-                        parameters[key].Add(
-                            Utilities.ValueToString(((IDictionary)value)[key])
-                        );
-                    }
-                    else
-                    {
-                        items.Add(
-                            $"{key}{delimiter}{Utilities.ValueToString(((IDictionary)value)[key])}"
-                        );
-                    }
-                }
-
-                if (items.Count > 0)
-                {
-                    if (!parameters.ContainsKey(parentName))
-                    {
-                        parameters.Add(parentName, new List<string>());
-                    }
-
-                    parameters[parentName].Add(string.Join(delimiter, items));
-                }
+                return SerializeFormDictionary(parentName, (IDictionary)value, explode, delimiter);
             }
-            else if (Utilities.IsList(value))
-            {
-                var values = new List<string>();
-                var items = new List<string>();
-                var list = (IList)value;
 
-                // Handle empty arrays - add empty parameter if allowEmptyValue includes this parameter
-                if (list.Count == 0 && allowEmptyValue?.Contains(parentName) == true)
+            if (Utilities.IsList(value))
+            {
+                return SerializeFormList(parentName, (IList)value, explode, delimiter, allowEmptyValue);
+            }
+
+            return SerializeFormScalar(parentName, value, allowEmptyValue);
+        }
+
+        private static Dictionary<string, List<string>> SerializeFormClass(string parentName, object value, bool explode, string delimiter)
+        {
+            var parameters = new Dictionary<string, List<string>>();
+            var items = new List<string>();
+
+            foreach (var prop in value.GetType().GetProperties())
+            {
+                var val = prop.GetValue(value);
+                if (val == null)
                 {
-                    if (!parameters.ContainsKey(parentName))
-                    {
-                        parameters.Add(parentName, new List<string>());
-                    }
-                    parameters[parentName].Add("");
+                    continue;
+                }
+
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetQueryParamMetadata();
+                if (metadata == null || metadata.Name == null)
+                {
+                    continue;
+                }
+
+                if (explode)
+                {
+                    AddToParams(parameters, metadata.Name, Utilities.ToString(val));
                 }
                 else
                 {
-                    foreach (var item in list)
-                    {
-                        if (explode)
-                        {
-                            values.Add(Utilities.ValueToString(item));
-                        }
-                        else
-                        {
-                            items.Add(Utilities.ValueToString(item));
-                        }
-                    }
-
-                    if (items.Count > 0)
-                    {
-                        values.Add(string.Join(delimiter, items));
-                    }
-
-                    foreach (var val in values)
-                    {
-                        if (!parameters.ContainsKey(parentName))
-                        {
-                            parameters.Add(parentName, new List<string>());
-                        }
-
-                        parameters[parentName].Add(val);
-                    }
+                    items.Add($"{metadata.Name}{delimiter}{Utilities.ValueToString(val)}");
                 }
+            }
+
+            if (items.Count > 0)
+            {
+                AddToParams(parameters, parentName, string.Join(delimiter, items));
+            }
+
+            return parameters;
+        }
+
+        private static Dictionary<string, List<string>> SerializeFormDictionary(string parentName, IDictionary value, bool explode, string delimiter)
+        {
+            var parameters = new Dictionary<string, List<string>>();
+            var items = new List<string>();
+
+            foreach (var k in value.Keys)
+            {
+                var key = k?.ToString();
+
+                if (key == null)
+                {
+                    continue;
+                }
+
+                if (explode)
+                {
+                    AddToParams(parameters, key, Utilities.ValueToString(value[key]));
+                }
+                else
+                {
+                    items.Add($"{key}{delimiter}{Utilities.ValueToString(value[key])}");
+                }
+            }
+
+            if (items.Count > 0)
+            {
+                AddToParams(parameters, parentName, string.Join(delimiter, items));
+            }
+
+            return parameters;
+        }
+
+        private static Dictionary<string, List<string>> SerializeFormList(string parentName, IList list, bool explode, string delimiter, List<string>? allowEmptyValue)
+        {
+            var parameters = new Dictionary<string, List<string>>();
+
+            // Handle empty arrays - add empty parameter if allowEmptyValue includes this parameter
+            if (list.Count == 0 && allowEmptyValue?.Contains(parentName) == true)
+            {
+                AddToParams(parameters, parentName, "");
+                return parameters;
+            }
+
+            var values = new List<string>();
+            var items = new List<string>();
+
+            foreach (var item in list)
+            {
+                if (explode)
+                {
+                    values.Add(Utilities.ValueToString(item));
+                }
+                else
+                {
+                    items.Add(Utilities.ValueToString(item));
+                }
+            }
+
+            if (items.Count > 0)
+            {
+                values.Add(string.Join(delimiter, items));
+            }
+
+            foreach (var val in values)
+            {
+                AddToParams(parameters, parentName, val);
+            }
+
+            return parameters;
+        }
+
+        private static Dictionary<string, List<string>> SerializeFormScalar(string parentName, object value, List<string>? allowEmptyValue)
+        {
+            var parameters = new Dictionary<string, List<string>>();
+
+            // Handle null values and empty strings for allowEmptyValue parameters
+            var stringValue = Utilities.ValueToString(value);
+            if ((value == null || stringValue == "") && allowEmptyValue?.Contains(parentName) == true)
+            {
+                AddToParams(parameters, parentName, "");
             }
             else
             {
-                if (!parameters.ContainsKey(parentName))
-                {
-                    parameters.Add(parentName, new List<string>());
-                }
-
-                // Handle null values and empty strings for allowEmptyValue parameters
-                var stringValue = Utilities.ValueToString(value);
-                if ((value == null || stringValue == "") && allowEmptyValue?.Contains(parentName) == true)
-                {
-                    parameters[parentName].Add("");
-                }
-                else
-                {
-                    parameters[parentName].Add(stringValue);
-                }
+                AddToParams(parameters, parentName, stringValue);
             }
 
             return parameters;
@@ -543,90 +478,63 @@ namespace Fastpix.Utils
 
             if (Utilities.IsClass(value))
             {
-                var props = value.GetType().GetProperties();
-
-                foreach (var prop in props)
-                {
-                    var val = prop.GetValue(value);
-
-                    if (val == null)
-                    {
-                        continue;
-                    }
-
-                    var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetQueryParamMetadata();
-                    if (metadata == null || metadata.Name == null)
-                    {
-                        continue;
-                    }
-
-                    var keyName = $"{parentName}[{metadata.Name}]";
-
-                    if (val != null && Utilities.IsList(val))
-                    {
-                        foreach (var v in (IList)val)
-                        {
-                            if (!parameters.ContainsKey(keyName))
-                            {
-                                parameters.Add(keyName, new List<string>());
-                            }
-
-                            parameters[keyName].Add(
-                                Utilities.ValueToString(v)
-                            );
-                        }
-                    }
-                    else
-                    {
-                        if (!parameters.ContainsKey(keyName))
-                        {
-                            parameters.Add(keyName, new List<string>());
-                        }
-
-                        parameters[keyName].Add(Utilities.ValueToString(val));
-                    }
-                }
+                SerializeDeepObjectClass(parameters, parentName, value);
             }
             else if (Utilities.IsDictionary(value))
             {
-                foreach (var key in ((IDictionary)value).Keys)
-                {
-                    if (key == null)
-                    {
-                        continue;
-                    }
-
-                    var val = ((IDictionary)value)[key];
-
-                    var keyName = $"{parentName}[{key}]";
-
-                    if (val != null && Utilities.IsList(val))
-                    {
-                        foreach (var v in (IList)val)
-                        {
-                            if (!parameters.ContainsKey(keyName))
-                            {
-                                parameters.Add(keyName, new List<string>());
-                            }
-
-                            parameters[keyName].Add(
-                                Utilities.ValueToString(v)
-                            );
-                        }
-                    }
-                    else
-                    {
-                        if (!parameters.ContainsKey(keyName))
-                        {
-                            parameters.Add(keyName, new List<string>());
-                        }
-
-                        parameters[keyName].Add(Utilities.ValueToString(val));
-                    }
-                }
+                SerializeDeepObjectDictionary(parameters, parentName, (IDictionary)value);
             }
 
             return parameters;
+        }
+
+        private static void SerializeDeepObjectClass(Dictionary<string, List<string>> parameters, string parentName, object value)
+        {
+            foreach (var prop in value.GetType().GetProperties())
+            {
+                var val = prop.GetValue(value);
+
+                if (val == null)
+                {
+                    continue;
+                }
+
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetQueryParamMetadata();
+                if (metadata == null || metadata.Name == null)
+                {
+                    continue;
+                }
+
+                AddDeepObjectValue(parameters, $"{parentName}[{metadata.Name}]", val);
+            }
+        }
+
+        private static void SerializeDeepObjectDictionary(Dictionary<string, List<string>> parameters, string parentName, IDictionary value)
+        {
+            foreach (var key in value.Keys)
+            {
+                if (key == null)
+                {
+                    continue;
+                }
+
+                AddDeepObjectValue(parameters, $"{parentName}[{key}]", value[key]);
+            }
+        }
+
+        private static void AddDeepObjectValue(Dictionary<string, List<string>> parameters, string keyName, object? val)
+        {
+            if (val != null && Utilities.IsList(val))
+            {
+                foreach (var v in (IList)val)
+                {
+                    AddToParams(parameters, keyName, Utilities.ValueToString(v));
+                }
+            }
+            else
+            {
+                AddToParams(parameters, keyName, Utilities.ValueToString(val));
+            }
         }
     }
 }

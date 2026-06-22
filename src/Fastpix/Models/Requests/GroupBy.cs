@@ -51,14 +51,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GroupBy)
+                    if (enumVal is GroupBy groupBy)
                     {
-                        return (GroupBy)enumVal;
+                        return groupBy;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GroupBy");
+            throw new ArgumentException($"Unknown value {value} for enum GroupBy", nameof(value));
         }
     }
 

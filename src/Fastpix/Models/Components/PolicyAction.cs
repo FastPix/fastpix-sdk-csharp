@@ -43,14 +43,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is PolicyAction)
+                    if (enumVal is PolicyAction policyAction)
                     {
-                        return (PolicyAction)enumVal;
+                        return policyAction;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum PolicyAction");
+            throw new ArgumentException($"Unknown value {value} for enum PolicyAction", nameof(value));
         }
     }
 

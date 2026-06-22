@@ -52,16 +52,102 @@ namespace Fastpix
 
     public class InVideoAIFeatures: IInVideoAIFeatures
     {
-        public SDKConfig SDKConfiguration { get; private set; }
+        public SdkConfig SDKConfiguration { get; private set; }
 
-        private const string _language = Constants.Language;
-        private const string _sdkVersion = Constants.SdkVersion;
-        private const string _sdkGenVersion = Constants.SdkGenVersion;
-        private const string _openapiDocVersion = Constants.OpenApiDocVersion;
+        private const string ApplicationJsonContentType = "application/json";
+        private const string UnknownContentTypeError = "Unknown content type received";
+        private const string ApiErrorOccurred = "API error occurred";
 
-        public InVideoAIFeatures(SDKConfig config)
+        public InVideoAIFeatures(SdkConfig config)
         {
             SDKConfiguration = config;
+        }
+
+        private RetryConfig ResolveRetryConfig(RetryConfig? retryConfig)
+        {
+            if (retryConfig != null)
+            {
+                return retryConfig;
+            }
+
+            if (this.SDKConfiguration.RetryConfig != null)
+            {
+                return this.SDKConfiguration.RetryConfig;
+            }
+
+            var backoff = new BackoffStrategy(
+                initialIntervalMs: 1000L,
+                maxIntervalMs: 10000L,
+                maxElapsedTimeMs: 3600000L,
+                exponent: 1.5
+            );
+            return new RetryConfig(
+                strategy: RetryConfig.RetryStrategy.BACKOFF,
+                backoff: backoff,
+                retryConnectionErrors: true
+            );
+        }
+
+        private static T DeserializeBody<T>(string httpResponseBody, HttpRequestMessage httpRequest, HttpResponseMessage httpResponse, string typeName)
+        {
+            try
+            {
+                return ResponseBodyDeserializer.DeserializeNotNull<T>(httpResponseBody, NullValueHandling.Ignore);
+            }
+            catch (Exception ex)
+            {
+                throw new ResponseValidationException($"Failed to deserialize response body into {typeName}.", httpRequest, httpResponse, httpResponseBody, ex);
+            }
+        }
+
+        private static List<string> GetRetryStatusCodes()
+        {
+            return new List<string>
+            {
+                "408",
+                "429",
+                "500",
+                "502",
+                "503",
+                "504",
+            };
+        }
+
+        private async Task<HttpResponseMessage> SendWithRetriesAsync(HttpRequestMessage httpRequest, RetryConfig retryConfig, HookContext hookCtx, CancellationToken? cancellationToken)
+        {
+            Func<Task<HttpResponseMessage>> retrySend = async () =>
+            {
+                var _httpRequest = await SDKConfiguration.Client.CloneAsync(httpRequest);
+                return await SDKConfiguration.Client.SendAsync(_httpRequest, cancellationToken);
+            };
+            var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, GetRetryStatusCodes());
+
+            HttpResponseMessage httpResponse;
+            try
+            {
+                httpResponse = await retries.Run();
+                int _statusCode = (int)httpResponse.StatusCode;
+
+                if (_statusCode >= 400 && _statusCode < 600)
+                {
+                    var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
+                    if (_httpResponse != null)
+                    {
+                        httpResponse = _httpResponse;
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), null, error);
+                if (_httpResponse == null)
+                {
+                    throw;
+                }
+                httpResponse = _httpResponse;
+            }
+
+            return await this.SDKConfiguration.Hooks.AfterSuccessAsync(new AfterSuccessContext(hookCtx), httpResponse);
         }
 
         public async Task<UpdateMediaSummaryResponse> UpdateSummaryAsync(string mediaId, UpdateMediaSummaryRequestBody body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -72,7 +158,7 @@ namespace Fastpix
                 Body = body,
             };
             string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
-            var urlString = URLBuilder.Build(baseUrl, "/on-demand/{mediaId}/summary", request, null);
+            var urlString = UrlBuilder.Build(baseUrl, "/on-demand/{mediaId}/summary", request, null);
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Patch, urlString);
             httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
@@ -91,95 +177,22 @@ namespace Fastpix
             var hookCtx = new HookContext(SDKConfiguration, baseUrl, "update-media-summary", null, SDKConfiguration.SecuritySource, cancellationToken);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
-            if (retryConfig == null)
-            {
-                if (this.SDKConfiguration.RetryConfig != null)
-                {
-                    retryConfig = this.SDKConfiguration.RetryConfig;
-                }
-                else
-                {
-                    var backoff = new BackoffStrategy(
-                        initialIntervalMs: 1000L,
-                        maxIntervalMs: 10000L,
-                        maxElapsedTimeMs: 3600000L,
-                        exponent: 1.5
-                    );
-                    retryConfig = new RetryConfig(
-                        strategy: RetryConfig.RetryStrategy.BACKOFF,
-                        backoff: backoff,
-                        retryConnectionErrors: true
-                    );
-                }
-            }
+            retryConfig = ResolveRetryConfig(retryConfig);
 
-            List<string> statusCodes = new List<string>
-            {
-                "408",
-                "429",
-                "500",
-                "502",
-                "503",
-                "504",
-            };
-
-            Func<Task<HttpResponseMessage>> retrySend = async () =>
-            {
-                var _httpRequest = await SDKConfiguration.Client.CloneAsync(httpRequest);
-                return await SDKConfiguration.Client.SendAsync(_httpRequest, cancellationToken);
-            };
-            var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, statusCodes);
-
-            HttpResponseMessage httpResponse;
-            try
-            {
-                httpResponse = await retries.Run();
-                int _statusCode = (int)httpResponse.StatusCode;
-
-                if (_statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
-                {
-                    var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
-                    if (_httpResponse != null)
-                    {
-                        httpResponse = _httpResponse;
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), null, error);
-                if (_httpResponse != null)
-                {
-                    httpResponse = _httpResponse;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            httpResponse = await this.SDKConfiguration.Hooks.AfterSuccessAsync(new AfterSuccessContext(hookCtx), httpResponse);
+            HttpResponseMessage httpResponse = await SendWithRetriesAsync(httpRequest, retryConfig, hookCtx, cancellationToken);
 
             var contentType = httpResponse.Content.Headers.ContentType?.MediaType;
             int responseStatusCode = (int)httpResponse.StatusCode;
             if(responseStatusCode == 200)
             {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
                     var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    UpdateMediaSummaryResponseBody obj;
-                    try
-                    {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<UpdateMediaSummaryResponseBody>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into UpdateMediaSummaryResponseBody.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
+                    var obj = DeserializeBody<UpdateMediaSummaryResponseBody>(httpResponseBody, httpRequest, httpResponse, "UpdateMediaSummaryResponseBody");
 
                     var response = new UpdateMediaSummaryResponse()
                     {
-                        HttpMeta = new Models.Components.HTTPMetadata()
+                        HttpMeta = new Models.Components.HttpMetadata()
                         {
                             Response = httpResponse,
                             Request = httpRequest
@@ -189,34 +202,22 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
-            else if(responseStatusCode >= 400 && responseStatusCode < 500)
+            else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
-            }
-            else if(responseStatusCode >= 500 && responseStatusCode < 600)
-            {
-                throw new Models.Errors.APIException("API error occurred", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
             else
             {
-                if(Utilities.IsContentTypeMatch("application/json", contentType))
+                if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
                     var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
-                    DefaultError obj;
-                    try
-                    {
-                        obj = ResponseBodyDeserializer.DeserializeNotNull<DefaultError>(httpResponseBody, NullValueHandling.Ignore);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ResponseValidationException("Failed to deserialize response body into DefaultError.", httpRequest, httpResponse, httpResponseBody, ex);
-                    }
+                    var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, "DefaultError");
 
                     var response = new UpdateMediaSummaryResponse()
                     {
-                        HttpMeta = new Models.Components.HTTPMetadata()
+                        HttpMeta = new Models.Components.HttpMetadata()
                         {
                             Response = httpResponse,
                             Request = httpRequest
@@ -226,7 +227,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.APIException("Unknown content type received", httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
             }
         }
     }

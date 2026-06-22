@@ -63,14 +63,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GetTimeseriesDataTimespan)
+                    if (enumVal is GetTimeseriesDataTimespan getTimeseriesDataTimespan)
                     {
-                        return (GetTimeseriesDataTimespan)enumVal;
+                        return getTimeseriesDataTimespan;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum GetTimeseriesDataTimespan");
+            throw new ArgumentException($"Unknown value {value} for enum GetTimeseriesDataTimespan", nameof(value));
         }
     }
 

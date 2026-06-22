@@ -49,14 +49,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is Type)
+                    if (enumVal is Type type)
                     {
-                        return (Type)enumVal;
+                        return type;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum Type");
+            throw new ArgumentException($"Unknown value {value} for enum Type", nameof(value));
         }
     }
 

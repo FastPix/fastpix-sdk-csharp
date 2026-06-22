@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "f2UBG2c1osU=",
+  "dgSpecHash": "G0E9VyX92Og=",
   "success": true,
-  "projectFilePath": "/Users/tharunbudidha/Desktop/Fastpix-C-sharp/fastpix-csharp/src/Fastpix/Fastpix.csproj",
+  "projectFilePath": "/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj",
   "expectedPackageFiles": [
-    "/Users/tharunbudidha/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
-    "/Users/tharunbudidha/.nuget/packages/nodatime/3.1.9/nodatime.3.1.9.nupkg.sha512",
-    "/Users/tharunbudidha/.nuget/packages/system.runtime.compilerservices.unsafe/4.7.1/system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512"
+    "/Users/sumasree/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
+    "/Users/sumasree/.nuget/packages/nodatime/3.1.9/nodatime.3.1.9.nupkg.sha512",
+    "/Users/sumasree/.nuget/packages/system.runtime.compilerservices.unsafe/4.7.1/system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512",
+    "/Users/sumasree/.nuget/packages/microsoft.netcore.app.ref/8.0.26/microsoft.netcore.app.ref.8.0.26.nupkg.sha512",
+    "/Users/sumasree/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.26/microsoft.aspnetcore.app.ref.8.0.26.nupkg.sha512"
   ],
   "logs": []
 }

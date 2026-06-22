@@ -17,6 +17,14 @@
     <PackageReference Include="NJsonSchema" Version="11.1.0" />
   </ItemGroup>
 
+  <!-- Example snippets are standalone file-based programs (each has top-level
+       statements and a #:project directive). Exclude them from the project build
+       so they don't clash with Program.cs (CS8802) or trip CS9298 on the directive. -->
+  <ItemGroup>
+    <Compile Remove="examples/**/*.cs" />
+    <None Include="examples/**/*.cs" />
+  </ItemGroup>
+
   <!-- Keep the fixtures next to the binary; the runner resolves them from the project dir anyway. -->
   <ItemGroup>
     <None Include="get-endpoints-fixtures.json" CopyToOutputDirectory="PreserveNewest" />

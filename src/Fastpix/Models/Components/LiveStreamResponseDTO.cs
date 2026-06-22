@@ -13,7 +13,7 @@ namespace Fastpix.Models.Components
     /// <summary>
     /// Displays the result of the request.
     /// </summary>
-    public class LiveStreamResponseDTO
+    public class LiveStreamResponseDto
     {
 
         /// <summary>
@@ -26,6 +26,6 @@ namespace Fastpix.Models.Components
         /// Displays the result of the request.
         /// </summary>
         [JsonProperty("data")]
-        public CreateLiveStreamResponseDTO? Data { get; set; }
+        public CreateLiveStreamResponseDto? Data { get; set; }
     }
 }

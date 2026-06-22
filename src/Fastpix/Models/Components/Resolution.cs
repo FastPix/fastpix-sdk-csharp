@@ -49,14 +49,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is Resolution)
+                    if (enumVal is Resolution resolution)
                     {
-                        return (Resolution)enumVal;
+                        return resolution;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum Resolution");
+            throw new ArgumentException($"Unknown value {value} for enum Resolution", nameof(value));
         }
     }
 

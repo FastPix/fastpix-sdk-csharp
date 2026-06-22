@@ -69,7 +69,6 @@ namespace Fastpix.Models.Components
         public static PlaylistCreatedSchema CreateManual(PlaylistByIdResponseDataManual manual)
         {
             PlaylistCreatedSchemaType typ = PlaylistCreatedSchemaType.Manual;
-            string typStr = PlaylistCreatedSchemaType.Manual.ToString();
             manual.Type = PlaylistByIdResponseDataManualTypeExtension.ToEnum(PlaylistCreatedSchemaType.Manual.ToString());
             PlaylistCreatedSchema res = new PlaylistCreatedSchema(typ);
             res.PlaylistByIdResponseDataManual = manual;
@@ -79,7 +78,6 @@ namespace Fastpix.Models.Components
         public static PlaylistCreatedSchema CreateSmart(PlaylistByIdResponseDataSmart smart)
         {
             PlaylistCreatedSchemaType typ = PlaylistCreatedSchemaType.Smart;
-            string typStr = PlaylistCreatedSchemaType.Smart.ToString();
             smart.Type = PlaylistByIdResponseDataSmartTypeExtension.ToEnum(PlaylistCreatedSchemaType.Smart.ToString());
             PlaylistCreatedSchema res = new PlaylistCreatedSchema(typ);
             res.PlaylistByIdResponseDataSmart = smart;
@@ -100,7 +98,7 @@ namespace Fastpix.Models.Components
                 }
 
                 JObject jo = JObject.Load(reader);
-                string discriminator = jo.GetValue("type")?.ToString() ?? throw new ArgumentNullException("Could not find discriminator field.");
+                string discriminator = jo.GetValue("type")?.ToString() ?? throw new InvalidOperationException("Could not find discriminator field.");
                 if (discriminator == PlaylistCreatedSchemaType.Manual.ToString())
                 {
                     PlaylistByIdResponseDataManual playlistByIDResponseDataManual = ResponseBodyDeserializer.DeserializeNotNull<PlaylistByIdResponseDataManual>(jo.ToString());
@@ -133,7 +131,6 @@ namespace Fastpix.Models.Components
                 if (res.PlaylistByIdResponseDataSmart != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.PlaylistByIdResponseDataSmart));
-                    return;
                 }
             }
 

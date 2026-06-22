@@ -63,14 +63,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is ListByTopContentTimespan)
+                    if (enumVal is ListByTopContentTimespan listByTopContentTimespan)
                     {
-                        return (ListByTopContentTimespan)enumVal;
+                        return listByTopContentTimespan;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum ListByTopContentTimespan");
+            throw new ArgumentException($"Unknown value {value} for enum ListByTopContentTimespan", nameof(value));
         }
     }
 

@@ -47,7 +47,7 @@ namespace FastPixSamples
             };
 
             var response = await client.LiveStreams.CreateAsync(request);
-            var stream = response.LiveStreamResponseDTO;
+            var stream = response.LiveStreamResponseDto;
 
             Console.WriteLine($"Live stream created:");
             Console.WriteLine($"- Stream ID: {stream.Id}");

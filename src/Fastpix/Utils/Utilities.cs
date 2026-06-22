@@ -15,7 +15,7 @@ namespace Fastpix.Utils
     using Newtonsoft.Json;
     using System.Collections;
 
-    public class Utilities
+    public static partial class Utilities
     {
         public static JsonConverter[] GetDefaultJsonSerializers()
         {
@@ -95,7 +95,8 @@ namespace Fastpix.Utils
             }
             else if (IsDictionary(obj))
             {
-                type = type.GetGenericArguments().Last();
+                var genericArgs = type.GetGenericArguments();
+                type = genericArgs[genericArgs.Length - 1];
             }
 
             return JsonConvert.SerializeObject(
@@ -133,7 +134,7 @@ namespace Fastpix.Utils
             return o.GetType().IsClass && (o.GetType().FullName ?? "").StartsWith("Fastpix.Models");
         }
 
-        // TODO: code review polyfilled for IsAssignableTo
+        // Polyfill for Type.IsAssignableTo, kept for framework compatibility.
         public static bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
         {
             return potentialDescendant.IsSubclassOf(potentialBase)
@@ -158,12 +159,14 @@ namespace Fastpix.Utils
         public static bool IsEnum(object? obj) => obj != null && obj.GetType().IsEnum;
 
         public static bool IsDate(object? obj) =>
-            obj != null && (obj.GetType() == typeof(DateTime) || obj.GetType() == typeof(DateOnly));
+            obj is DateTime || obj is DateOnly;
+
+        [GeneratedRegex("^\"(.*)\"$", RegexOptions.None, 1000)]
+        private static partial Regex SurroundingQuotesRegex();
 
         private static string StripSurroundingQuotes(string input)
         {
-            Regex surroundingQuotesRegex = new Regex("^\"(.*)\"$");
-            var match = surroundingQuotesRegex.Match(input);
+            var match = SurroundingQuotesRegex().Match(input);
             if(match.Groups.Values.Count() == 2)
             {
                 return match.Groups.Values.Last().ToString();
@@ -178,20 +181,20 @@ namespace Fastpix.Utils
                 return "";
             }
 
-            if (value.GetType() == typeof(DateTime))
+            if (value is DateTime dateTime)
             {
-                return ((DateTime)value)
+                return dateTime
                     .ToUniversalTime()
                     .ToString("o", System.Globalization.CultureInfo.InvariantCulture);
             }
-            else if (value.GetType() == typeof(DateOnly))
+            else if (value is DateOnly dateOnly)
             {
-                return ((DateOnly)value)
+                return dateOnly
                     .ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             }
-            else if (value.GetType() == typeof(bool))
+            else if (value is bool boolean)
             {
-                return (bool)value ? "true" : "false";
+                return boolean ? "true" : "false";
             }
             else if (IsEnum(value))
             {
@@ -230,18 +233,18 @@ namespace Fastpix.Utils
 
             if (IsEnum(obj))
             {
-                var attributes = obj.GetType().GetMember(obj.ToString() ?? "").First().CustomAttributes;
-                if (attributes.Count() == 0)
+                var attributes = obj.GetType().GetMember(obj.ToString() ?? "")[0].CustomAttributes;
+                if (!attributes.Any())
                 {
                     return JsonConvert.SerializeObject(obj);
                 }
 
                 var args = attributes.First().ConstructorArguments;
-                if (args.Count() == 0)
+                if (!args.Any())
                 {
                     return JsonConvert.SerializeObject(obj);
                 }
-                return StripSurroundingQuotes(args.First().ToString());
+                return StripSurroundingQuotes(args[0].ToString());
             }
 
             if (IsDate(obj))
@@ -276,15 +279,15 @@ namespace Fastpix.Utils
                 }
 
                 var parts = mediaType.Split('/');
-                if (parts.Length == 2)
+                if (parts.Length == 2 && (parts[0] + "/*" == expected || "*/" + parts[1] == expected))
                 {
-                    if (parts[0] + "/*" == expected || "*/" + parts[1] == expected)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            catch (Exception) { }
+            catch (FormatException)
+            {
+                // Malformed content type header: treat as a non-match and fall through to return false.
+            }
 
             return false;
         }

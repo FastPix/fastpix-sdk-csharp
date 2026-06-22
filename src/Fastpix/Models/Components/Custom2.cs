@@ -24,7 +24,7 @@ namespace Fastpix.Models.Components
         /// <summary>
         /// A list of custom dimension objects.
         /// </summary>
-        [JsonProperty("Custom", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(nameof(Custom), NullValueHandling = NullValueHandling.Ignore)]
         public List<Custom1>? Custom { get; set; }
     }
 }

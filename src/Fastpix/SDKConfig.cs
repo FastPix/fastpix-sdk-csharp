@@ -14,7 +14,7 @@ namespace Fastpix
     using System.Collections.Generic;
     using System.Linq;
 
-    public struct SDKConfig
+    public struct SdkConfig
     {
         /// <summary>
         /// List of server URLs available to the SDK.
@@ -23,25 +23,25 @@ namespace Fastpix
             "https://api.fastpix.com/v1/",
         };
 
-        public IFastpixHttpClient Client;
-        public string ServerUrl;
-        public int ServerIndex;
-        public string UserAgent;
-        public Func<Fastpix.Models.Components.Security>? SecuritySource;
-        public SDKHooks Hooks;
-        public RetryConfig? RetryConfig;
+        public IFastpixHttpClient Client { get; set; }
+        public string ServerUrl { get; set; }
+        public int ServerIndex { get; set; }
+        public string UserAgent { get; set; }
+        public Func<Fastpix.Models.Components.Security>? SecuritySource { get; set; }
+        public SdkHooks Hooks { get; set; }
+        public RetryConfig? RetryConfig { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the SDKConfig struct with default values.
+        /// Initializes a new instance of the SdkConfig struct with default values.
         /// </summary>
-        public SDKConfig(IFastpixHttpClient? client = null)
+        public SdkConfig(IFastpixHttpClient? client = null)
         {
             Client = client ?? new FastpixHttpClient();
             ServerUrl = "";
             ServerIndex = 0;
-            UserAgent = "fastpix-sdk/csharp 1.1.2 2.788.7 1.0.0 Fastpix";
+            UserAgent = "fastpix-sdk/csharp 1.1.4 2.788.7 1.0.0 Fastpix";
             SecuritySource = null;
-            Hooks = new SDKHooks();
+            Hooks = new SdkHooks();
             RetryConfig = null;
         }
 
@@ -51,7 +51,7 @@ namespace Fastpix
             {
                 return Utilities.TemplateUrl(Utilities.RemoveSuffix(this.ServerUrl, "/"), new Dictionary<string, string>());
             }
-            return Utilities.TemplateUrl(SDKConfig.ServerList[this.ServerIndex], new Dictionary<string, string>());
+            return Utilities.TemplateUrl(SdkConfig.ServerList[this.ServerIndex], new Dictionary<string, string>());
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Fastpix
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -52,6 +53,8 @@ namespace Fastpix
     /// **Use case scenarios**   - **Token-based authentication:** Validate user access to premium or subscription-based content.   - **Key rotation:** Regularly rotate keys to reduce risk of compromise.   - **Protect intellectual property:** Prevent unauthorized distribution of valuable media assets.   - **Control usage:** Restrict access to specific users, groups, or contexts.   - **Prevent tampering:** Ensure requested assets have not been modified.   - **Time-bound access:** Enable signed URLs with expiration for controlled viewing windows.
     /// </remarks>
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase",
+        Justification = "Public SDK entry-point name; renaming would be a breaking API change for consumers.")]
     public interface IFastpixSDK
     {
         public IInputVideo InputVideo { get; }
@@ -138,14 +141,12 @@ namespace Fastpix
     /// **Use case scenarios**   - **Token-based authentication:** Validate user access to premium or subscription-based content.   - **Key rotation:** Regularly rotate keys to reduce risk of compromise.   - **Protect intellectual property:** Prevent unauthorized distribution of valuable media assets.   - **Control usage:** Restrict access to specific users, groups, or contexts.   - **Prevent tampering:** Ensure requested assets have not been modified.   - **Time-bound access:** Enable signed URLs with expiration for controlled viewing windows.
     /// </remarks>
     /// </summary>
+    [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase",
+        Justification = "Public SDK entry-point name; renaming would be a breaking API change for consumers.")]
     public class FastpixSDK: IFastpixSDK
     {
-        public SDKConfig SDKConfiguration { get; private set; }
+        public SdkConfig SDKConfiguration { get; private set; }
 
-        private const string _language = Constants.Language;
-        private const string _sdkVersion = Constants.SdkVersion;
-        private const string _sdkGenVersion = Constants.SdkGenVersion;
-        private const string _openapiDocVersion = Constants.OpenApiDocVersion;
         public IInputVideo InputVideo { get; private set; }
         public IManageVideos ManageVideos { get; private set; }
         public IVideos Videos { get; private set; }
@@ -170,7 +171,7 @@ namespace Fastpix
         public IMetrics Metrics { get; private set; }
         public IErrors Errors { get; private set; }
 
-        public FastpixSDK(SDKConfig config)
+        public FastpixSDK(SdkConfig config)
         {
             SDKConfiguration = config;
             InitHooks();
@@ -235,20 +236,14 @@ namespace Fastpix
         /// <exception cref="Exception">Thrown when the serverIndex is out of range (less than 0 or greater than or equal to the server list length).</exception>
         public FastpixSDK(Fastpix.Models.Components.Security? security = null, Func<Fastpix.Models.Components.Security>? securitySource = null, int? serverIndex = null, string? serverUrl = null, Dictionary<string, string>? urlParams = null, IFastpixHttpClient? client = null, RetryConfig? retryConfig = null)
         {
-            if (serverIndex != null)
+            if (serverIndex != null && (serverIndex.Value < 0 || serverIndex.Value >= SdkConfig.ServerList.Length))
             {
-                if (serverIndex.Value < 0 || serverIndex.Value >= SDKConfig.ServerList.Length)
-                {
-                    throw new Exception($"Invalid server index {serverIndex.Value}");
-                }
+                throw new ArgumentOutOfRangeException(nameof(serverIndex), $"Invalid server index {serverIndex.Value}");
             }
 
-            if (serverUrl != null)
+            if (serverUrl != null && urlParams != null)
             {
-                if (urlParams != null)
-                {
-                    serverUrl = Utilities.TemplateUrl(serverUrl, urlParams);
-                }
+                serverUrl = Utilities.TemplateUrl(serverUrl, urlParams);
             }
             Func<Fastpix.Models.Components.Security>? _securitySource = null;
 
@@ -262,10 +257,10 @@ namespace Fastpix
             }
             else
             {
-                throw new Exception("security and securitySource cannot both be null");
+                throw new ArgumentException("security and securitySource cannot both be null");
             }
 
-            SDKConfiguration = new SDKConfig(client)
+            SDKConfiguration = new SdkConfig(client)
             {
                 ServerIndex = serverIndex == null ? 0 : serverIndex.Value,
                 ServerUrl = serverUrl == null ? "" : serverUrl,
@@ -327,17 +322,19 @@ namespace Fastpix
             SDKConfiguration = SDKConfiguration.Hooks.SDKInit(SDKConfiguration);
         }
 
+        [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase",
+            Justification = "Public SDK builder name; renaming would be a breaking API change for consumers.")]
         public class SDKBuilder
         {
-            private SDKConfig _sdkConfig = new SDKConfig(client: new FastpixHttpClient());
+            private SdkConfig _sdkConfig = new SdkConfig(client: new FastpixHttpClient());
 
             public SDKBuilder() { }
 
             public SDKBuilder WithServerIndex(int serverIndex)
             {
-                if (serverIndex < 0 || serverIndex >= SDKConfig.ServerList.Length)
+                if (serverIndex < 0 || serverIndex >= SdkConfig.ServerList.Length)
                 {
-                    throw new Exception($"Invalid server index {serverIndex}");
+                    throw new ArgumentOutOfRangeException(nameof(serverIndex), $"Invalid server index {serverIndex}");
                 }
                 _sdkConfig.ServerIndex = serverIndex;
                 return this;
@@ -380,7 +377,7 @@ namespace Fastpix
             public FastpixSDK Build()
             {
               if (_sdkConfig.SecuritySource == null) {
-                  throw new Exception("securitySource cannot be null. One of `Security` or `securitySource` needs to be defined.");
+                  throw new InvalidOperationException("securitySource cannot be null. One of `Security` or `securitySource` needs to be defined.");
               }
               return new FastpixSDK(_sdkConfig);
             }

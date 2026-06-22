@@ -111,7 +111,6 @@ namespace Fastpix.Models.Components
                 }
 
                 var json = JRaw.Create(reader).ToString();
-                var fallbackCandidates = new List<(System.Type, object, string)>();
 
                 if (json[0] == '"' && json[^1] == '"'){
                     return new EventTime(EventTimeType.Str)
@@ -133,25 +132,6 @@ namespace Fastpix.Models.Components
                     // try next option
                 }
 
-                if (fallbackCandidates.Count > 0)
-                {
-                    fallbackCandidates.Sort((a, b) => ResponseBodyDeserializer.CompareFallbackCandidates(a.Item1, b.Item1, json));
-                    foreach(var (deserializationType, returnObject, propertyName) in fallbackCandidates)
-                    {
-                        try
-                        {
-                            return ResponseBodyDeserializer.DeserializeUndiscriminatedUnionFallback(deserializationType, returnObject, propertyName, json);
-                        }
-                        catch (ResponseBodyDeserializer.DeserializationException)
-                        {
-                            // try next fallback option
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-                    }
-                }
 
                 throw new InvalidOperationException("Could not deserialize into any supported types.");
             }
@@ -180,7 +160,6 @@ namespace Fastpix.Models.Components
                 if (res.Integer != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.Integer));
-                    return;
                 }
             }
 

@@ -14,7 +14,7 @@ namespace Fastpix.Utils
     using System.Text;
 
 
-    internal class RequestBodySerializer
+    internal static class RequestBodySerializer
     {
 
         public static HttpContent? Serialize(
@@ -30,9 +30,10 @@ namespace Fastpix.Utils
             {
                 if (!nullable && !optional)
                 {
-                    throw new ArgumentNullException("request body is required");
+                    throw new ArgumentNullException(nameof(request), "request body is required");
                 }
-                else if (nullable && serializationMethod == "json")
+
+                if (nullable && serializationMethod == "json")
                 {
                     return new StringContent("null", Encoding.UTF8, "application/json");
                 }
@@ -40,33 +41,48 @@ namespace Fastpix.Utils
                 return null;
             }
 
-            if (Utilities.IsClass(request))
+            if (TrySerializeFlattenedField(request, requestFieldName, serializationMethod, out var content))
             {
-                var prop = GetPropertyInfo(request, requestFieldName);
-
-                if (prop != null)
-                {
-                    var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetRequestMetadata();
-                    if (metadata != null)
-                    {
-                        var fieldValue = prop.GetValue(request);
-                        if (fieldValue == null)
-                        {
-                            return null;
-                        }
-
-                        return TrySerialize(
-                            fieldValue,
-                            requestFieldName,
-                            serializationMethod,
-                            metadata.MediaType ?? ""
-                        );
-                    }
-                }
+                return content;
             }
 
             // Not an object or flattened request
             return TrySerialize(request, requestFieldName, serializationMethod, "", format);
+        }
+
+        private static bool TrySerializeFlattenedField(
+            object request,
+            string requestFieldName,
+            string serializationMethod,
+            out HttpContent? content
+        )
+        {
+            content = null;
+
+            if (!Utilities.IsClass(request))
+            {
+                return false;
+            }
+
+            var prop = GetPropertyInfo(request, requestFieldName);
+            var metadata = prop?.GetCustomAttribute<FastpixMetadataAttribute>()?.GetRequestMetadata();
+            if (metadata == null)
+            {
+                return false;
+            }
+
+            var fieldValue = prop!.GetValue(request);
+            if (fieldValue != null)
+            {
+                content = TrySerialize(
+                    fieldValue,
+                    requestFieldName,
+                    serializationMethod,
+                    metadata.MediaType ?? ""
+                );
+            }
+
+            return true;
         }
 
         private static HttpContent? TrySerialize(
@@ -94,134 +110,131 @@ namespace Fastpix.Utils
                 case "json":
                     return SerializeJson(request, mediaType, format);
                 case "form":
-                    return SerializeForm(request, requestFieldName, mediaType);
+                    return SerializeForm(request, requestFieldName);
                 case "multipart":
-                    return SerializeMultipart(request, mediaType);
+                    return SerializeMultipart(request);
                 default:
                     // if request is a byte array, use it directly otherwise encode
-                    if (request.GetType() == typeof(byte[]))
+                    if (request is byte[] rawBytes)
                     {
-                        return SerializeRaw((byte[])request, mediaType);
+                        return SerializeRaw(rawBytes, mediaType);
                     }
-                    else if (request.GetType() == typeof(string))
+
+                    if (request is string rawString)
                     {
-                        return SerializeString((string)request, mediaType);
+                        return SerializeString(rawString, mediaType);
                     }
-                    else
-                    {
-                        throw new Exception(
-                            "Cannot serialize request body of type "
-                                + request.GetType().Name
-                                + " with serialization method "
-                                + serializationMethod
-                                + ""
-                        );
-                    }
+
+                    throw new NotSupportedException(
+                        "Cannot serialize request body of type "
+                            + request.GetType().Name
+                            + " with serialization method "
+                            + serializationMethod
+                    );
             }
         }
 
-        private static HttpContent SerializeJson(object request, string mediaType, string format = "")
+        private static StringContent SerializeJson(object request, string mediaType, string format = "")
         {
             return new StringContent(Utilities.SerializeJSON(request, format), Encoding.UTF8, mediaType);
         }
 
-        private static HttpContent SerializeForm(
-            object request,
-            string requestFieldName,
-            string mediaType
-        )
+        private static List<string> GetOrAddList(Dictionary<string, List<string>> form, string key)
+        {
+            if (!form.TryGetValue(key, out var list))
+            {
+                list = new List<string>();
+                form[key] = list;
+            }
+
+            return list;
+        }
+
+        private static FormUrlEncodedContent SerializeForm(object request, string requestFieldName)
         {
             Dictionary<string, List<string>> form = new Dictionary<string, List<string>>();
 
             if (Utilities.IsClass(request))
             {
-                var props = request.GetType().GetProperties();
-
-                foreach (var prop in props)
-                {
-                    var val = prop.GetValue(request);
-                    if (val == null)
-                    {
-                        continue;
-                    }
-
-                    var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetFormMetadata();
-                    if (metadata == null)
-                    {
-                        continue;
-                    }
-
-                    if (metadata.Json)
-                    {
-                        var key = metadata.Name ?? prop.Name;
-                        if (key == "")
-                        {
-                            continue;
-                        }
-
-                        if (!form.ContainsKey(key))
-                        {
-                            form.Add(key, new List<string>());
-                        }
-
-                        form[key].Add(Utilities.SerializeJSON(val));
-                    }
-                    else
-                    {
-                        switch (metadata.Style)
-                        {
-                            case "form":
-                                SerializeFormValue(
-                                    metadata.Name ?? prop.Name,
-                                    metadata.Explode,
-                                    val,
-                                    ref form
-                                );
-                                break;
-                            default:
-                                throw new Exception("Unsupported form style " + metadata.Style);
-                        }
-                    }
-                }
+                PopulateFormFromClass(request, form);
             }
             else if (Utilities.IsDictionary(request))
             {
-                foreach (var k in ((IDictionary)request).Keys)
-                {
-                    var key = k?.ToString();
-
-                    if (key == null)
-                    {
-                        continue;
-                    }
-
-                    if (!form.ContainsKey(key))
-                    {
-                        form.Add(key, new List<string>());
-                    }
-
-                    form[key].Add(Utilities.ValueToString(((IDictionary)request)[key]));
-                }
+                PopulateFormFromDictionary((IDictionary)request, form);
             }
             else if (Utilities.IsList(request))
             {
-                foreach (var item in (IList)request)
-                {
-                    if (!form.ContainsKey(requestFieldName))
-                    {
-                        form.Add(requestFieldName, new List<string>());
-                    }
-
-                    form[requestFieldName].Add(Utilities.ValueToString(item));
-                }
+                PopulateFormFromList((IList)request, requestFieldName, form);
             }
             else
             {
-                throw new Exception(
+                throw new NotSupportedException(
                     "Cannot serialize form data from type " + request.GetType().Name
                 );
             }
 
+            return BuildFormContent(form);
+        }
+
+        private static void PopulateFormFromClass(object request, Dictionary<string, List<string>> form)
+        {
+            foreach (var prop in request.GetType().GetProperties())
+            {
+                var val = prop.GetValue(request);
+                if (val == null)
+                {
+                    continue;
+                }
+
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetFormMetadata();
+                if (metadata == null)
+                {
+                    continue;
+                }
+
+                if (metadata.Json)
+                {
+                    var key = metadata.Name ?? prop.Name;
+                    if (key != "")
+                    {
+                        GetOrAddList(form, key).Add(Utilities.SerializeJSON(val));
+                    }
+                }
+                else if (metadata.Style == "form")
+                {
+                    SerializeFormValue(metadata.Name ?? prop.Name, metadata.Explode, val, ref form);
+                }
+                else
+                {
+                    throw new NotSupportedException("Unsupported form style " + metadata.Style);
+                }
+            }
+        }
+
+        private static void PopulateFormFromDictionary(IDictionary request, Dictionary<string, List<string>> form)
+        {
+            foreach (var k in request.Keys)
+            {
+                var key = k?.ToString();
+                if (key == null)
+                {
+                    continue;
+                }
+
+                GetOrAddList(form, key).Add(Utilities.ValueToString(request[key]));
+            }
+        }
+
+        private static void PopulateFormFromList(IList request, string requestFieldName, Dictionary<string, List<string>> form)
+        {
+            foreach (var item in request)
+            {
+                GetOrAddList(form, requestFieldName).Add(Utilities.ValueToString(item));
+            }
+        }
+
+        private static FormUrlEncodedContent BuildFormContent(Dictionary<string, List<string>> form)
+        {
             var formData = new List<KeyValuePair<string?, string?>>();
 
             foreach (var key in form.Keys)
@@ -240,13 +253,11 @@ namespace Fastpix.Utils
             return new FormUrlEncodedContent(formData);
         }
 
-        private static HttpContent SerializeMultipart(object request, string mediaType)
+        private static MultipartFormDataContent SerializeMultipart(object request)
         {
             var formData = new MultipartFormDataContent();
 
-            var properties = request.GetType().GetProperties();
-
-            foreach (var prop in properties)
+            foreach (var prop in request.GetType().GetProperties())
             {
                 var value = prop.GetValue(request);
                 if (value == null)
@@ -254,7 +265,7 @@ namespace Fastpix.Utils
                     continue;
                 }
 
-                var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetMultipartFormMetadata();
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetMultipartFormMetadata();
                 if (metadata == null)
                 {
                     continue;
@@ -262,44 +273,7 @@ namespace Fastpix.Utils
 
                 if (metadata.File)
                 {
-                    if (Utilities.IsList(value))
-                    {
-                        // Handle array/list of files - similar to how normal lists are handled
-                        foreach (var fileItem in (IList)value)
-                        {
-                            if (!Utilities.IsClass(fileItem))
-                            {
-                                throw new Exception(
-                                    "Cannot serialize multipart file from type " + fileItem.GetType().Name
-                                );
-                            }
-
-                            var fileProps = fileItem.GetType().GetProperties();
-                            var (fileName, content) = ExtractFileProperties(fileProps, fileItem);
-                            string fieldName = metadata.Name ?? prop.Name;
-
-                            var fileContent = new ByteArrayContent(content);
-                            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                            formData.Add(fileContent, fieldName, fileName);
-                        }
-                    }
-                    else if (Utilities.IsClass(value))
-                    {
-                        // Handle single file
-                        var fileProps = value.GetType().GetProperties();
-                        var (fileName, content) = ExtractFileProperties(fileProps, value);
-                        string fieldName = metadata.Name;
-
-                        var fileContent = new ByteArrayContent(content);
-                        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                        formData.Add(fileContent, fieldName, fileName);
-                    }
-                    else
-                    {
-                        throw new Exception(
-                            "Cannot serialize multipart file from type " + value.GetType().Name
-                        );
-                    }
+                    AddMultipartFile(formData, value, metadata, prop);
                 }
                 else if (metadata.Json)
                 {
@@ -310,16 +284,9 @@ namespace Fastpix.Utils
                 }
                 else if (Utilities.IsList(value))
                 {
-                    var values = new List<string>();
-
                     foreach (var item in (IList)value)
                     {
-                        values.Add(Utilities.ValueToString(item));
-                    }
-
-                    foreach (var val in values)
-                    {
-                        formData.Add(new StringContent(val), metadata.Name ?? prop.Name);
+                        formData.Add(new StringContent(Utilities.ValueToString(item)), metadata.Name ?? prop.Name);
                     }
                 }
                 else
@@ -334,14 +301,59 @@ namespace Fastpix.Utils
             return formData;
         }
 
-        private static HttpContent SerializeRaw(byte[] request, string mediaType)
+        private static void AddMultipartFile(
+            MultipartFormDataContent formData,
+            object value,
+            FastpixMetadataAttribute.MultipartFormMetadata metadata,
+            PropertyInfo prop
+        )
+        {
+            if (Utilities.IsList(value))
+            {
+                // Handle array/list of files - similar to how normal lists are handled
+                foreach (var fileItem in (IList)value)
+                {
+                    if (!Utilities.IsClass(fileItem))
+                    {
+                        throw new NotSupportedException(
+                            "Cannot serialize multipart file from type " + fileItem.GetType().Name
+                        );
+                    }
+
+                    AddFileContent(formData, fileItem, metadata.Name ?? prop.Name);
+                }
+            }
+            else if (Utilities.IsClass(value))
+            {
+                // Handle single file
+                AddFileContent(formData, value, metadata.Name);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    "Cannot serialize multipart file from type " + value.GetType().Name
+                );
+            }
+        }
+
+        private static void AddFileContent(MultipartFormDataContent formData, object fileItem, string fieldName)
+        {
+            var fileProps = fileItem.GetType().GetProperties();
+            var (fileName, content) = ExtractFileProperties(fileProps, fileItem);
+
+            var fileContent = new ByteArrayContent(content);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            formData.Add(fileContent, fieldName, fileName);
+        }
+
+        private static ByteArrayContent SerializeRaw(byte[] request, string mediaType)
         {
             var content = new ByteArrayContent(request);
             content.Headers.Add("Content-Type", mediaType);
             return content;
         }
 
-        private static HttpContent SerializeString(string request, string mediaType)
+        private static StringContent SerializeString(string request, string mediaType)
         {
             return new StringContent(request, Encoding.UTF8, mediaType);
         }
@@ -355,161 +367,162 @@ namespace Fastpix.Utils
         {
             if (Utilities.IsClass(value))
             {
-                if (Utilities.IsDate(value))
-                {
-                    if (!form.ContainsKey(fieldName))
-                    {
-                        form[fieldName] = new List<string>();
-                    }
-
-                    form[fieldName].Add(Utilities.ValueToString(value));
-                }
-                else
-                {
-                    var props = value.GetType().GetProperties();
-
-                    var items = new List<string>();
-
-                    foreach (var prop in props)
-                    {
-                        var val = prop.GetValue(value);
-                        if (val == null)
-                        {
-                            continue;
-                        }
-
-                        var metadata = prop.GetCustomAttribute<FastpixMetadata>()?.GetFormMetadata();
-                        if (metadata == null || metadata.Name == null)
-                        {
-                            continue;
-                        }
-
-                        if (explode)
-                        {
-                            if (!form.ContainsKey(metadata.Name))
-                            {
-                                form[metadata.Name] = new List<string>();
-                            }
-
-                            if (Utilities.IsList(val))
-                            {
-                                foreach(var item in (IEnumerable)val)
-                                {
-                                    form[metadata.Name].Add(Utilities.ValueToString(item));
-                                }
-                            }
-                            else
-                            {
-                              form[metadata.Name].Add(Utilities.ValueToString(val));
-                            }
-                        }
-                        else
-                        {
-                            if (Utilities.IsList(val))
-                            {
-                                foreach(var item in (IEnumerable)val)
-                                {
-                                    items.Add($"{metadata.Name},{Utilities.ValueToString(item)}");
-                                }
-                            }
-                            else
-                            {
-                              items.Add($"{metadata.Name},{Utilities.ValueToString(val)}");
-                            }
-                        }
-                    }
-
-                    if (items.Count > 0)
-                    {
-                        if (!form.ContainsKey(fieldName))
-                        {
-                            form[fieldName] = new List<string>();
-                        }
-
-                        form[fieldName].Add(string.Join(",", items));
-                    }
-                }
+                SerializeFormValueClass(fieldName, explode, value, form);
             }
             else if (Utilities.IsDictionary(value))
             {
-                var items = new List<string>();
-
-                foreach (var k in ((IDictionary)value).Keys)
-                {
-                    var key = k?.ToString();
-
-                    if (key == null)
-                    {
-                        continue;
-                    }
-
-                    if (explode)
-                    {
-                        if (!form.ContainsKey(key))
-                        {
-                            form[key] = new List<string>();
-                        }
-
-                        form[key].Add(
-                            Utilities.ValueToString(((IDictionary)value)[key])
-                        );
-                    }
-                    else
-                    {
-                        items.Add($"{key},{Utilities.ValueToString(((IDictionary)value)[key])}");
-                    }
-                }
-
-                if (items.Count > 0)
-                {
-                    if (!form.ContainsKey(fieldName))
-                    {
-                        form[fieldName] = new List<string>();
-                    }
-
-                    form[fieldName].Add(string.Join(",", items));
-                }
+                SerializeFormValueDictionary(fieldName, explode, (IDictionary)value, form);
             }
             else if (Utilities.IsList(value))
             {
-                var values = new List<string>();
-                var items = new List<string>();
+                SerializeFormValueList(fieldName, explode, (IList)value, form);
+            }
+            else
+            {
+                GetOrAddList(form, fieldName).Add(Utilities.ValueToString(value));
+            }
+        }
 
-                foreach (var item in (IList)value)
+        private static void SerializeFormValueClass(
+            string fieldName,
+            bool explode,
+            object value,
+            Dictionary<string, List<string>> form
+        )
+        {
+            if (Utilities.IsDate(value))
+            {
+                GetOrAddList(form, fieldName).Add(Utilities.ValueToString(value));
+                return;
+            }
+
+            var items = new List<string>();
+
+            foreach (var prop in value.GetType().GetProperties())
+            {
+                var val = prop.GetValue(value);
+                if (val == null)
                 {
-                    if (explode)
-                    {
-                        values.Add(Utilities.ValueToString(item));
-                    }
-                    else
-                    {
-                        items.Add(Utilities.ValueToString(item));
-                    }
+                    continue;
                 }
 
-                if (items.Count > 0)
+                var metadata = prop.GetCustomAttribute<FastpixMetadataAttribute>()?.GetFormMetadata();
+                if (metadata == null || metadata.Name == null)
                 {
-                    values.Add(string.Join(",", items));
+                    continue;
                 }
 
-                foreach (var val in values)
+                if (explode)
                 {
-                    if (!form.ContainsKey(fieldName))
-                    {
-                        form[fieldName] = new List<string>();
-                    }
+                    AddExplodedValues(form, metadata.Name, val);
+                }
+                else
+                {
+                    AddJoinedValues(items, metadata.Name, val);
+                }
+            }
 
-                    form[fieldName].Add(val);
+            if (items.Count > 0)
+            {
+                GetOrAddList(form, fieldName).Add(string.Join(",", items));
+            }
+        }
+
+        private static void AddExplodedValues(Dictionary<string, List<string>> form, string name, object val)
+        {
+            var list = GetOrAddList(form, name);
+
+            if (Utilities.IsList(val))
+            {
+                foreach (var item in (IEnumerable)val)
+                {
+                    list.Add(Utilities.ValueToString(item));
                 }
             }
             else
             {
-                if (!form.ContainsKey(fieldName))
+                list.Add(Utilities.ValueToString(val));
+            }
+        }
+
+        private static void AddJoinedValues(List<string> items, string name, object val)
+        {
+            if (Utilities.IsList(val))
+            {
+                foreach (var item in (IEnumerable)val)
                 {
-                    form[fieldName] = new List<string>();
+                    items.Add($"{name},{Utilities.ValueToString(item)}");
+                }
+            }
+            else
+            {
+                items.Add($"{name},{Utilities.ValueToString(val)}");
+            }
+        }
+
+        private static void SerializeFormValueDictionary(
+            string fieldName,
+            bool explode,
+            IDictionary value,
+            Dictionary<string, List<string>> form
+        )
+        {
+            var items = new List<string>();
+
+            foreach (var k in value.Keys)
+            {
+                var key = k?.ToString();
+                if (key == null)
+                {
+                    continue;
                 }
 
-                form[fieldName].Add(Utilities.ValueToString(value));
+                if (explode)
+                {
+                    GetOrAddList(form, key).Add(Utilities.ValueToString(value[key]));
+                }
+                else
+                {
+                    items.Add($"{key},{Utilities.ValueToString(value[key])}");
+                }
+            }
+
+            if (items.Count > 0)
+            {
+                GetOrAddList(form, fieldName).Add(string.Join(",", items));
+            }
+        }
+
+        private static void SerializeFormValueList(
+            string fieldName,
+            bool explode,
+            IList value,
+            Dictionary<string, List<string>> form
+        )
+        {
+            var values = new List<string>();
+            var items = new List<string>();
+
+            foreach (var item in value)
+            {
+                if (explode)
+                {
+                    values.Add(Utilities.ValueToString(item));
+                }
+                else
+                {
+                    items.Add(Utilities.ValueToString(item));
+                }
+            }
+
+            if (items.Count > 0)
+            {
+                values.Add(string.Join(",", items));
+            }
+
+            foreach (var val in values)
+            {
+                GetOrAddList(form, fieldName).Add(val);
             }
         }
 
@@ -521,7 +534,7 @@ namespace Fastpix.Utils
             foreach (var fileProp in fileProps)
             {
                 var fileMetadata = fileProp
-                    .GetCustomAttribute<FastpixMetadata>()
+                    .GetCustomAttribute<FastpixMetadataAttribute>()
                     ?.GetMultipartFormMetadata();
                 if (
                     fileMetadata == null
@@ -543,7 +556,7 @@ namespace Fastpix.Utils
 
             if (fileName == "" || content == null)
             {
-                throw new Exception("Invalid multipart/form-data file");
+                throw new InvalidOperationException("Invalid multipart/form-data file");
             }
 
             return (fileName, content);

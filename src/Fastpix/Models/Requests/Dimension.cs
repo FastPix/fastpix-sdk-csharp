@@ -155,14 +155,14 @@ namespace Fastpix.Models.Requests
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is Dimension)
+                    if (enumVal is Dimension dimension)
                     {
-                        return (Dimension)enumVal;
+                        return dimension;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum Dimension");
+            throw new ArgumentException($"Unknown value {value} for enum Dimension", nameof(value));
         }
     }
 

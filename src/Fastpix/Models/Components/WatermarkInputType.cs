@@ -41,14 +41,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is WatermarkInputType)
+                    if (enumVal is WatermarkInputType watermarkInputType)
                     {
-                        return (WatermarkInputType)enumVal;
+                        return watermarkInputType;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum WatermarkInputType");
+            throw new ArgumentException($"Unknown value {value} for enum WatermarkInputType", nameof(value));
         }
     }
 

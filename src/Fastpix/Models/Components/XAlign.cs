@@ -45,14 +45,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is XAlign)
+                    if (enumVal is XAlign xAlign)
                     {
-                        return (XAlign)enumVal;
+                        return xAlign;
                     }
                 }
             }
 
-            throw new Exception($"Unknown value {value} for enum XAlign");
+            throw new ArgumentException($"Unknown value {value} for enum XAlign", nameof(value));
         }
     }
 
