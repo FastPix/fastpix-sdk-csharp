@@ -5,11 +5,11 @@ using Fastpix.Utils;
 using Newtonsoft.Json;
 
 var sdk = new FastpixSDK(security: new Security() {
-    Username = "1b92c0d6-5548-4642-b13e-4bb7d77dbaf4",
-    Password = "ff32012b-ec02-40ca-b0d4-711d81537e73",
+    Username = "your-access-token",
+    Password = "your-secret-key",
 });
 
-var res = await sdk.Playlists.DeleteAsync(playlistId: "2b2ce02d-54f8-47f6-b21d-9bec5096eb42");
+var res = await sdk.Playlists.DeleteAsync(playlistId: "your-playlist-id");
 
 // handle response
 Console.WriteLine(

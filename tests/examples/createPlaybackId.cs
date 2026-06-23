@@ -6,12 +6,12 @@ using Fastpix.Utils;
 using Newtonsoft.Json;
 
 var sdk = new FastpixSDK(security: new Security() {
-    Username = "1b92c0d6-5548-4642-b13e-4bb7d77dbaf4",
-    Password = "ff32012b-ec02-40ca-b0d4-711d81537e73",
+    Username = "your-access-token",
+    Password = "your-secret-key",
 });
 
 var res = await sdk.Playback.CreateAsync(
-    mediaId: "28da13b6-7e27-4ea7-a971-13c7c6fdc917",
+    mediaId: "your-media-id",
     body: new CreateMediaPlaybackIdRequestBody() {
         AccessPolicy = AccessPolicy.Public,
         Resolution = Fastpix.Models.Requests.Resolution.OneThousandAndEightyp,

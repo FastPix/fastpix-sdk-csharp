@@ -8,8 +8,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 
 var sdk = new FastpixSDK(security: new Security() {
-    Username = "1b92c0d6-5548-4642-b13e-4bb7d77dbaf4",
-    Password = "ff32012b-ec02-40ca-b0d4-711d81537e73",
+    Username = "your-access-token",
+    Password = "your-secret-key",
 });
 
 // NOTE: domain restrictions can only be updated once the playback ID is
@@ -17,8 +17,8 @@ var sdk = new FastpixSDK(security: new Security() {
 // "Ready" status. Use a playback ID belonging to a Ready media (the values
 // below were created from a Ready media). A freshly created playback ID can
 // stay "preparing" for up to ~2 minutes, so we retry on that 400 below.
-var mediaId = "28da13b6-7e27-4ea7-a971-13c7c6fdc917";
-var playbackId = "3c8b5171-4537-4261-bb47-177eedb4fa21";
+var mediaId = "your-media-id";
+var playbackId = "your-playback-id";
 
 UpdateDomainRestrictionsResponse? res = null;
 for (int attempt = 1; attempt <= 24; attempt++) // ~2 min at 5s intervals
