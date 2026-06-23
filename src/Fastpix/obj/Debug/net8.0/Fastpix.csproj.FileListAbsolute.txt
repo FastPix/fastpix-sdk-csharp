@@ -1508,7 +1508,6 @@
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.AssemblyInfoInputs.cache
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.AssemblyInfo.cs
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.csproj.CoreCompileInputs.cache
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.sourcelink.json
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.dll
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/refint/Fastpix.dll
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.xml
