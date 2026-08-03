@@ -177,7 +177,7 @@ namespace Fastpix
             {
                 if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     var obj = DeserializeOrThrow<LiveStreamDeleteResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "LiveStreamDeleteResponse");
 
                     return new EnableLiveStreamResponse()
@@ -191,17 +191,17 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                 var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                 return new EnableLiveStreamResponse()
@@ -215,7 +215,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
         }
 
         public async Task<DisableLiveStreamResponse> DisableAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -265,7 +265,7 @@ namespace Fastpix
             {
                 if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     var obj = DeserializeOrThrow<LiveStreamDeleteResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "LiveStreamDeleteResponse");
 
                     return new DisableLiveStreamResponse()
@@ -279,17 +279,17 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                 var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                 return new DisableLiveStreamResponse()
@@ -303,7 +303,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
         }
     }
 }

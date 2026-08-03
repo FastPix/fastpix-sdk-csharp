@@ -181,7 +181,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     GetDrmConfigurationResponseBody obj;
                     try
                     {
@@ -204,17 +204,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     DefaultError obj;
                     try
                     {
@@ -237,7 +237,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
         }
 
@@ -271,7 +271,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     GetDrmConfigurationByIdResponseBody obj;
                     try
                     {
@@ -294,17 +294,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     DefaultError obj;
                     try
                     {
@@ -327,7 +327,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
         }
     }

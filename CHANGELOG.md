@@ -5,6 +5,75 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+Synchronises the SDK with the current `fastpix-openai.yaml`. The four new
+In-video AI operations (`/ai/{mediaId}/advanced-summary`,
+`/ai/{mediaId}/attributed-transcript`) are **not** included in this entry.
+
+### Breaking
+
+- **`Models.Components.GetMediaResponse` renamed to
+  `Models.Components.GetMediaDetailResponse`**, following the schema rename on
+  `GET /on-demand/{mediaId}`. Its generated companion types were renamed to
+  match: `GetMediaResponseMaxResolution`, `…MediaQuality`, `…Mp4Support`,
+  `…SourceResolution`, `…Status` and `…Track` are now
+  `GetMediaDetailResponse*`. The HTTP wrapper `Models.Requests.GetMediaResponse`
+  is unchanged.
+- **`UpdateTrackRequest.Url` removed.** The API does not allow a track's file to
+  be changed — only its language and title. Callers setting `Url` must drop it.
+- **`UpdateMediaMaxResolution.ThreeHundredAndSixtyp` (`360p`) removed**, matching
+  the `Update-Media.maxResolution` enum. No other `maxResolution` enum offered
+  `360p`, and no request enum accepts it, so the API cannot return it.
+- **`Mp4Support` on media responses is now a list, not a scalar enum.** The
+  schema has long declared `mp4Support` as an array of rendition objects, but
+  the SDK modelled it as a single string enum, so any response with MP4
+  renditions present failed to deserialize. On `Media`, `GetAllMediaResponse`,
+  `GetMediaDetailResponse`, `LiveMediaClips`, `SourceAccessMedia` and
+  `UpdateMedia` the property is now `List<Mp4SupportEntry>?`, and the six
+  per-model enums (`MediaMp4Support`, `GetAllMediaResponseMp4Support`,
+  `GetMediaDetailResponseMp4Support`, `LiveMediaClipsMp4Support`,
+  `SourceAccessMediaMp4Support`, `UpdateMediaMp4Support`) were removed.
+  Read the requested setting from the request models — `CreateMediaRequestMp4Support`,
+  `DirectUploadVideoMediaMp4Support` and `UpdatedMp4SupportMp4Support` are
+  unchanged and remain string enums.
+
+### Added
+
+- **`Title` on ten track models**: `AddTrackRequest`, `AddTrackResponse`,
+  `UpdateTrackRequest`, `UpdateTrackResponse`, `GenerateTrackResponse`,
+  `TrackSubtitlesGenerateRequest`, `AudioTrack`, `SubtitleTrack`, `VideoTrack`
+  and `VideoTrackForGetAll`.
+- **`OptimizeAudio`** (`bool?`) on `Media`, `GetAllMediaResponse`,
+  `LiveMediaClips`, `SourceAccessMedia`, `GetMediaDetailResponse` and
+  `UpdateMedia`.
+- **`Mp4SupportEntry`** component, describing one downloadable MP4 rendition
+  (`Type`, `Status`, `Height`, `Width`, `Ext`), together with the
+  `Mp4SupportType` (`capped_4k`, `audioOnly`), `Mp4SupportStatus` (`preparing`,
+  `ready`, `failed`) and `Mp4SupportExt` (`mp4`, `m4a`) enums.
+- **`360p` and `360`** added to the `sourceResolution` enums for
+  `GetAllMediaResponse`, `GetMediaDetailResponse`, `LiveMediaClips`, `Media` and
+  `SourceAccessMedia`. `UpdateMediaSourceResolution` already carried both.
+
+### Fixed
+
+- Documentation links updated for the FastPix docs reorganisation — webhook
+  events now under `/docs/webhooks/`, track and playback guides under
+  `/docs/video-on-demand/`, AI guides under `/docs/in-video-ai/`, live-stream
+  guides under `/docs/live-streaming/`, analytics guides under
+  `/docs/video-data/`, and `/docs/error-codes` → `/docs/error-codes/error-codes`.
+  Live-stream "Manage streams" links now carry their per-operation anchors.
+- Webhook event renamed in prose: `video.media.subtitle.generated.ready` →
+  `video.media.subtitle.generated`.
+- The `GET /on-demand/{mediaId}` and `PATCH /on-demand/{mediaId}/update-mp4Support`
+  response examples now show `mp4Support` as the array of rendition objects the
+  schema declares, rather than the scalar `"capped_4k"`.
+
+### Compatibility
+
+- `maxDuration.minimum` moved from `0` to `60` on the live-stream response
+  models. The SDK does not emit range validation, so there is no code change.
+
+---
+
 ## [1.1.4]
 
 ### Changed

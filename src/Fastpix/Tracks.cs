@@ -176,7 +176,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     var obj = DeserializeOrThrow<DeleteMediaTrackResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DeleteMediaTrackResponseBody");
 
                     var response = new DeleteMediaTrackResponse()
@@ -191,17 +191,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault());
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                     var response = new DeleteMediaTrackResponse()
@@ -216,7 +216,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken.GetValueOrDefault()));
             }
         }
     }
