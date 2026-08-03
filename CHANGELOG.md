@@ -4,6 +4,7 @@
 All notable changes to this project will be documented in this file.
 
 ---
+## [1.1.5]
 
 Synchronises the SDK with the current `fastpix-openai.yaml`. The four new
 In-video AI operations (`/ai/{mediaId}/advanced-summary`,

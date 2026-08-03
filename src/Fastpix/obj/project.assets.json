@@ -310,7 +310,7 @@
     "/Users/sumasree/.nuget/packages/": {}
   },
   "project": {
-    "version": "1.1.4",
+    "version": "1.1.5",
     "restore": {
       "projectUniqueName": "/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj",
       "projectName": "Fastpix",

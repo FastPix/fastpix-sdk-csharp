@@ -24,11 +24,11 @@ using System.Reflection;
 **Signing Keys**: Manage cryptographic signing keys for secure token-based access. Create/rotate keys, protect intellectual property, control usage, and enable time-bound access with signed URLs.
 
 Use cases: Video-on-demand platforms, e-learning solutions, event broadcasting, creator platforms, corporate streaming, analytics dashboards, and quality monitoring.")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.4.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.4+eac0a4cb965e2da79628bc99b4ea822a5a7dc4b1")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.5.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fastpix")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fastpix")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.1.4.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.1.5.0")]
 [assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/FastPix/fastpix-sdk-csharp")]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Fastpix.UnitTests")]
 
