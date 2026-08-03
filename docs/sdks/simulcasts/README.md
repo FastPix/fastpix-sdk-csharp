@@ -20,7 +20,7 @@ Creates a simulcast for a parent live stream. Simulcasting allows you to broadca
 #### Example
 An event manager sets up a live stream for a virtual conference and wants to simulcast the stream on YouTube and Facebook Live. They first create the primary live stream in FastPix, ensuring it's in the idle state. Then, they use the API to create a simulcast target for YouTube. 
 
-Related guide: <a href="https://fastpix.com/docs/edit-and-transform-live-stream/simulcast-to-multiple-platforms">Simulcast to 3rd party platforms</a>
+Related guide: <a href="https://fastpix.com/docs/live-streaming/simulcast-to-multiple-platforms">Simulcast to 3rd party platforms</a>
 
 ### Example Usage
 
@@ -31,6 +31,7 @@ using Fastpix.Models.Components;
 using System.Collections.Generic;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -50,11 +51,12 @@ var res = await sdk.Simulcasts.CreateAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.SimulcastResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.SimulcastResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -79,7 +81,7 @@ Console.WriteLine(
 
 Deletes a simulcast using its unique simulcastId, which you received during the simulcast creation process. Deleting a simulcast stops the broadcast to the associated platform, while the parent stream continues if it’s live. This action can’t be undone, and you must create a new simulcast to resume streaming to the same platform.
 
-Webhook event: <a href="https://fastpix.com/docs/live-stream-events/live-events#videolive_streamsimulcast_targetdeleted">video.live_stream.simulcast_target.deleted</a>
+Webhook event: <a href="https://fastpix.com/docs/webhooks/live-events#videolive_streamsimulcast_targetdeleted">video.live_stream.simulcast_target.deleted</a>
 
 
 #### Example
@@ -93,6 +95,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -106,11 +109,12 @@ var res = await sdk.Simulcasts.DeleteAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.SimulcastdeleteResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.SimulcastdeleteResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -135,7 +139,7 @@ Console.WriteLine(
 
 Updates the status of a specific simulcast linked to a parent live stream. You can enable or disable the simulcast at any time while the parent stream is active or idle. After the live stream is disabled, the simulcast can no longer be modified.
 
-Webhook event: <a href="https://fastpix.com/docs/live-stream-events/live-events#videolive_streamsimulcast_targetupdated">video.live_stream.simulcast_target.updated</a>
+Webhook event: <a href="https://fastpix.com/docs/webhooks/live-events#videolive_streamsimulcast_targetupdated">video.live_stream.simulcast_target.updated</a>
 
 #### Example
 When a `PATCH` request is made to this endpoint, the API updates the status of the simulcast. This can be useful for pausing or resuming a simulcast on a particular platform without stopping the parent live stream.
@@ -149,6 +153,7 @@ using Fastpix.Models.Components;
 using System.Collections.Generic;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -167,11 +172,12 @@ var res = await sdk.Simulcasts.UpdateAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.SimulcastUpdateResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.SimulcastUpdateResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

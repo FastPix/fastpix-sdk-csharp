@@ -31,6 +31,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -44,11 +45,12 @@ var res = await sdk.DrmConfigurations.ListAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -89,6 +91,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -99,11 +102,12 @@ var res = await sdk.DrmConfigurations.GetByIdAsync(drmConfigurationId: "<drmConf
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

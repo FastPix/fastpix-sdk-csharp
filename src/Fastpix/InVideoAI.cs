@@ -34,11 +34,11 @@ namespace Fastpix
         /// 2. Include the `chapters` parameter in the request body to enable.<br/>
         /// 3. The response contains the updated media data, confirming the changes made.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaichaptersready&quot;&gt;video.mediaAI.chapters.ready&lt;/a&gt; webhook event to track and notify about the chapters generation.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaaichaptersready&quot;&gt;video.mediaAI.chapters.ready&lt;/a&gt; webhook event to track and notify about the chapters generation.<br/>
         /// <br/>
         /// **Use case:** This is particularly useful when a user uploads a video and later decides to enable chapters without re-uploading the entire video.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/generate-video-chapters&quot;&gt;Video chapters&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/in-video-ai/generate-video-chapters&quot;&gt;Video chapters&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -60,11 +60,11 @@ namespace Fastpix
         /// 2. Include the `namedEntities` parameter in the request body to enable.<br/>
         /// 3. Receive a response containing the updated media data, confirming the changes made.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaainamedentitiesready&quot;&gt;video.mediaAI.named-entities.ready&lt;/a&gt; webhook event to track and notify about the named entities extraction.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaainamedentitiesready&quot;&gt;video.mediaAI.named-entities.ready&lt;/a&gt; webhook event to track and notify about the named entities extraction.<br/>
         /// <br/>
         /// **Use case:** If a user uploads a video and later decides to enable named entity extraction without re-uploading the entire video.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/extract-named-entities-from-a-video&quot;&gt;Named entities&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/in-video-ai/extract-named-entities-from-a-video&quot;&gt;Named entities&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -195,7 +195,7 @@ namespace Fastpix
             {
                 if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<UpdateMediaChaptersResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "UpdateMediaChaptersResponseBody");
 
                     return new UpdateMediaChaptersResponse()
@@ -209,17 +209,17 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                 var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                 return new UpdateMediaChaptersResponse()
@@ -233,7 +233,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
         }
 
         public async Task<UpdateMediaNamedEntitiesResponse> UpdateNamedEntitiesAsync(string mediaId, UpdateMediaNamedEntitiesRequestBody body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -290,7 +290,7 @@ namespace Fastpix
             {
                 if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<UpdateMediaNamedEntitiesResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "UpdateMediaNamedEntitiesResponseBody");
 
                     return new UpdateMediaNamedEntitiesResponse()
@@ -304,17 +304,17 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                 var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                 return new UpdateMediaNamedEntitiesResponse()
@@ -328,7 +328,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
         }
     }
 }

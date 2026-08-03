@@ -60,7 +60,7 @@ namespace Fastpix
         ///   * **field:** The grouping field value based on the groupBy parameter. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -96,7 +96,7 @@ namespace Fastpix
         ///   * **globalValue:** A global metric value that reflects the overall performance of the specified metric across the entire dataset for the given timespan. This value is not affected by specific filters. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -142,7 +142,7 @@ namespace Fastpix
         ///   3. You Receive a response containing the comparison values for the specified metrics across the selected dimensions. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/explore-the-dashboard#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -279,7 +279,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     ListBreakdownValuesResponseBody obj;
                     try
                     {
@@ -302,17 +302,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new ListBreakdownValuesResponse()
@@ -327,7 +327,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -364,7 +364,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     ListOverallValuesResponseBody obj;
                     try
                     {
@@ -387,17 +387,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new ListOverallValuesResponse()
@@ -412,7 +412,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -442,7 +442,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     GetTimeseriesDataResponseBody obj;
                     try
                     {
@@ -465,17 +465,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new GetTimeseriesDataResponse()
@@ -490,7 +490,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -527,7 +527,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     ListComparisonValuesResponseBody obj;
                     try
                     {
@@ -550,17 +550,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Include);
 
                     var response = new ListComparisonValuesResponse()
@@ -575,7 +575,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }

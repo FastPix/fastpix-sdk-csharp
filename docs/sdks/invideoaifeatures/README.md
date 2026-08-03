@@ -16,7 +16,7 @@ This endpoint allows you to generate the summary for an existing media.
 3. Include the `summaryLength` parameter, specify the desired length of the summary in words (for example, 120 words), this determines how concise or detailed the summary will be. If no specific summary length is provided, the default length will be 100 words.
 4. The response includes the updated media data and confirmation of the changes applied.
 
-You can use the <a href="https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaisummaryready">video.mediaAI.summary.ready</a> webhook event to track and notify about the summary generation.
+You can use the <a href="https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaaisummaryready">video.mediaAI.summary.ready</a> webhook event to track and notify about the summary generation.
 
 
 
@@ -24,7 +24,7 @@ You can use the <a href="https://fastpix.com/docs/ai-events/in-video-ai-events#v
 
 **Use case**: This is particularly useful when a user uploads a video and later chooses to generate a summary without needing to re-upload the video.
 
-Related guide: <a href="https://fastpix.com/docs/video-intelligence/generate-a-video-summary">Video summary</a>
+Related guide: <a href="https://fastpix.com/docs/in-video-ai/generate-a-video-summary">Video summary</a>
 
 
 ### Example Usage
@@ -36,6 +36,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -51,11 +52,12 @@ var res = await sdk.InVideoAIFeatures.UpdateSummaryAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

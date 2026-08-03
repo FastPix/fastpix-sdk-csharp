@@ -50,5 +50,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("status")]
         public string? Status { get; set; }
+
+        /// <summary>
+        /// Title of the track.
+        /// </summary>
+        [JsonProperty("title")]
+        public string? Title { get; set; }
     }
 }

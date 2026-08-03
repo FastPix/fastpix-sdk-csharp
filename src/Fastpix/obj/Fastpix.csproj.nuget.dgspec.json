@@ -5,7 +5,7 @@
   },
   "projects": {
     "/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj": {
-      "version": "1.1.4",
+      "version": "1.1.5",
       "restore": {
         "projectUniqueName": "/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/Fastpix.csproj",
         "projectName": "Fastpix",
@@ -45,6 +45,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.SourceLink.GitHub": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "newtonsoft.json": {
               "target": "Package",
               "version": "[13.0.3, )"

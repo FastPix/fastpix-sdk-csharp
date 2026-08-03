@@ -34,11 +34,11 @@ namespace Fastpix
         /// 2. Include the `moderation` object and provide the requried `type` parameter in the request body to specify the media type (for example, video/audio/av).<br/>
         /// 4. The response contains the updated media data, confirming the changes made.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaimoderationready&quot;&gt;video.mediaAI.moderation.ready&lt;/a&gt; webhook event to track and notify about the detected moderation results.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaaimoderationready&quot;&gt;video.mediaAI.moderation.ready&lt;/a&gt; webhook event to track and notify about the detected moderation results.<br/>
         /// <br/>
         /// **Use case:** This is particularly useful when a user uploads a video and later decides to enable moderation detection without the need to re-upload it.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/detect-nsfw-content-and-profanity&quot;&gt;Moderate NSFW &amp; Profanity&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/in-video-ai/detect-nsfw-content-and-profanity&quot;&gt;Moderate NSFW &amp; Profanity&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -182,7 +182,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<UpdateMediaModerationResponseBody>(httpResponseBody, httpRequest, httpResponse, "UpdateMediaModerationResponseBody", NullValueHandling.Ignore);
 
                     var response = new UpdateMediaModerationResponse()
@@ -197,17 +197,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new UpdateMediaModerationResponse()
@@ -222,7 +222,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }

@@ -15,7 +15,7 @@ This endpoint creates a new playlist within a specified workspace. A playlist ac
 - **Manual:** Creates an empty playlist without any initial media items. Use this mode for manual curation, where you add items later in a user-defined sequence.
 - **Smart:** Auto-populates the playlist at creation time based on the filter criteria (for example, a video creation date range) that you provide in the request.
 
-For more details, see <a href="https://fastpix.com/docs/playback-and-delivery/create-and-manage-playlists">Create and manage playlist</a>.
+For more details, see <a href="https://fastpix.com/docs/video-on-demand/create-and-manage-playlists">Create and manage playlist</a>.
 
 #### How it works 
 
@@ -34,6 +34,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -65,11 +66,12 @@ var res = await sdk.Playlist.CreateAsync(req);
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.PlaylistCreatedResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.PlaylistCreatedResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

@@ -38,7 +38,7 @@ namespace Fastpix.Utils
 
             if (Nullable.GetUnderlyingType(objectType) != null) {
                 objectType = Nullable.GetUnderlyingType(objectType)!;
-                extensionType = System.Type.GetType(objectType!.FullName + "Extension");
+                extensionType = System.Type.GetType(objectType.FullName + "Extension");
             }
 
             if (extensionType == null)

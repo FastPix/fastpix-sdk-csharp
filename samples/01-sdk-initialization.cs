@@ -15,16 +15,16 @@ namespace FastPixSamples
             var client = FastPix.Builder()
                 .WithSecurity(new Security
                 {
-                    Username = "your-username-here",
-                    Password = "your-password-here"
+                    Username = "your-access-token",
+                    Password = "your-secret-key"
                 })
                 .Build();
 
             // Alternative: Using constructor
             var security = new Security
             {
-                Username = "your-username-here",
-                Password = "your-password-here"
+                    Username = "your-access-token",
+                    Password = "your-secret-key"
             };
             var client2 = new FastPix(security);
 

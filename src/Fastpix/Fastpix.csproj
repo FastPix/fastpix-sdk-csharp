@@ -3,12 +3,17 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Fastpix</PackageId>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>FastPix-dev</Authors>
     <Company>FastPix</Company>
     <Owners>devs@fastpix.com</Owners>
     <Copyright>Copyright (c) FastPix 2025</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/FastPix/fastpix-sdk-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FastPix/fastpix-sdk-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>fastpix;video;audio;media;streaming;live-streaming;vod;playback;sdk;api</PackageTags>
     <Description>FastPix C# SDK: A comprehensive set of APIs for managing on-demand media (video/audio) and live streaming experiences with built-in security through cryptographic signing keys. Covers the full lifecycle of content creation, management, distribution, playback, and secure access for scalable video-first applications.
 
 **Media APIs**: Create, retrieve, update, and delete media files. Manage metadata, playback settings, and multilingual tracks. Upload videos directly or from URLs, configure playback IDs, and build robust VOD/AOD libraries.
@@ -32,6 +37,22 @@ Use cases: Video-on-demand platforms, e-learning solutions, event broadcasting, 
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+  <!-- SourceLink + symbol package so consumers can step into the SDK while debugging. -->
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Deterministic>true</Deterministic>
+    <!-- Set automatically on CI; enables deterministic, reproducible builds. -->
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true' or '$(TF_BUILD)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Expose internal helpers (UrlBuilder, Utilities, converters) to the unit-test assembly. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Fastpix.UnitTests" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
     <None Include="..\..\docs\**\*" Pack="true" PackagePath="\docs"  CopyToOutputDirectory="PreserveNewest"/>
@@ -40,6 +61,7 @@ Use cases: Video-on-demand platforms, e-learning solutions, event broadcasting, 
   <ItemGroup>
     <PackageReference Include="newtonsoft.json" Version="13.0.3" />
     <PackageReference Include="nodatime" Version="3.1.9" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

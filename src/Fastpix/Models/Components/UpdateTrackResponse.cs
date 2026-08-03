@@ -45,5 +45,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("languageName")]
         public string? LanguageName { get; set; }
+
+        /// <summary>
+        /// Title of the track.
+        /// </summary>
+        [JsonProperty("title")]
+        public string? Title { get; set; }
     }
 }

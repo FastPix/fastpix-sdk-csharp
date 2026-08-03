@@ -32,7 +32,7 @@ namespace Fastpix.Utils
             {
                 throw new InvalidOperationException($"Deserialization error: {typeof(T).Name} cannot be null.");
             }
-            return result!;
+            return result;
         }
 
         public sealed class MissingMemberException : Exception
@@ -75,13 +75,13 @@ namespace Fastpix.Utils
             MethodInfo? method = typeof(ResponseBodyDeserializer).GetMethod("Deserialize");
             if (method != null)
             {
-                MethodInfo generic = method!.MakeGenericMethod(type);
+                MethodInfo generic = method.MakeGenericMethod(type);
                 var args = new object[] { json, NullValueHandling.Ignore, MissingMemberHandling.Ignore };
                 var value = generic.Invoke(null, args);
-                PropertyInfo? propertyInfo = obj.GetType().GetProperty(propertyName!);
+                PropertyInfo? propertyInfo = obj.GetType().GetProperty(propertyName);
                 if (propertyInfo != null && value != null)
                 {
-                    propertyInfo!.SetValue(obj, value!);
+                    propertyInfo.SetValue(obj, value);
                     return obj;
                 }
             }
@@ -98,7 +98,7 @@ namespace Fastpix.Utils
             var jsonPropertyAttributes = type.GetProperties()
                 .Where(prop => Attribute.IsDefined(prop, typeof(JsonPropertyAttribute)))
                 .Select(prop => prop.GetCustomAttribute(typeof(JsonPropertyAttribute)) as JsonPropertyAttribute)
-                .Where(attr => attr != null && attr!.PropertyName != null)
+                .Where(attr => attr != null && attr.PropertyName != null)
                 .ToList();
 
             foreach (var attr in jsonPropertyAttributes)

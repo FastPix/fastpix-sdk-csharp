@@ -20,7 +20,7 @@ This endpoint retrieves the DRM configuration (DRM ID) associated with a workspa
 **Example:**  
 A media service provider may retrieve DRM configuration for a workspace to create DRM content.
 
-Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">Manage DRM configuration</a>
+Related guide: <a href="https://fastpix.com/docs/video-security/set-up-drm-encryption">Manage DRM configuration</a>
 
 
 ### Example Usage
@@ -31,6 +31,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -44,11 +45,12 @@ var res = await sdk.DrmConfigurations.ListAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -78,7 +80,7 @@ This endpoint retrieves a DRM configuration ID. It is used to fetch the DRM-rela
 1. Make a GET request to this endpoint, replacing `{drmConfigurationId}` with the UUID of the DRM configuration.  
 2. The response contains the associated DRM configuration ID.
 
-Related guide: <a href="https://docs.fastpix.io/docs/secure-playback-with-drm">Manage DRM configuration</a>
+Related guide: <a href="https://fastpix.com/docs/video-security/set-up-drm-encryption">Manage DRM configuration</a>
 
 
 ### Example Usage
@@ -89,6 +91,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -99,11 +102,12 @@ var res = await sdk.DrmConfigurations.GetByIdAsync(drmConfigurationId: "<drmConf
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

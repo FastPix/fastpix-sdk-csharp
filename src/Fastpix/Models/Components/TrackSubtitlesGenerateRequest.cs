@@ -38,5 +38,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("languageCode")]
         public Models.Components.LanguageCode? LanguageCode { get; set; } = Fastpix.Models.Components.LanguageCode.EnUS;
+
+        /// <summary>
+        /// Title of the track.
+        /// </summary>
+        [JsonProperty("title")]
+        public string? Title { get; set; }
     }
 }

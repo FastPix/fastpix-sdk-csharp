@@ -27,7 +27,7 @@ namespace Fastpix
         /// Create a new stream
         /// 
         /// <remarks>
-        /// Creates a new &lt;a href=&quot;https://fastpix.com/docs/get-started/live-quickstart&quot;&gt;RTMPS&lt;/a&gt; or &lt;a href=&quot;https://fastpix.com/docs/broadcast/live-stream-with-srt&quot;&gt;SRT&lt;/a&gt; live stream in FastPix. When you create a stream, FastPix generates a unique `streamKey` and `srtSecret` that you can use with broadcasting software such as OBS to connect to FastPix RTMPS or SRT servers. Use SRT for live streaming in unstable network conditions, as it provides error correction and encryption for a more reliable and secure broadcast.<br/>
+        /// Creates a new &lt;a href=&quot;https://fastpix.com/docs/live-streaming/quickstart&quot;&gt;RTMPS&lt;/a&gt; or &lt;a href=&quot;https://fastpix.com/docs/live-streaming/live-stream-with-srt&quot;&gt;SRT&lt;/a&gt; live stream in FastPix. When you create a stream, FastPix generates a unique `streamKey` and `srtSecret` that you can use with broadcasting software such as OBS to connect to FastPix RTMPS or SRT servers. Use SRT for live streaming in unstable network conditions, as it provides error correction and encryption for a more reliable and secure broadcast.<br/>
         /// <br/>
         /// Leverage SRT for live streaming in environments with unstable networks, taking advantage of its error correction and encryption features for a resilient and secure broadcast. <br/>
         /// <br/>
@@ -37,7 +37,7 @@ namespace Fastpix
         /// <br/>
         /// 2. FastPix returns the stream details for both RTMPS and SRT configurations. These keys and IDs from the stream details are essential for connecting the broadcasting software to FastPix’s servers and transmitting the live stream to viewers.<br/>
         /// <br/>
-        /// 3. After the live stream is created, FastPix sends a `POST` request to your specified webhook endpoint with the event &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamcreated&quot;&gt;video.live_stream.created&lt;/a&gt;.<br/>
+        /// 3. After the live stream is created, FastPix sends a `POST` request to your specified webhook endpoint with the event &lt;a href=&quot;https://fastpix.com/docs/webhooks/live-events#videolive_streamcreated&quot;&gt;video.live_stream.created&lt;/a&gt;.<br/>
         /// <br/>
         /// <br/>
         /// **Example:**<br/>
@@ -46,7 +46,7 @@ namespace Fastpix
         ///   Imagine a gaming platform that allows users to live stream gameplay directly from their dashboard. The API creates a new stream, provides the necessary stream key, and sets it to &quot;private&quot; so that only specific viewers can access it. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/get-started/live-quickstart&quot;&gt;How to live stream&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/live-streaming/quickstart&quot;&gt;How to live stream&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<CreateNewStreamResponse> CreateAsync(CreateLiveStreamRequest request, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -77,7 +77,7 @@ namespace Fastpix
         /// <br/>
         /// Suppose a content creator is hosting a live concert and wants to display the number of live viewers on their dashboard. This endpoint can be queried to show up-to-date viewer statistics.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#how-to-get-stream-viewers&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<GetLiveStreamViewerCountByIdResponse> GetViewerCountAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -92,7 +92,7 @@ namespace Fastpix
         ///   Suppose a news agency is broadcasting a live event and wants to track the configurations set for the live stream while also checking the stream&apos;s status.<br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#how-to-get-stream-details&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<GetLiveStreamByIdResponse> GetByIdAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -103,14 +103,14 @@ namespace Fastpix
         /// <remarks>
         /// Permanently deletes a specified live stream from the workspace. If the stream is active, the encoder is disconnected and ingestion stops immediately. This action is irreversible, and any future playback attempts fail as a result.<br/>
         /// <br/>
-        ///   Provide the `streamId` in the request to terminate active connections and remove the stream from the workspace. You can further look for &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamdeleted&quot;&gt;video.live_stream.deleted&lt;/a&gt; webhook to notify your system about the status.<br/>
+        ///   Provide the `streamId` in the request to terminate active connections and remove the stream from the workspace. You can further look for &lt;a href=&quot;https://fastpix.com/docs/webhooks/live-events#videolive_streamdeleted&quot;&gt;video.live_stream.deleted&lt;/a&gt; webhook to notify your system about the status.<br/>
         /// <br/>
         ///   #### Example<br/>
         /// <br/>
         ///   For an online concert platform, a trial stream was mistakenly made public. The event manager deletes the stream before the concert begins to avoid confusion among viewers. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#delete-a-stream&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<DeleteLiveStreamResponse> DeleteAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -129,7 +129,7 @@ namespace Fastpix
         /// <br/>
         /// A virtual event ends, and the system or host needs to close the livestream to prevent further streaming. This endpoint ensures the livestream status is changed from `active` to `idle`, indicating it&apos;s officially completed.<br/>
         /// <br/>
-        /// Related guide &lt;a href=&quot;https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams&quot;&gt;Manage streams&lt;/a&gt;
+        /// Related guide &lt;a href=&quot;https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#how-to-complete-a-stream&quot;&gt;Manage streams&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<CompleteLiveStreamResponse> CompleteAsync(string streamId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -269,7 +269,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     LiveStreamResponseDto obj;
                     try
                     {
@@ -292,17 +292,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new CreateNewStreamResponse()
@@ -317,7 +317,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -353,7 +353,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     GetStreamsResponse obj;
                     try
                     {
@@ -376,17 +376,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Include);
 
                     var response = new GetAllStreamsResponse()
@@ -401,7 +401,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -435,7 +435,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     ViewsCountResponse obj;
                     try
                     {
@@ -458,17 +458,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new GetLiveStreamViewerCountByIdResponse()
@@ -483,7 +483,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -517,7 +517,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     LivestreamgetResponse obj;
                     try
                     {
@@ -540,17 +540,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new GetLiveStreamByIdResponse()
@@ -565,7 +565,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -599,7 +599,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     LiveStreamDeleteResponse obj;
                     try
                     {
@@ -622,17 +622,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new DeleteLiveStreamResponse()
@@ -647,7 +647,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -681,7 +681,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     LiveStreamDeleteResponse obj;
                     try
                     {
@@ -704,17 +704,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, nameof(DefaultError), NullValueHandling.Ignore);
 
                     var response = new CompleteLiveStreamResponse()
@@ -729,7 +729,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }

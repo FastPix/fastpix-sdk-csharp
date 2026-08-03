@@ -24,7 +24,7 @@ Retrieves a list of all media clips generated from a specific livestream. Each m
 Suppose you’re hosting a live gaming event and want to showcase key moments from the stream — such as top plays or final match highlights. You can use this endpoint to fetch all clips generated from that livestream, display them in your dashboard, or use them for post-event editing and sharing.
 
 
-Related guide: <a href="https://docs.fastpix.io/docs/instant-live-clipping">Instant live clipping</a>
+Related guide: <a href="https://fastpix.com/docs/live-streaming/clip-moments-from-a-live-stream">Instant live clipping</a>
 
 
 ### Example Usage
@@ -35,6 +35,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -50,11 +51,12 @@ var res = await sdk.Videos.ListLiveClipsAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -90,7 +92,7 @@ This endpoint allows you to update specific parameters of an existing media file
 
 3. The response returns the updated media data, confirming the changes. 
 
-4. Monitor the <a href="https://docs.fastpix.io/docs/media-events#videomediaupdated">video.media.updated</a> webhook event to track the update status in your system.
+4. Monitor the <a href="https://fastpix.com/docs/webhooks/media-events#videomediaupdated">video.media.updated</a> webhook event to track the update status in your system.
 
 #### Example
 If a user uploads a video and later needs to change the title, add a new description, or update tags, you can use this endpoint to update the media metadata without re-uploading the entire video.
@@ -105,6 +107,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 var sdk = new FastpixSDK(security: new Security() {
@@ -124,11 +127,12 @@ var res = await sdk.Videos.UpdateAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -166,11 +170,11 @@ This endpoint allows you to update an existing audio or subtitle track associate
 
 After updating a track, your system must receive webhook notifications:
 
-1. After successfully updating a track, your system must receive the webhook event <a href="https://docs.fastpix.io/docs/transform-media-events#videomediatrackupdated">video.media.track.updated</a>.
+1. After successfully updating a track, your system must receive the webhook event <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediatrackupdated">video.media.track.updated</a>.
 
-2. Once the new track is processed and ready, you must receive the webhook event <a href="https://docs.fastpix.io/docs/transform-media-events#videomediatrackready">video.media.track.ready</a>.
+2. Once the new track is processed and ready, you must receive the webhook event <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediatrackready">video.media.track.ready</a>.
 
-3. Once the media file is updated with the new track details, a <a href="https://docs.fastpix.io/docs/media-events#videomediaupdated">video.media.updated</a> event must be triggered.
+3. Once the media file is updated with the new track details, a <a href="https://fastpix.com/docs/webhooks/media-events#videomediaupdated">video.media.updated</a> event must be triggered.
 
 
 #### Example
@@ -179,7 +183,7 @@ Suppose you previously added a French subtitle track to a video but now need to 
   - The original track file has errors and needs correction.
   - You want to improve subtitle translations or replace an audio track with a better-quality version.
 
-Related guides: <a href="https://docs.fastpix.io/docs/manage-subtitle-tracks">Add own subtitle tracks</a>, <a href="https://docs.fastpix.io/docs/manage-audio-tracks">Add own audio tracks</a>
+Related guides: <a href="https://fastpix.com/docs/video-on-demand/add-subtitles-to-a-video">Add own subtitle tracks</a>, <a href="https://fastpix.com/docs/video-on-demand/add-audio-to-a-video">Add own audio tracks</a>
 
 
 ### Example Usage
@@ -190,6 +194,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -206,11 +211,12 @@ var res = await sdk.Videos.UpdateTrackAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -256,6 +262,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -266,11 +273,12 @@ var res = await sdk.Videos.GetSummaryAsync(mediaId: "<mediaId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -316,6 +324,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -326,11 +335,12 @@ var res = await sdk.Videos.GetInputInfoAsync(mediaId: "<mediaId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

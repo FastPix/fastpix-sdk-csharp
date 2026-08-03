@@ -19,7 +19,7 @@ The `livestreamId` must be provided in the path, and the stream must not already
 
 A creator disables a livestream to pause it temporarily. Later, they decide to continue the session. By calling this endpoint with the stream's ID, they can re-enable and restart the same livestream.
 
-Related guide <a href="https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams">Manage streams</a>
+Related guide <a href="https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#enable-a-stream">Manage streams</a>
 
 ### Example Usage
 
@@ -29,6 +29,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -39,11 +40,12 @@ var res = await sdk.ManageLiveStream.EnableAsync(streamId: "<streamId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.LiveStreamDeleteResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.LiveStreamDeleteResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -73,7 +75,7 @@ A disabled stream can later be re-enabled using the enable endpoint — however,
 
 A speaker finishes their live session and wants to prevent the stream from being mistakenly started again. By calling this endpoint, the stream is transitioned to a `disabled` state, ensuring it's permanently stopped (unless re-enabled on a paid plan).
 
-Related guide <a href="https://fastpix.com/docs/manage-live-streams/create-and-manage-live-streams">Manage streams</a>
+Related guide <a href="https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#disable-a-stream">Manage streams</a>
 
 ### Example Usage
 
@@ -83,6 +85,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -93,11 +96,12 @@ var res = await sdk.ManageLiveStream.DisableAsync(streamId: "<streamId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.LiveStreamDeleteResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.LiveStreamDeleteResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

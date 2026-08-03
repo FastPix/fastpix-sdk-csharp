@@ -55,7 +55,7 @@ namespace Fastpix
         /// If you manage a video streaming service and want to analyze content performance across devices and browsers. By calling the List Video Views endpoint with filters such as `browser_name` and `device_type`, you can identify which platforms are most popular with your audience. This information helps optimize content for widely used platforms and troubleshoot playback issues on less common devices.<br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/audience-metrics&quot;&gt;Audience metrics&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#1-views-dashboard&quot;&gt;Views dashboard&lt;/a&gt;
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/audience-metrics&quot;&gt;Audience metrics&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/video-data/explore-the-dashboard#1-views-dashboard&quot;&gt;Views dashboard&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<ListVideoViewsResponse> ListAsync(ListVideoViewsRequest? request = null, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -74,7 +74,7 @@ namespace Fastpix
         /// If a developer receives a report of a poor viewing experience for a specific user. By using this endpoint with the users `viewId`, the developer can retrieve metrics like buffering duration, playback errors, and session length. This data allows the developer to pinpoint issues (such as poor connectivity or a browser-specific problem) and take steps to improve the user experience.<br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<GetVideoViewDetailsResponse> GetViewDetailsAsync(string viewId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -98,7 +98,7 @@ namespace Fastpix
         ///   5. You receive a response containing the list of top video views matching the specified criteria.<br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/identify-top-performing-content&quot;&gt;Get top-performing content&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/identify-top-performing-content&quot;&gt;Get top-performing content&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -221,7 +221,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<ListVideoViewsResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "ListVideoViewsResponseBody");
 
                     var response = new ListVideoViewsResponse()
@@ -236,17 +236,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "DefaultError");
 
                     var response = new ListVideoViewsResponse()
@@ -261,7 +261,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -312,7 +312,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<GetVideoViewDetailsResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "GetVideoViewDetailsResponseBody");
 
                     var response = new GetVideoViewDetailsResponse()
@@ -327,17 +327,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                     var response = new GetVideoViewDetailsResponse()
@@ -352,7 +352,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -405,7 +405,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<ListByTopContentResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "ListByTopContentResponseBody");
 
                     var response = new ListByTopContentResponse()
@@ -420,17 +420,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "DefaultError");
 
                     var response = new ListByTopContentResponse()
@@ -445,7 +445,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }

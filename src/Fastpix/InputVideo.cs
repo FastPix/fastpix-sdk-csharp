@@ -64,10 +64,10 @@ namespace Fastpix
         /// <br/>
         /// 4. Use the id in subsequent API calls, such as checking the status of the media with the &lt;a href=&quot;https://fastpix.com/docs/video-on-demand-api/manage-videos/get-media&quot;&gt;Get Media by ID&lt;/a&gt; endpoint to determine when the media is ready for playback. <br/>
         /// <br/>
-        /// FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, after the media file is created (but not yet processed or encoded), FastPix sends a `POST` request to your specified webhook URL with the event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediacreated&quot;&gt;video.media.created&lt;/a&gt;. <br/>
+        /// FastPix uses webhooks to tell your application about things that happen in the background, outside of the API regular request flow. For instance, after the media file is created (but not yet processed or encoded), FastPix sends a `POST` request to your specified webhook URL with the event &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediacreated&quot;&gt;video.media.created&lt;/a&gt;. <br/>
         /// <br/>
         /// <br/>
-        /// After processing completes, monitor the events &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaready&quot;&gt;video.media.ready&lt;/a&gt; and &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediafailed&quot;&gt;video.media.failed&lt;/a&gt; to track the status of the media file.<br/>
+        /// After processing completes, monitor the events &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediaready&quot;&gt;video.media.ready&lt;/a&gt; and &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediafailed&quot;&gt;video.media.failed&lt;/a&gt; to track the status of the media file.<br/>
         /// <br/>
         /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-a-url&quot;&gt;Upload videos from URL&lt;/a&gt;<br/>
         /// 
@@ -83,7 +83,7 @@ namespace Fastpix
         /// <br/>
         /// &gt; **NOTE**<br/>
         /// &gt;<br/>
-        /// &gt; This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the <a href="https://fastpix.com/docs/changelog/api-update-direct-upload-media-from-device">changelog</a>.<br/>
+        /// &gt; This version now supports uploads with no file size limitations and offers faster uploads. The previous endpoint (which had a 500MB size limit) is now deprecated. You can find details in the <a href="https://fastpix.com/docs/changelog/release-notes">changelog</a>.<br/>
         /// <br/>
         /// #### How it works<br/>
         /// <br/>
@@ -91,7 +91,7 @@ namespace Fastpix
         /// <br/>
         /// 2. The response includes an `uploadId` and a signed `url` for direct video file upload.<br/>
         /// <br/>
-        /// 3. Upload your video file to the provided url by making a PUT request. The API accepts the media file from your device and uploads it to the FastPix platform. (Refer to &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-device#step-3-initiate-the-upload&quot;&gt;Step 3: Initiate the upload&lt;/a&gt; for complete instructions.)<br/>
+        /// 3. Upload your video file to the provided url by making a PUT request. The API accepts the media file from your device and uploads it to the FastPix platform. (Refer to &lt;a href=&quot;https://fastpix.com/docs/upload-videos/upload-videos-from-device#initiate-the-upload-session-web-only&quot;&gt;Step 3: Initiate the upload&lt;/a&gt; for complete instructions.)<br/>
         /// <br/>
         /// <br/>
         /// 4. Once uploaded, the media undergoes processing and is assigned a unique ID for tracking. Retain this `uploadId` for any future operations related to this upload. <br/>
@@ -234,7 +234,7 @@ namespace Fastpix
             {
                 if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<CreateMediaSuccessResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "CreateMediaSuccessResponse");
 
                     return new Models.Requests.CreateMediaResponse()
@@ -248,17 +248,17 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                 var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DefaultError");
 
                 return new Models.Requests.CreateMediaResponse()
@@ -272,7 +272,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
         }
 
         public async Task<DirectUploadVideoMediaResponse> UploadAsync(DirectUploadVideoMediaRequest? request = null, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
@@ -325,7 +325,7 @@ namespace Fastpix
             {
                 if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DirectUploadVideoMediaResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "DirectUploadVideoMediaResponseBody");
 
                     return new DirectUploadVideoMediaResponse()
@@ -339,17 +339,17 @@ namespace Fastpix
                     };
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
 
             if (Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
             {
-                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                 var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "DefaultError");
 
                 return new DirectUploadVideoMediaResponse()
@@ -363,7 +363,7 @@ namespace Fastpix
                 };
             }
 
-            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+            throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
         }
     }
 }

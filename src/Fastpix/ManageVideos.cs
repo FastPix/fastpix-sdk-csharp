@@ -83,7 +83,7 @@ namespace Fastpix
         /// <br/>
         /// 2. This action is irreversible. Make sure you no longer need the media before proceeding. Once deleted, the media can’t be retrieved or played back. <br/>
         /// <br/>
-        /// 3. Monitor the following webhook event: &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediadeleted&quot;&gt;video.media.deleted&lt;/a&gt;<br/>
+        /// 3. Monitor the following webhook event: &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediadeleted&quot;&gt;video.media.deleted&lt;/a&gt;<br/>
         /// <br/>
         /// #### Example<br/>
         /// A user on a video-sharing platform decides to remove an old video from their profile, or suppose you&apos;re running a content moderation system, and one of the videos uploaded by a user violates your platform&apos;s policies. Using this endpoint, the media is permanently deleted from your library, ensuring it&apos;s no longer accessible or viewable by other users.<br/>
@@ -110,17 +110,17 @@ namespace Fastpix
         /// <br/>
         /// #### Webhook events<br/>
         /// <br/>
-        /// 1. After successfully adding a track, your system must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackcreated&quot;&gt;video.media.track.created&lt;/a&gt;.<br/>
+        /// 1. After successfully adding a track, your system must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/webhooks/transform-media-events#videomediatrackcreated&quot;&gt;video.media.track.created&lt;/a&gt;.<br/>
         /// <br/>
-        /// 2. Once the track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
+        /// 2. Once the track is processed and ready, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/webhooks/transform-media-events#videomediatrackready&quot;&gt;video.media.track.ready&lt;/a&gt;.<br/>
         /// <br/>
-        /// 3. Finally, an update event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; must notify your system about the media&apos;s updated status.<br/>
+        /// 3. Finally, an update event &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; must notify your system about the media&apos;s updated status.<br/>
         /// <br/>
         /// <br/>
         /// #### Example<br/>
         /// Suppose you have a video uploaded to the FastPix platform, and you want to add an Italian audio track to it. By calling this API, you can attach an external audio file (https://static.fastpix.com/music-1.mp3) to the media file. Similarly, if you need to add subtitles in different languages, you can specify type: `subtitle` with the corresponding subtitle `url`, `languageCode` and `languageName`.<br/>
         /// <br/>
-        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
+        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -139,7 +139,7 @@ namespace Fastpix
         /// <br/>
         /// #### Webhook Events<br/>
         /// <br/>
-        /// Once the upload is cancelled, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediauploadcancelled&quot;&gt;video.media.upload.cancelled&lt;/a&gt;.<br/>
+        /// Once the upload is cancelled, you must receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediauploadcancelled&quot;&gt;video.media.upload.cancelled&lt;/a&gt;.<br/>
         /// <br/>
         /// #### Example<br/>
         /// <br/>
@@ -165,11 +165,11 @@ namespace Fastpix
         /// <br/>
         /// #### Webhook Events<br/>
         /// <br/>
-        /// 1. After the subtitle track is generated and ready, you receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediasubtitlegeneratedready&quot;&gt;video.media.subtitle.generated.ready&lt;/a&gt;.<br/>
+        /// 1. After the subtitle track is generated and ready, you receive the webhook event &lt;a href=&quot;https://fastpix.com/docs/webhooks/transform-media-events#videomediasubtitlegenerated&quot;&gt;video.media.subtitle.generated&lt;/a&gt;.<br/>
         /// <br/>
-        /// 2. Finally the &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event notifies your system about the media’s updated status.<br/>
+        /// 2. Finally the &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event notifies your system about the media’s updated status.<br/>
         /// <br/>
-        /// &lt;/br&gt; Related guide: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/generate-subtitles-automatically&quot;&gt;Add auto-generated subtitles&lt;/a&gt;<br/>
+        /// &lt;/br&gt; Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/generate-subtitles-automatically&quot;&gt;Add auto-generated subtitles&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -188,7 +188,7 @@ namespace Fastpix
         /// 2. Include the updated `sourceAccess` parameter in the request body.<br/>
         /// <br/>
         /// 3. You receive a response confirming the update to the media’s source access status.<br/>
-        /// 4. Webhook events: &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediasourceready&quot;&gt;video.media.source.ready&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediasourcedeleted&quot;&gt;video.media.source.deleted&lt;/a&gt;<br/>
+        /// 4. Webhook events: &lt;a href=&quot;https://fastpix.com/docs/webhooks/transform-media-events#videomediasourceready&quot;&gt;video.media.source.ready&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/webhooks/transform-media-events#videomediasourcedeleted&quot;&gt;video.media.source.deleted&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -220,13 +220,13 @@ namespace Fastpix
         /// <br/>
         /// #### Webhook events<br/>
         /// <br/>
-        /// - &lt;a href=&quot;https://fastpix.com/docs/vod-events/transform-media-events#videomediamp4supportready&quot;&gt;video.media.mp4Support.ready&lt;/a&gt; – Triggered when the MP4 support setting is successfully updated.<br/>
+        /// - &lt;a href=&quot;https://fastpix.com/docs/webhooks/transform-media-events#videomediamp4supportready&quot;&gt;video.media.mp4Support.ready&lt;/a&gt; – Triggered when the MP4 support setting is successfully updated.<br/>
         /// <br/>
         /// #### Example<br/>
         /// Suppose you have a video uploaded to the FastPix platform, and you want to allow users to download the video in MP4 format. By setting &quot;mp4Support&quot;: &quot;capped_4k&quot;, the system generates an MP4 rendition of the video up to 4K resolution, making it available for download through the stream URL(`https://stream.fastpix.com/{playbackId}/{capped-4k.mp4 | audio.m4a}`). If you want users to stream only the audio from the media file, you can set &quot;mp4Support&quot;: &quot;audioOnly&quot;. This provides an audio-only stream URL that allows users to listen to the media without video. By setting &quot;mp4Support&quot;: &quot;audioOnly,capped_4k&quot;, both options are enabled. Users can download the MP4 video and also stream just the audio version of the media. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/playback-and-delivery/enable-mp4-support-for-offline-viewing&quot;&gt;Use MP4 support for offline viewing&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/enable-mp4-support-for-offline-viewing&quot;&gt;Use MP4 support for offline viewing&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -278,7 +278,7 @@ namespace Fastpix
         /// <br/>
         /// Imagine you’re managing a video editing platform where users upload full-length videos and create short clips for social media sharing. To keep track of all clips linked to a particular video, you call this API with the sourceMediaId. The response provides a list of all associated clips, allowing you to manage, edit, or repurpose them as needed.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-videos/clip-and-trim-videos&quot;&gt;Create clips from existing media&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/clip-and-trim-videos&quot;&gt;Create clips from existing media&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -406,7 +406,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<ListMediaResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "ListMediaResponseBody");
 
                     var response = new ListMediaResponse()
@@ -421,17 +421,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, DefaultErrorTypeName);
 
                     var response = new ListMediaResponse()
@@ -446,7 +446,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -497,7 +497,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<GetMediaResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "GetMediaResponseBody");
 
                     var response = new Models.Requests.GetMediaResponse()
@@ -512,17 +512,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new Models.Requests.GetMediaResponse()
@@ -537,7 +537,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -588,7 +588,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DeleteMediaResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "DeleteMediaResponseBody");
 
                     var response = new DeleteMediaResponse()
@@ -603,17 +603,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new DeleteMediaResponse()
@@ -628,7 +628,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -686,7 +686,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<AddMediaTrackResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "AddMediaTrackResponseBody");
 
                     var response = new AddMediaTrackResponse()
@@ -701,17 +701,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new AddMediaTrackResponse()
@@ -726,7 +726,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -777,7 +777,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<CancelUploadResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "CancelUploadResponseBody");
 
                     var response = new CancelUploadResponse()
@@ -792,17 +792,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new CancelUploadResponse()
@@ -817,7 +817,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -876,7 +876,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<GenerateSubtitleTrackResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "GenerateSubtitleTrackResponseBody");
 
                     var response = new GenerateSubtitleTrackResponse()
@@ -891,17 +891,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new GenerateSubtitleTrackResponse()
@@ -916,7 +916,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -974,7 +974,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<UpdatedSourceAccessResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "UpdatedSourceAccessResponseBody");
 
                     var response = new UpdatedSourceAccessResponse()
@@ -989,17 +989,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new UpdatedSourceAccessResponse()
@@ -1014,7 +1014,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -1072,7 +1072,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<UpdatedMp4SupportResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "UpdatedMp4SupportResponseBody");
 
                     var response = new UpdatedMp4SupportResponse()
@@ -1087,17 +1087,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new UpdatedMp4SupportResponse()
@@ -1112,7 +1112,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -1165,7 +1165,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<ListUploadsResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, "ListUploadsResponseBody");
 
                     var response = new ListUploadsResponse()
@@ -1180,17 +1180,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Include, DefaultErrorTypeName);
 
                     var response = new ListUploadsResponse()
@@ -1205,7 +1205,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -1259,7 +1259,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<MediaClipResponse>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "MediaClipResponse");
 
                     var response = new GetMediaClipsResponse()
@@ -1274,17 +1274,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, DefaultErrorTypeName);
 
                     var response = new GetMediaClipsResponse()
@@ -1299,7 +1299,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }

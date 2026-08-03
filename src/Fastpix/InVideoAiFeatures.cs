@@ -35,7 +35,7 @@ namespace Fastpix
         /// 3. Include the `summaryLength` parameter, specify the desired length of the summary in words (for example, 120 words), this determines how concise or detailed the summary will be. If no specific summary length is provided, the default length will be 100 words.<br/>
         /// 4. The response includes the updated media data and confirmation of the changes applied.<br/>
         /// <br/>
-        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaisummaryready&quot;&gt;video.mediaAI.summary.ready&lt;/a&gt; webhook event to track and notify about the summary generation.<br/>
+        /// You can use the &lt;a href=&quot;https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaaisummaryready&quot;&gt;video.mediaAI.summary.ready&lt;/a&gt; webhook event to track and notify about the summary generation.<br/>
         /// <br/>
         /// <br/>
         /// <br/>
@@ -43,7 +43,7 @@ namespace Fastpix
         /// <br/>
         /// **Use case**: This is particularly useful when a user uploads a video and later chooses to generate a summary without needing to re-upload the video.<br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-intelligence/generate-a-video-summary&quot;&gt;Video summary&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/in-video-ai/generate-a-video-summary&quot;&gt;Video summary&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -187,7 +187,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<UpdateMediaSummaryResponseBody>(httpResponseBody, httpRequest, httpResponse, "UpdateMediaSummaryResponseBody");
 
                     var response = new UpdateMediaSummaryResponse()
@@ -202,17 +202,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     var obj = DeserializeBody<DefaultError>(httpResponseBody, httpRequest, httpResponse, "DefaultError");
 
                     var response = new UpdateMediaSummaryResponse()
@@ -227,7 +227,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }

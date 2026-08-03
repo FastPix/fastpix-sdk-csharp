@@ -22,7 +22,7 @@ This endpoint allows you to delete an existing audio or subtitle track from a me
 
 1. After successfully deleting a track, your system must receive the webhook event **video.media.track.deleted**.
 
-2. Once the media file is updated to reflect the track removal, a <a href="https://fastpix.com/docs/vod-events/media-events#videomediaupdated">video.media.updated</a> event must be triggered.
+2. Once the media file is updated to reflect the track removal, a <a href="https://fastpix.com/docs/webhooks/media-events#videomediaupdated">video.media.updated</a> event must be triggered.
 
 
 #### Example
@@ -32,7 +32,7 @@ Suppose you uploaded an audio track in Italian for a video but later realize it'
   - The content owner requests the removal of a specific subtitle or audio track.
   - A new version of the track gets uploaded to replace the existing one.
 
-Related guides: <a href="https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video">Add own subtitle tracks</a>, <a href="https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video">Add own audio tracks</a>
+Related guides: <a href="https://fastpix.com/docs/video-on-demand/add-subtitles-to-a-video">Add own subtitle tracks</a>, <a href="https://fastpix.com/docs/video-on-demand/add-audio-to-a-video">Add own audio tracks</a>
 
 
 ### Example Usage
@@ -43,6 +43,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -56,11 +57,12 @@ var res = await sdk.Tracks.DeleteAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

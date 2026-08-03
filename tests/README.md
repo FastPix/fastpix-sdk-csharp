@@ -97,11 +97,11 @@ and there are no JSON-path discrepancies in either direction.
 ## Latest consolidated report
 
 <!-- BEGIN GET_ENDPOINTS_CONSOLIDATED -->
-Last generated: 2026-06-10T07:05:48.4116620Z
+Last generated: 2026-08-03T05:48:04.1913640Z
 
 - **Total GET endpoints**: 30
-- **PASS**: 25
-- **FAIL**: 5
+- **PASS**: 26
+- **FAIL**: 4
 - **SKIP**: 0
 
 | Endpoint | OperationId | OpenAPI valid | SDK parse | Missing in SDK (present in API) | Missing in API (present in SDK) | Empty arrays omitted by SDK | Status |
@@ -120,7 +120,7 @@ Last generated: 2026-06-10T07:05:48.4116620Z
 | `/on-demand/drm-configurations` | `getDrmConfiguration` | ✅ | ❌ | None | None | None | ❌ FAIL |
 | `/on-demand/drm-configurations/{drmConfigurationId}` | `getDrmConfigurationById` | ✅ | ❌ | None | None | None | ❌ FAIL |
 | `/live/streams` | `get-all-streams` | ✅ | ✅ | None | None | None | ✅ PASS |
-| `/live/streams/{streamId}/viewer-count` | `get-live-stream-viewer-count-by-id` | ✅ | ❌ | None | None | None | ❌ FAIL |
+| `/live/streams/{streamId}/viewer-count` | `get-live-stream-viewer-count-by-id` | ✅ | ✅ | None | None | None | ✅ PASS |
 | `/live/streams/{streamId}` | `get-live-stream-by-id` | ✅ | ✅ | None | None | None | ✅ PASS |
 | `/live/streams/{streamId}/playback-ids/{playbackId}` | `get-live-stream-playback-id` | ✅ | ✅ | None | None | None | ✅ PASS |
 | `/live/streams/{streamId}/simulcast/{simulcastId}` | `get-specific-simulcast-of-stream` | ✅ | ✅ | None | None | None | ✅ PASS |

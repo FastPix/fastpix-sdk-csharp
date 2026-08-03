@@ -34,7 +34,7 @@ namespace Fastpix
         /// <br/>
         /// The dimensions retrieved from this endpoint can be used in conjunction with the &lt;a href=&quot;https://fastpix.com/docs/video-data-api/views/list-video-views&quot;&gt;list video views&lt;/a&gt; and &lt;a href=&quot;https://fastpix.com/docs/video-data-api/views/list-by-top-content&quot;&gt;list by top content&lt;/a&gt; endpoints to filter results based on specific criteria. For example, you can filter views by `browser_name`, `os_name`, `device_type`, and more.<br/>
         /// <br/>
-        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt; ,   &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/pass-custom-metadata-to-metrics&quot;&gt;Use passable dimensions&lt;/a&gt;<br/>
+        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/video-data/what-video-data-do-we-capture#/&quot;&gt;What Video Data do we capture?&lt;/a&gt; ,   &lt;a href=&quot;https://fastpix.com/docs/video-data/pass-custom-metadata-to-metrics&quot;&gt;Use passable dimensions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -47,14 +47,14 @@ namespace Fastpix
         /// This endpoint returns the filter values associated with a specific dimension, along with the total number of video views for each value. For example, it can list all `browser_name` (dimension) and show how many views occurred for all available browsers like Chrome, Safari (filter values). <br/>
         /// <br/>
         /// <br/>
-        /// In order to use the &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/use-custom-dimensions&quot;&gt;Custom Dimensions&lt;/a&gt;, you must enable them in the dashboard under settings option based on the plan you have opted for.<br/>
+        /// In order to use the &lt;a href=&quot;https://fastpix.com/docs/video-data/use-custom-dimensions&quot;&gt;Custom Dimensions&lt;/a&gt;, you must enable them in the dashboard under settings option based on the plan you have opted for.<br/>
         /// <br/>
         /// #### Example<br/>
         /// <br/>
         /// A developer wants to know how their video content performs across different browsers. By calling this endpoint for the `device_type` dimension, they can retrieve a breakdown of video views by each device (for example, Desktop, Mobile, Tablet). This data helps the developer understand where optimizations or troubleshooting is necessary.<br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#filters-and-timeframes&quot;&gt;Filters and timespan&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/explore-the-dashboard#filters-and-timeframes&quot;&gt;Filters and timespan&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -179,7 +179,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     ListDimensionsResponseBody obj;
                     try
                     {
@@ -202,17 +202,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     DefaultError obj;
                     try
                     {
@@ -235,7 +235,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
 
@@ -271,7 +271,7 @@ namespace Fastpix
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     ListFilterValuesForDimensionResponseBody obj;
                     try
                     {
@@ -294,17 +294,17 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else if(responseStatusCode >= 400 && responseStatusCode < 600)
             {
-                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(ApiErrorOccurred, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
             else
             {
                 if(Utilities.IsContentTypeMatch(ApplicationJsonContentType, contentType))
                 {
-                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync();
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
                     DefaultError obj;
                     try
                     {
@@ -327,7 +327,7 @@ namespace Fastpix
                     return response;
                 }
 
-                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync());
+                throw new Models.Errors.ApiException(UnknownContentTypeError, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
             }
         }
     }
