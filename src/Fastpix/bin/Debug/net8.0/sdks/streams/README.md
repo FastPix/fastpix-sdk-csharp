@@ -11,7 +11,7 @@
 This endpoint allows you to modify the parameters of an existing live stream, such as its `metadata` (title, description) or the `reconnectWindow`. It’s useful for making changes to a stream that has already been created but not yet ended. After the live stream is disabled, you cannot update a stream. 
 
 
-  The updated stream parameters and the `streamId` needs to be shared in the request, and FastPix returns the updated stream details. After the update, <a href="https://docs.fastpix.io/docs/live-events#videolive_streamupdated">video.live_stream.updated</a> webhook event notifies your system.
+  The updated stream parameters and the `streamId` needs to be shared in the request, and FastPix returns the updated stream details. After the update, <a href="https://fastpix.com/docs/webhooks/live-events#videolive_streamupdated">video.live_stream.updated</a> webhook event notifies your system.
 
  #### Example
 
@@ -19,7 +19,7 @@ This endpoint allows you to modify the parameters of an existing live stream, su
 
 
 
-  Related guide: <a href="https://docs.fastpix.io/docs/manage-streams">Manage streams</a>
+  Related guide: <a href="https://fastpix.com/docs/live-streaming/create-and-manage-live-streams#how-to-update-a-stream">Manage streams</a>
 
 ### Example Usage
 
@@ -30,6 +30,7 @@ using Fastpix.Models.Components;
 using System.Collections.Generic;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -48,11 +49,12 @@ var res = await sdk.Streams.UpdateAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.PatchResponseDTO,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.PatchResponseDto,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

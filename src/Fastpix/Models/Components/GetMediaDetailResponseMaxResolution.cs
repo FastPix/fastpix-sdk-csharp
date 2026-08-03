@@ -11,42 +11,32 @@ namespace Fastpix.Models.Components
     using System;
     
     /// <summary>
-    /// The actual resolution of the uploaded media. This represents the native quality of the source media.
+    /// The maximum resolution specified by the user for the media.
     /// </summary>
-    public enum GetMediaResponseSourceResolution
+    public enum GetMediaDetailResponseMaxResolution
     {
         [JsonProperty("2160p")]
         TwoThousandOneHundredAndSixtyp,
-        [JsonProperty("2160")]
-        TwoThousandOneHundredAndSixty,
         [JsonProperty("1440p")]
         OneThousandFourHundredAndFortyp,
-        [JsonProperty("1440")]
-        OneThousandFourHundredAndForty,
         [JsonProperty("1080p")]
         OneThousandAndEightyp,
-        [JsonProperty("1080")]
-        OneThousandAndEighty,
         [JsonProperty("720p")]
         SevenHundredAndTwentyp,
-        [JsonProperty("720")]
-        SevenHundredAndTwenty,
         [JsonProperty("480p")]
         FourHundredAndEightyp,
-        [JsonProperty("480")]
-        FourHundredAndEighty,
     }
 
-    public static class GetMediaResponseSourceResolutionExtension
+    public static class GetMediaDetailResponseMaxResolutionExtension
     {
-        public static string Value(this GetMediaResponseSourceResolution value)
+        public static string Value(this GetMediaDetailResponseMaxResolution value)
         {
             return ((JsonPropertyAttribute)value.GetType().GetMember(value.ToString())[0].GetCustomAttributes(typeof(JsonPropertyAttribute), false)[0]).PropertyName ?? value.ToString();
         }
 
-        public static GetMediaResponseSourceResolution ToEnum(this string value)
+        public static GetMediaDetailResponseMaxResolution ToEnum(this string value)
         {
-            foreach(var field in typeof(GetMediaResponseSourceResolution).GetFields())
+            foreach(var field in typeof(GetMediaDetailResponseMaxResolution).GetFields())
             {
                 var attributes = field.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
                 if (attributes.Length == 0)
@@ -59,14 +49,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GetMediaResponseSourceResolution getMediaResponseSourceResolution)
+                    if (enumVal is GetMediaDetailResponseMaxResolution getMediaResponseMaxResolution)
                     {
-                        return getMediaResponseSourceResolution;
+                        return getMediaResponseMaxResolution;
                     }
                 }
             }
 
-            throw new ArgumentException($"Unknown value {value} for enum GetMediaResponseSourceResolution", nameof(value));
+            throw new ArgumentException($"Unknown value {value} for enum GetMediaDetailResponseMaxResolution", nameof(value));
         }
     }
 

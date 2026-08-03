@@ -37,7 +37,7 @@ Each view in the response includes a unique `viewId`. You can use this `viewId` 
 If you manage a video streaming service and want to analyze content performance across devices and browsers. By calling the List Video Views endpoint with filters such as `browser_name` and `device_type`, you can identify which platforms are most popular with your audience. This information helps optimize content for widely used platforms and troubleshoot playback issues on less common devices.
 
 
-  Related guide: <a href="https://fastpix.com/docs/concepts/audience-metrics">Audience metrics</a>, <a href="https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#1-views-dashboard">Views dashboard</a>
+  Related guide: <a href="https://fastpix.com/docs/video-data/audience-metrics">Audience metrics</a>, <a href="https://fastpix.com/docs/video-data/explore-the-dashboard#1-views-dashboard">Views dashboard</a>
 
 ### Example Usage
 
@@ -48,6 +48,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -65,11 +66,12 @@ var res = await sdk.Views.ListAsync(req);
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -101,7 +103,7 @@ To use this endpoint, send `GET` request with the `viewId`. The response include
 If a developer receives a report of a poor viewing experience for a specific user. By using this endpoint with the users `viewId`, the developer can retrieve metrics like buffering duration, playback errors, and session length. This data allows the developer to pinpoint issues (such as poor connectivity or a browser-specific problem) and take steps to improve the user experience.
 
 
-Related guide: <a href="https://fastpix.com/docs/concepts/what-video-data-do-we-capture#/">What Video Data do we capture?</a>
+Related guide: <a href="https://fastpix.com/docs/video-data/what-video-data-do-we-capture#/">What Video Data do we capture?</a>
 
 ### Example Usage
 
@@ -111,6 +113,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -121,11 +124,12 @@ var res = await sdk.Views.GetViewDetailsAsync(viewId: "<id>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -162,7 +166,7 @@ Retrieves a list of the top video views that fall within the specified filters a
   5. You receive a response containing the list of top video views matching the specified criteria.
 
 
-  Related guide: <a href="https://fastpix.com/docs/working-with-video-data/identify-top-performing-content">Get top-performing content</a>
+  Related guide: <a href="https://fastpix.com/docs/video-data/identify-top-performing-content">Get top-performing content</a>
 
 
 ### Example Usage
@@ -174,6 +178,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -188,11 +193,12 @@ var res = await sdk.Views.ListByTopContentAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

@@ -26,7 +26,7 @@ This endpoint returns the total number of playback errors that occurred, along w
 * **code:** The error code associated with the specific error. 
 
 
-Related guide: <a href="https://fastpix.com/docs/working-with-video-data/troubleshoot-playback-errors">Troubleshoot errors</a>
+Related guide: <a href="https://fastpix.com/docs/video-data/troubleshoot-playback-errors">Troubleshoot errors</a>
 
 
 ### Example Usage
@@ -38,6 +38,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -52,11 +53,12 @@ var res = await sdk.Errors.ListAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

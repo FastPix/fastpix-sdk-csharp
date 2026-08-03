@@ -1076,7 +1076,6 @@
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponse.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponseMaxResolution.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponseMediaQuality.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponseMp4Support.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponseSourceResolution.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponseStatus.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllMediaResponseTrack.md
@@ -1084,13 +1083,6 @@
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllSigningKeysResponse.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetAllSigningKeysResponseDto.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetCreateLiveStreamResponseDTO.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponse.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponseMaxResolution.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponseMediaQuality.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponseMp4Support.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponseSourceResolution.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponseStatus.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaResponseTrack.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetPublicPemUsingSigningKeyIdResponseDTO.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetPublicPemUsingSigningKeyIdResponseDTOData.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetStreamsResponse.md
@@ -1119,7 +1111,6 @@
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaIdsRequest.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaMaxResolution.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaMediaQuality.md
-/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaMp4Support.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaSourceResolution.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaStatus.md
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/MediaTrack.md
@@ -1513,3 +1504,13 @@
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.xml
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/Fastpix.pdb
 /Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/obj/Debug/net8.0/ref/Fastpix.dll
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaDetailResponse.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaDetailResponseMaxResolution.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaDetailResponseMediaQuality.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaDetailResponseSourceResolution.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaDetailResponseStatus.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/GetMediaDetailResponseTrack.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/Mp4SupportEntry.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/Mp4SupportExt.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/Mp4SupportStatus.md
+/Users/sumasree/fp-csharp/fastpix-sdk-csharp/src/Fastpix/bin/Debug/net8.0/Models/Components/Mp4SupportType.md

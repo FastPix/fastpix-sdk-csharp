@@ -10,16 +10,10 @@ namespace Fastpix.Models.Components
     using Newtonsoft.Json;
     
     /// <summary>
-    /// Contains details about the track being added to the media file.
+    /// Contains details about the track being updated. The track&apos;s file (`url`) cannot be changed — only its language and title.
     /// </summary>
     public class UpdateTrackRequest
     {
-
-        /// <summary>
-        /// The direct URL of the track file. It must point to a valid audio or subtitle file.
-        /// </summary>
-        [JsonProperty("url")]
-        public string? Url { get; set; } = "https://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.vtt";
 
         /// <summary>
         /// The BCP 47 language code representing the track’s language.
@@ -32,5 +26,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("languageName")]
         public string? LanguageName { get; set; } = "French";
+
+        /// <summary>
+        /// Title of the track.
+        /// </summary>
+        [JsonProperty("title")]
+        public string? Title { get; set; }
     }
 }

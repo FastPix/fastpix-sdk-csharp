@@ -35,6 +35,10 @@ namespace Fastpix.Models.Components
         FourHundredAndEightyp,
         [JsonProperty("480")]
         FourHundredAndEighty,
+        [JsonProperty("360p")]
+        ThreeHundredAndSixtyp,
+        [JsonProperty("360")]
+        ThreeHundredAndSixty,
     }
 
     public static class GetAllMediaResponseSourceResolutionExtension

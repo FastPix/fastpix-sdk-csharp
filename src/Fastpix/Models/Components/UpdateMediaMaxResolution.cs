@@ -25,8 +25,6 @@ namespace Fastpix.Models.Components
         SevenHundredAndTwentyp,
         [JsonProperty("480p")]
         FourHundredAndEightyp,
-        [JsonProperty("360p")]
-        ThreeHundredAndSixtyp,
     }
 
     public static class UpdateMediaMaxResolutionExtension

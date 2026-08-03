@@ -37,7 +37,7 @@ namespace Fastpix
         /// #### Example<br/>
         /// An event manager sets up a live stream for a virtual conference and wants to simulcast the stream on YouTube and Facebook Live. They first create the primary live stream in FastPix, ensuring it&apos;s in the idle state. Then, they use the API to create a simulcast target for YouTube. <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/edit-and-transform-live-stream/simulcast-to-multiple-platforms&quot;&gt;Simulcast to 3rd party platforms&lt;/a&gt;
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/live-streaming/simulcast-to-multiple-platforms&quot;&gt;Simulcast to 3rd party platforms&lt;/a&gt;
         /// </remarks>
         /// </summary>
         Task<CreateSimulcastOfStreamResponse> CreateAsync(string streamId, SimulcastRequest body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
@@ -48,7 +48,7 @@ namespace Fastpix
         /// <remarks>
         /// Deletes a simulcast using its unique simulcastId, which you received during the simulcast creation process. Deleting a simulcast stops the broadcast to the associated platform, while the parent stream continues if it’s live. This action can’t be undone, and you must create a new simulcast to resume streaming to the same platform.<br/>
         /// <br/>
-        /// Webhook event: &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamsimulcast_targetdeleted&quot;&gt;video.live_stream.simulcast_target.deleted&lt;/a&gt;<br/>
+        /// Webhook event: &lt;a href=&quot;https://fastpix.com/docs/webhooks/live-events#videolive_streamsimulcast_targetdeleted&quot;&gt;video.live_stream.simulcast_target.deleted&lt;/a&gt;<br/>
         /// <br/>
         /// <br/>
         /// #### Example<br/>
@@ -63,7 +63,7 @@ namespace Fastpix
         /// <remarks>
         /// Updates the status of a specific simulcast linked to a parent live stream. You can enable or disable the simulcast at any time while the parent stream is active or idle. After the live stream is disabled, the simulcast can no longer be modified.<br/>
         /// <br/>
-        /// Webhook event: &lt;a href=&quot;https://fastpix.com/docs/live-stream-events/live-events#videolive_streamsimulcast_targetupdated&quot;&gt;video.live_stream.simulcast_target.updated&lt;/a&gt;<br/>
+        /// Webhook event: &lt;a href=&quot;https://fastpix.com/docs/webhooks/live-events#videolive_streamsimulcast_targetupdated&quot;&gt;video.live_stream.simulcast_target.updated&lt;/a&gt;<br/>
         /// <br/>
         /// #### Example<br/>
         /// When a `PATCH` request is made to this endpoint, the API updates the status of the simulcast. This can be useful for pausing or resuming a simulcast on a particular platform without stopping the parent live stream.

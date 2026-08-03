@@ -41,7 +41,7 @@ namespace Fastpix
         /// <br/>
         /// 1. After successfully deleting a track, your system must receive the webhook event **video.media.track.deleted**.<br/>
         /// <br/>
-        /// 2. Once the media file is updated to reflect the track removal, a &lt;a href=&quot;https://fastpix.com/docs/vod-events/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
+        /// 2. Once the media file is updated to reflect the track removal, a &lt;a href=&quot;https://fastpix.com/docs/webhooks/media-events#videomediaupdated&quot;&gt;video.media.updated&lt;/a&gt; event must be triggered.<br/>
         /// <br/>
         /// <br/>
         /// #### Example<br/>
@@ -51,7 +51,7 @@ namespace Fastpix
         ///   - The content owner requests the removal of a specific subtitle or audio track.<br/>
         ///   - A new version of the track gets uploaded to replace the existing one.<br/>
         /// <br/>
-        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
+        /// Related guides: &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/add-subtitles-to-a-video&quot;&gt;Add own subtitle tracks&lt;/a&gt;, &lt;a href=&quot;https://fastpix.com/docs/video-on-demand/add-audio-to-a-video&quot;&gt;Add own audio tracks&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

@@ -1,4 +1,4 @@
-# GetMediaResponseSourceResolution
+# GetMediaDetailResponseSourceResolution
 
 The actual resolution of the uploaded media. This represents the native quality of the source media.
 
@@ -17,3 +17,5 @@ The actual resolution of the uploaded media. This represents the native quality 
 | `SevenHundredAndTwenty`           | 720                               |
 | `FourHundredAndEightyp`           | 480p                              |
 | `FourHundredAndEighty`            | 480                               |
+| `ThreeHundredAndSixtyp`           | 360p                              |
+| `ThreeHundredAndSixty`            | 360                               |

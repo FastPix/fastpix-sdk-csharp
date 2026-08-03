@@ -23,6 +23,6 @@ namespace Fastpix.Models.Requests
         public bool? Success { get; set; }
 
         [JsonProperty("data")]
-        public Models.Components.GetMediaResponse? Data { get; set; }
+        public Models.Components.GetMediaDetailResponse? Data { get; set; }
     }
 }

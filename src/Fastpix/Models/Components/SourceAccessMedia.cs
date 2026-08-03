@@ -16,6 +16,12 @@ namespace Fastpix.Models.Components
     {
 
         /// <summary>
+        /// Whether the audio track of the media has been volume-normalized.
+        /// </summary>
+        [JsonProperty("optimizeAudio")]
+        public bool? OptimizeAudio { get; set; }
+
+        /// <summary>
         /// A video thumbnail is a still image that acts as the preview image for your video.
         /// </summary>
         [JsonProperty("thumbnail")]
@@ -80,18 +86,10 @@ namespace Fastpix.Models.Components
         public SourceAccessMediaStatus? Status { get; set; }
 
         /// <summary>
-        /// Determines the type of MP4 support for the media.<br/>
-        ///
-        /// <remarks>
-        /// - **none**: Disables MP4 support.<br/>
-        /// - **capped_4k**: Enables MP4 downloads with resolutions up to 4K.<br/>
-        /// - **audioOnly**: Provides an MP4 stream containing only the audio.<br/>
-        /// - **audioOnly,capped_4k**: Enables both MP4 video downloads (up to 4K) and an audio-only stream.<br/>
-        ///
-        /// </remarks>
+        /// A list of MP4 renditions generated for the media when MP4 support is requested. Each entry represents one downloadable rendition (for example, a capped-4K video file or an audio-only m4a file) along with its generation status. Omitted when no MP4 support has been requested.
         /// </summary>
         [JsonProperty("mp4Support", NullValueHandling = NullValueHandling.Ignore)]
-        public SourceAccessMediaMp4Support? Mp4Support { get; set; }
+        public List<Mp4SupportEntry>? Mp4Support { get; set; }
 
         /// <summary>
         /// The sourceAccess parameter determines whether the original media file is accessible. Set to true to enable access or false to restrict it.

@@ -15,11 +15,11 @@ This endpoint enables moderation features, such as NSFW and profanity filtering,
 2. Include the `moderation` object and provide the requried `type` parameter in the request body to specify the media type (for example, video/audio/av).
 4. The response contains the updated media data, confirming the changes made.
 
-You can use the <a href="https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaimoderationready">video.mediaAI.moderation.ready</a> webhook event to track and notify about the detected moderation results.
+You can use the <a href="https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaaimoderationready">video.mediaAI.moderation.ready</a> webhook event to track and notify about the detected moderation results.
 
 **Use case:** This is particularly useful when a user uploads a video and later decides to enable moderation detection without the need to re-upload it.
 
-Related guide: <a href="https://fastpix.com/docs/video-intelligence/detect-nsfw-content-and-profanity">Moderate NSFW & Profanity</a>
+Related guide: <a href="https://fastpix.com/docs/in-video-ai/detect-nsfw-content-and-profanity">Moderate NSFW & Profanity</a>
 
 
 ### Example Usage
@@ -31,6 +31,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -48,11 +49,12 @@ var res = await sdk.Moderations.UpdateAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

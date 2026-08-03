@@ -25,8 +25,8 @@ namespace FastPixSamples
                 var client = FastPix.Builder()
                     .WithSecurity(new Security
                     {
-                        Username = "5030b0db-40fb-4222-b5f3-960497046aac",
-                        Password = "b93ab5d7-6ee2-48ae-b120-44da31e6cb17"
+                        Username = "your-access-token",
+                        Password = "your-secret-key"
                     })
                     .Build();
 

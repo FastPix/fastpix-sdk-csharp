@@ -12,8 +12,14 @@ namespace Fastpix.Models.Components
     using System;
     using System.Collections.Generic;
     
-    public class GetMediaResponse
+    public class GetMediaDetailResponse
     {
+
+        /// <summary>
+        /// Whether the audio track of the media has been volume-normalized.
+        /// </summary>
+        [JsonProperty("optimizeAudio")]
+        public bool? OptimizeAudio { get; set; }
 
         /// <summary>
         /// A video thumbnail is a still image that acts as the preview image for your video.
@@ -59,7 +65,7 @@ namespace Fastpix.Models.Components
         /// The quality tier applied to the media.
         /// </summary>
         [JsonProperty("mediaQuality")]
-        public GetMediaResponseMediaQuality? MediaQuality { get; set; }
+        public GetMediaDetailResponseMediaQuality? MediaQuality { get; set; }
 
         /// <summary>
         /// The unique identifier of the user who created this media.
@@ -77,33 +83,25 @@ namespace Fastpix.Models.Components
         /// The maximum resolution specified by the user for the media.
         /// </summary>
         [JsonProperty("maxResolution")]
-        public GetMediaResponseMaxResolution? MaxResolution { get; set; } = Fastpix.Models.Components.GetMediaResponseMaxResolution.OneThousandAndEightyp;
+        public GetMediaDetailResponseMaxResolution? MaxResolution { get; set; } = Fastpix.Models.Components.GetMediaDetailResponseMaxResolution.OneThousandAndEightyp;
 
         /// <summary>
         /// The actual resolution of the uploaded media. This represents the native quality of the source media.
         /// </summary>
         [JsonProperty("sourceResolution")]
-        public GetMediaResponseSourceResolution? SourceResolution { get; set; } = Fastpix.Models.Components.GetMediaResponseSourceResolution.OneThousandAndEightyp;
+        public GetMediaDetailResponseSourceResolution? SourceResolution { get; set; } = Fastpix.Models.Components.GetMediaDetailResponseSourceResolution.OneThousandAndEightyp;
 
         /// <summary>
         /// Determines the media&apos;s status, which can be one of the possible values.
         /// </summary>
         [JsonProperty("status")]
-        public GetMediaResponseStatus? Status { get; set; }
+        public GetMediaDetailResponseStatus? Status { get; set; }
 
         /// <summary>
-        /// Determines the type of MP4 support for the media.<br/>
-        /// 
-        /// <remarks>
-        /// - **none**: Disables MP4 support.<br/>
-        /// - **capped_4k**: Enables MP4 downloads with resolutions up to 4K.<br/>
-        /// - **audioOnly**: Provides an MP4 stream containing only the audio.<br/>
-        /// - **audioOnly,capped_4k**: Enables both MP4 video downloads (up to 4K) and an audio-only stream.<br/>
-        /// 
-        /// </remarks>
+        /// A list of MP4 renditions generated for the media when MP4 support is requested. Each entry represents one downloadable rendition (for example, a capped-4K video file or an audio-only m4a file) along with its generation status. Omitted when no MP4 support has been requested.
         /// </summary>
         [JsonProperty("mp4Support")]
-        public GetMediaResponseMp4Support? Mp4Support { get; set; }
+        public List<Mp4SupportEntry>? Mp4Support { get; set; }
 
         /// <summary>
         /// The sourceAccess parameter determines whether the original media file is accessible. Set to true to enable access or false to restrict it.
@@ -121,7 +119,7 @@ namespace Fastpix.Models.Components
         /// A media consists of different media tracks, like video, audio, and subtitle, all combined.
         /// </summary>
         [JsonProperty("tracks")]
-        public List<GetMediaResponseTrack>? Tracks { get; set; }
+        public List<GetMediaDetailResponseTrack>? Tracks { get; set; }
 
         /// <summary>
         /// List of generated subtitle tracks associated with the media.

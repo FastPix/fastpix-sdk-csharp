@@ -16,11 +16,11 @@ This endpoint enables you to generate chapters for an existing media file.
 2. Include the `chapters` parameter in the request body to enable.
 3. The response contains the updated media data, confirming the changes made.
 
-You can use the <a href="https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaaichaptersready">video.mediaAI.chapters.ready</a> webhook event to track and notify about the chapters generation.
+You can use the <a href="https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaaichaptersready">video.mediaAI.chapters.ready</a> webhook event to track and notify about the chapters generation.
 
 **Use case:** This is particularly useful when a user uploads a video and later decides to enable chapters without re-uploading the entire video.
 
-Related guide: <a href="https://fastpix.com/docs/video-intelligence/generate-video-chapters">Video chapters</a>
+Related guide: <a href="https://fastpix.com/docs/in-video-ai/generate-video-chapters">Video chapters</a>
 
 
 ### Example Usage
@@ -32,6 +32,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -45,11 +46,12 @@ var res = await sdk.InVideoAI.UpdateMediaChaptersAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -84,11 +86,11 @@ Named Entity Recognition (NER) is a fundamental natural language processing (NLP
 2. Include the `namedEntities` parameter in the request body to enable.
 3. Receive a response containing the updated media data, confirming the changes made.
 
-You can use the <a href="https://fastpix.com/docs/ai-events/in-video-ai-events#videomediaainamedentitiesready">video.mediaAI.named-entities.ready</a> webhook event to track and notify about the named entities extraction.
+You can use the <a href="https://fastpix.com/docs/webhooks/in-video-ai-events#videomediaainamedentitiesready">video.mediaAI.named-entities.ready</a> webhook event to track and notify about the named entities extraction.
 
 **Use case:** If a user uploads a video and later decides to enable named entity extraction without re-uploading the entire video.
 
-Related guide: <a href="https://fastpix.com/docs/video-intelligence/extract-named-entities-from-a-video">Named entities</a>
+Related guide: <a href="https://fastpix.com/docs/in-video-ai/extract-named-entities-from-a-video">Named entities</a>
 
 
 ### Example Usage
@@ -100,6 +102,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -115,11 +118,12 @@ var res = await sdk.InVideoAI.UpdateNamedEntitiesAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

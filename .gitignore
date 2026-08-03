@@ -417,6 +417,7 @@ Desktop.ini
 # Local OpenAPI spec used by the validation harness — not part of the published SDK
 fixed 7.yaml
 *.local.yaml
+/fastpix-openai.yaml
 
 # Endpoint validation harness (tests/) — build output and generated artifacts
 tests/bin/

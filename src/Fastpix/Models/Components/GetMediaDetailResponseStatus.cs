@@ -13,7 +13,7 @@ namespace Fastpix.Models.Components
     /// <summary>
     /// Determines the media&apos;s status, which can be one of the possible values.
     /// </summary>
-    public enum GetMediaResponseStatus
+    public enum GetMediaDetailResponseStatus
     {
         [JsonProperty("Created")]
         Created,
@@ -33,16 +33,16 @@ namespace Fastpix.Models.Components
         Failed,
     }
 
-    public static class GetMediaResponseStatusExtension
+    public static class GetMediaDetailResponseStatusExtension
     {
-        public static string Value(this GetMediaResponseStatus value)
+        public static string Value(this GetMediaDetailResponseStatus value)
         {
             return ((JsonPropertyAttribute)value.GetType().GetMember(value.ToString())[0].GetCustomAttributes(typeof(JsonPropertyAttribute), false)[0]).PropertyName ?? value.ToString();
         }
 
-        public static GetMediaResponseStatus ToEnum(this string value)
+        public static GetMediaDetailResponseStatus ToEnum(this string value)
         {
-            foreach(var field in typeof(GetMediaResponseStatus).GetFields())
+            foreach(var field in typeof(GetMediaDetailResponseStatus).GetFields())
             {
                 var attributes = field.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
                 if (attributes.Length == 0)
@@ -55,14 +55,14 @@ namespace Fastpix.Models.Components
                 {
                     var enumVal = field.GetValue(null);
 
-                    if (enumVal is GetMediaResponseStatus getMediaResponseStatus)
+                    if (enumVal is GetMediaDetailResponseStatus getMediaResponseStatus)
                     {
                         return getMediaResponseStatus;
                     }
                 }
             }
 
-            throw new ArgumentException($"Unknown value {value} for enum GetMediaResponseStatus", nameof(value));
+            throw new ArgumentException($"Unknown value {value} for enum GetMediaDetailResponseStatus", nameof(value));
         }
     }
 

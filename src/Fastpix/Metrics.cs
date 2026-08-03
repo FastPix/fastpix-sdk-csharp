@@ -60,7 +60,7 @@ namespace Fastpix
         ///   * **field:** The grouping field value based on the groupBy parameter. <br/>
         /// <br/>
         /// <br/>
-        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+        /// Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -96,7 +96,7 @@ namespace Fastpix
         ///   * **globalValue:** A global metric value that reflects the overall performance of the specified metric across the entire dataset for the given timespan. This value is not affected by specific filters. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/concepts/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/what-video-data-do-we-capture&quot;&gt;Understand data definitions&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>
@@ -142,7 +142,7 @@ namespace Fastpix
         ///   3. You Receive a response containing the comparison values for the specified metrics across the selected dimensions. <br/>
         /// <br/>
         /// <br/>
-        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/working-with-video-data/explore-the-dashboard#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
+        ///   Related guide: &lt;a href=&quot;https://fastpix.com/docs/video-data/explore-the-dashboard#compare-metrics&quot;&gt;Compare metrics in dashboard&lt;/a&gt;<br/>
         /// 
         /// </remarks>
         /// </summary>

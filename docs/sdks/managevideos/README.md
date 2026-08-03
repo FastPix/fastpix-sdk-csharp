@@ -38,6 +38,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -52,11 +53,12 @@ var res = await sdk.ManageVideos.ListAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -107,6 +109,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -117,11 +120,12 @@ var res = await sdk.ManageVideos.GetByIdAsync(mediaId: "<mediaId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -153,7 +157,7 @@ This endpoint allows you to permanently delete a a specific video or audio media
 
 2. This action is irreversible. Make sure you no longer need the media before proceeding. Once deleted, the media can’t be retrieved or played back. 
 
-3. Monitor the following webhook event: <a href="https://fastpix.com/docs/vod-events/media-events#videomediadeleted">video.media.deleted</a>
+3. Monitor the following webhook event: <a href="https://fastpix.com/docs/webhooks/media-events#videomediadeleted">video.media.deleted</a>
 
 #### Example
 A user on a video-sharing platform decides to remove an old video from their profile, or suppose you're running a content moderation system, and one of the videos uploaded by a user violates your platform's policies. Using this endpoint, the media is permanently deleted from your library, ensuring it's no longer accessible or viewable by other users.
@@ -167,6 +171,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -177,11 +182,12 @@ var res = await sdk.ManageVideos.DeleteMediaAsync(mediaId: "<mediaId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -217,17 +223,17 @@ This endpoint allows you to add an audio or subtitle track to an existing media 
 
 #### Webhook events
 
-1. After successfully adding a track, your system must receive the webhook event <a href="https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackcreated">video.media.track.created</a>.
+1. After successfully adding a track, your system must receive the webhook event <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediatrackcreated">video.media.track.created</a>.
 
-2. Once the track is processed and ready, you must receive the webhook event <a href="https://fastpix.com/docs/vod-events/transform-media-events#videomediatrackready">video.media.track.ready</a>.
+2. Once the track is processed and ready, you must receive the webhook event <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediatrackready">video.media.track.ready</a>.
 
-3. Finally, an update event <a href="https://fastpix.com/docs/vod-events/media-events#videomediaupdated">video.media.updated</a> must notify your system about the media's updated status.
+3. Finally, an update event <a href="https://fastpix.com/docs/webhooks/media-events#videomediaupdated">video.media.updated</a> must notify your system about the media's updated status.
 
 
 #### Example
 Suppose you have a video uploaded to the FastPix platform, and you want to add an Italian audio track to it. By calling this API, you can attach an external audio file (<track-url>) to the media file. Similarly, if you need to add subtitles in different languages, you can specify type: `subtitle` with the corresponding subtitle `url`, `languageCode` and `languageName`.
 
-Related guides: <a href="https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-subtitles-to-a-video">Add own subtitle tracks</a>, <a href="https://fastpix.com/docs/manage-audio-and-subtitle-tracks/add-audio-to-a-video">Add own audio tracks</a>
+Related guides: <a href="https://fastpix.com/docs/video-on-demand/add-subtitles-to-a-video">Add own subtitle tracks</a>, <a href="https://fastpix.com/docs/video-on-demand/add-audio-to-a-video">Add own audio tracks</a>
 
 
 ### Example Usage
@@ -239,6 +245,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -254,11 +261,12 @@ var res = await sdk.ManageVideos.AddMediaTrackAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -290,7 +298,7 @@ This endpoint allows you to cancel ongoing upload by its `uploadId`. Once cancel
 
 #### Webhook Events
 
-Once the upload is cancelled, you must receive the webhook event <a href="https://fastpix.com/docs/vod-events/media-events#videomediauploadcancelled">video.media.upload.cancelled</a>.
+Once the upload is cancelled, you must receive the webhook event <a href="https://fastpix.com/docs/webhooks/media-events#videomediauploadcancelled">video.media.upload.cancelled</a>.
 
 #### Example
 
@@ -305,6 +313,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -315,11 +324,12 @@ var res = await sdk.ManageVideos.CancelUploadAsync(uploadId: "<uploadId>");
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -353,11 +363,11 @@ This endpoint allows you to generate subtitles for an existing audio track in a 
 
 #### Webhook Events
 
-1. After the subtitle track is generated and ready, you receive the webhook event <a href="https://fastpix.com/docs/vod-events/transform-media-events#videomediasubtitlegeneratedready">video.media.subtitle.generated.ready</a>.
+1. After the subtitle track is generated and ready, you receive the webhook event <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediasubtitlegenerated">video.media.subtitle.generated</a>.
 
-2. Finally the <a href="https://fastpix.com/docs/vod-events/media-events#videomediaupdated">video.media.updated</a> event notifies your system about the media’s updated status.
+2. Finally the <a href="https://fastpix.com/docs/webhooks/media-events#videomediaupdated">video.media.updated</a> event notifies your system about the media’s updated status.
 
-</br> Related guide: <a href="https://fastpix.com/docs/manage-audio-and-subtitle-tracks/generate-subtitles-automatically">Add auto-generated subtitles</a>
+</br> Related guide: <a href="https://fastpix.com/docs/video-on-demand/generate-subtitles-automatically">Add auto-generated subtitles</a>
 
 
 ### Example Usage
@@ -368,6 +378,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -384,11 +395,12 @@ var res = await sdk.ManageVideos.GenerateSubtitlesAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -421,7 +433,7 @@ This endpoint allows you to update the `sourceAccess` setting of an existing med
 2. Include the updated `sourceAccess` parameter in the request body.
 
 3. You receive a response confirming the update to the media’s source access status.
-4. Webhook events: <a href="https://fastpix.com/docs/vod-events/transform-media-events#videomediasourceready">video.media.source.ready</a>, <a href="https://fastpix.com/docs/vod-events/transform-media-events#videomediasourcedeleted">video.media.source.deleted</a>
+4. Webhook events: <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediasourceready">video.media.source.ready</a>, <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediasourcedeleted">video.media.source.deleted</a>
 
 
 ### Example Usage
@@ -433,6 +445,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -448,11 +461,12 @@ var res = await sdk.ManageVideos.UpdateSourceAccessAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -497,13 +511,13 @@ This endpoint allows you to update the `mp4Support` setting of an existing media
 
 #### Webhook events
 
-- <a href="https://fastpix.com/docs/vod-events/transform-media-events#videomediamp4supportready">video.media.mp4Support.ready</a> – Triggered when the MP4 support setting is successfully updated.
+- <a href="https://fastpix.com/docs/webhooks/transform-media-events#videomediamp4supportready">video.media.mp4Support.ready</a> – Triggered when the MP4 support setting is successfully updated.
 
 #### Example
 Suppose you have a video uploaded to the FastPix platform, and you want to allow users to download the video in MP4 format. By setting "mp4Support": "capped_4k", the system generates an MP4 rendition of the video up to 4K resolution, making it available for download through the stream URL(`<stream-url>/{playbackId}/{capped-4k.mp4 | audio.m4a}`). If you want users to stream only the audio from the media file, you can set "mp4Support": "audioOnly". This provides an audio-only stream URL that allows users to listen to the media without video. By setting "mp4Support": "audioOnly,capped_4k", both options are enabled. Users can download the MP4 video and also stream just the audio version of the media. 
 
 
-Related guide: <a href="https://fastpix.com/docs/playback-and-delivery/enable-mp4-support-for-offline-viewing">Use MP4 support for offline viewing</a>
+Related guide: <a href="https://fastpix.com/docs/video-on-demand/enable-mp4-support-for-offline-viewing">Use MP4 support for offline viewing</a>
 
 
 ### Example Usage
@@ -515,6 +529,7 @@ using Fastpix.Models.Components;
 using Fastpix.Models.Requests;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -528,11 +543,12 @@ var res = await sdk.ManageVideos.UpdateMp4SupportAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -581,6 +597,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -595,11 +612,12 @@ var res = await sdk.ManageVideos.ListUploadsAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.Object,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 
@@ -640,7 +658,7 @@ A media clip is a segmented portion of an original media file (source media). Cl
 
 Imagine you’re managing a video editing platform where users upload full-length videos and create short clips for social media sharing. To keep track of all clips linked to a particular video, you call this API with the sourceMediaId. The response provides a list of all associated clips, allowing you to manage, edit, or repurpose them as needed.
 
-Related guide: <a href="https://fastpix.com/docs/edit-and-transform-videos/clip-and-trim-videos">Create clips from existing media</a>
+Related guide: <a href="https://fastpix.com/docs/video-on-demand/clip-and-trim-videos">Create clips from existing media</a>
 
 
 ### Example Usage
@@ -651,6 +669,7 @@ using Fastpix;
 using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -666,11 +685,12 @@ var res = await sdk.ManageVideos.ListClipsAsync(
 
 // handle response
 Console.WriteLine(
-    JsonConvert.SerializeObject(
-        res.MediaClipResponse,
-        Formatting.Indented,
-        Utilities.GetDefaultJsonSerializerSettings()
-    )
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.MediaClipResponse,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
 );
 ```
 

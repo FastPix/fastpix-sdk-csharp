@@ -15,26 +15,26 @@ namespace Fastpix.Models.Components
     using System.Numerics;
     using System.Reflection;
 
-    public class GetMediaResponseTrackType
+    public class GetMediaDetailResponseTrackType
     {
-        private GetMediaResponseTrackType(string value) { Value = value; }
+        private GetMediaDetailResponseTrackType(string value) { Value = value; }
 
         public string Value { get; private set; }
 
-        public static GetMediaResponseTrackType VideoTrack { get { return new GetMediaResponseTrackType("VideoTrack"); } }
+        public static GetMediaDetailResponseTrackType VideoTrack { get { return new GetMediaDetailResponseTrackType("VideoTrack"); } }
 
-        public static GetMediaResponseTrackType AudioTrack { get { return new GetMediaResponseTrackType("AudioTrack"); } }
+        public static GetMediaDetailResponseTrackType AudioTrack { get { return new GetMediaDetailResponseTrackType("AudioTrack"); } }
 
-        public static GetMediaResponseTrackType SubtitleTrack { get { return new GetMediaResponseTrackType("SubtitleTrack"); } }
+        public static GetMediaDetailResponseTrackType SubtitleTrack { get { return new GetMediaDetailResponseTrackType("SubtitleTrack"); } }
 
         public override string ToString() { return Value; }
-        public static implicit operator String(GetMediaResponseTrackType v) { return v.Value; }
-        public static GetMediaResponseTrackType FromString(string v) {
+        public static implicit operator String(GetMediaDetailResponseTrackType v) { return v.Value; }
+        public static GetMediaDetailResponseTrackType FromString(string v) {
             switch(v) {
                 case "VideoTrack": return VideoTrack;
                 case "AudioTrack": return AudioTrack;
                 case "SubtitleTrack": return SubtitleTrack;
-                default: throw new ArgumentException("Invalid value for GetMediaResponseTrackType");
+                default: throw new ArgumentException("Invalid value for GetMediaDetailResponseTrackType");
             }
         }
         public override bool Equals(object? obj)
@@ -43,7 +43,7 @@ namespace Fastpix.Models.Components
             {
                 return false;
             }
-            return Value.Equals(((GetMediaResponseTrackType)obj).Value);
+            return Value.Equals(((GetMediaDetailResponseTrackType)obj).Value);
         }
 
         public override int GetHashCode()
@@ -53,10 +53,10 @@ namespace Fastpix.Models.Components
     }
 
 
-    [JsonConverter(typeof(GetMediaResponseTrack.GetMediaResponseTrackConverter))]
-    public class GetMediaResponseTrack
+    [JsonConverter(typeof(GetMediaDetailResponseTrack.GetMediaDetailResponseTrackConverter))]
+    public class GetMediaDetailResponseTrack
     {
-        public GetMediaResponseTrack(GetMediaResponseTrackType type)
+        public GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType type)
         {
             Type = type;
         }
@@ -70,35 +70,35 @@ namespace Fastpix.Models.Components
         [FastpixMetadata("form:explode=true")]
         public SubtitleTrack? SubtitleTrack { get; set; }
 
-        public GetMediaResponseTrackType Type { get; set; }
-        public static GetMediaResponseTrack CreateVideoTrack(VideoTrack videoTrack)
+        public GetMediaDetailResponseTrackType Type { get; set; }
+        public static GetMediaDetailResponseTrack CreateVideoTrack(VideoTrack videoTrack)
         {
-            GetMediaResponseTrackType typ = GetMediaResponseTrackType.VideoTrack;
+            GetMediaDetailResponseTrackType typ = GetMediaDetailResponseTrackType.VideoTrack;
 
-            GetMediaResponseTrack res = new GetMediaResponseTrack(typ);
+            GetMediaDetailResponseTrack res = new GetMediaDetailResponseTrack(typ);
             res.VideoTrack = videoTrack;
             return res;
         }
-        public static GetMediaResponseTrack CreateAudioTrack(AudioTrack audioTrack)
+        public static GetMediaDetailResponseTrack CreateAudioTrack(AudioTrack audioTrack)
         {
-            GetMediaResponseTrackType typ = GetMediaResponseTrackType.AudioTrack;
+            GetMediaDetailResponseTrackType typ = GetMediaDetailResponseTrackType.AudioTrack;
 
-            GetMediaResponseTrack res = new GetMediaResponseTrack(typ);
+            GetMediaDetailResponseTrack res = new GetMediaDetailResponseTrack(typ);
             res.AudioTrack = audioTrack;
             return res;
         }
-        public static GetMediaResponseTrack CreateSubtitleTrack(SubtitleTrack subtitleTrack)
+        public static GetMediaDetailResponseTrack CreateSubtitleTrack(SubtitleTrack subtitleTrack)
         {
-            GetMediaResponseTrackType typ = GetMediaResponseTrackType.SubtitleTrack;
+            GetMediaDetailResponseTrackType typ = GetMediaDetailResponseTrackType.SubtitleTrack;
 
-            GetMediaResponseTrack res = new GetMediaResponseTrack(typ);
+            GetMediaDetailResponseTrack res = new GetMediaDetailResponseTrack(typ);
             res.SubtitleTrack = subtitleTrack;
             return res;
         }
 
-        public class GetMediaResponseTrackConverter : JsonConverter
+        public class GetMediaDetailResponseTrackConverter : JsonConverter
         {
-            public override bool CanConvert(System.Type objectType) => objectType == typeof(GetMediaResponseTrack);
+            public override bool CanConvert(System.Type objectType) => objectType == typeof(GetMediaDetailResponseTrack);
 
             public override bool CanRead => true;
 
@@ -114,14 +114,14 @@ namespace Fastpix.Models.Components
 
                 try
                 {
-                    return new GetMediaResponseTrack(GetMediaResponseTrackType.AudioTrack)
+                    return new GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType.AudioTrack)
                     {
                         AudioTrack = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<AudioTrack>(json)
                     };
                 }
                 catch (ResponseBodyDeserializer.MissingMemberException)
                 {
-                    fallbackCandidates.Add((typeof(AudioTrack), new GetMediaResponseTrack(GetMediaResponseTrackType.AudioTrack), "AudioTrack"));
+                    fallbackCandidates.Add((typeof(AudioTrack), new GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType.AudioTrack), "AudioTrack"));
                 }
                 catch (ResponseBodyDeserializer.DeserializationException)
                 {
@@ -130,14 +130,14 @@ namespace Fastpix.Models.Components
 
                 try
                 {
-                    return new GetMediaResponseTrack(GetMediaResponseTrackType.SubtitleTrack)
+                    return new GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType.SubtitleTrack)
                     {
                         SubtitleTrack = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<SubtitleTrack>(json)
                     };
                 }
                 catch (ResponseBodyDeserializer.MissingMemberException)
                 {
-                    fallbackCandidates.Add((typeof(SubtitleTrack), new GetMediaResponseTrack(GetMediaResponseTrackType.SubtitleTrack), "SubtitleTrack"));
+                    fallbackCandidates.Add((typeof(SubtitleTrack), new GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType.SubtitleTrack), "SubtitleTrack"));
                 }
                 catch (ResponseBodyDeserializer.DeserializationException)
                 {
@@ -146,14 +146,14 @@ namespace Fastpix.Models.Components
 
                 try
                 {
-                    return new GetMediaResponseTrack(GetMediaResponseTrackType.VideoTrack)
+                    return new GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType.VideoTrack)
                     {
                         VideoTrack = ResponseBodyDeserializer.DeserializeUndiscriminatedUnionMember<VideoTrack>(json)
                     };
                 }
                 catch (ResponseBodyDeserializer.MissingMemberException)
                 {
-                    fallbackCandidates.Add((typeof(VideoTrack), new GetMediaResponseTrack(GetMediaResponseTrackType.VideoTrack), "VideoTrack"));
+                    fallbackCandidates.Add((typeof(VideoTrack), new GetMediaDetailResponseTrack(GetMediaDetailResponseTrackType.VideoTrack), "VideoTrack"));
                 }
                 catch (ResponseBodyDeserializer.DeserializationException)
                 {
@@ -186,7 +186,7 @@ namespace Fastpix.Models.Components
                     throw new InvalidOperationException("Unexpected null JSON value.");
                 }
 
-                GetMediaResponseTrack res = (GetMediaResponseTrack)value;
+                GetMediaDetailResponseTrack res = (GetMediaDetailResponseTrack)value;
 
                 if (res.VideoTrack != null)
                 {
