@@ -25,7 +25,7 @@ using System.Reflection;
 
 Use cases: Video-on-demand platforms, e-learning solutions, event broadcasting, creator platforms, corporate streaming, analytics dashboards, and quality monitoring.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.4.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.4+9f24e61941a5c25a65c64e8bedc9a35a942770f3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.4+eac0a4cb965e2da79628bc99b4ea822a5a7dc4b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Fastpix")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Fastpix")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.1.4.0")]
