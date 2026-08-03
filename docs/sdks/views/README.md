@@ -120,7 +120,7 @@ var sdk = new FastpixSDK(security: new Security() {
     Password = "your-secret-key",
 });
 
-var res = await sdk.Views.GetViewDetailsAsync(viewId: "<id>");
+var res = await sdk.Views.GetViewDetailsAsync(viewId: "<viewId>");
 
 // handle response
 Console.WriteLine(

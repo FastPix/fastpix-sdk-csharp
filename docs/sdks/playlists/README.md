@@ -94,7 +94,7 @@ var sdk = new FastpixSDK(security: new Security() {
     Password = "your-secret-key",
 });
 
-var res = await sdk.Playlists.GetAsync(playlistId: "<id>");
+var res = await sdk.Playlists.GetAsync(playlistId: "<playlistId>");
 
 // handle response
 Console.WriteLine(
@@ -149,7 +149,7 @@ var sdk = new FastpixSDK(security: new Security() {
 });
 
 var res = await sdk.Playlists.UpdateAsync(
-    playlistId: "<id>",
+    playlistId: "<playlistId>",
     body: new UpdatePlaylistRequest() {
         Name = "updated name",
         Description = "updated description",
@@ -208,7 +208,7 @@ var sdk = new FastpixSDK(security: new Security() {
     Password = "your-secret-key",
 });
 
-var res = await sdk.Playlists.DeleteAsync(playlistId: "<id>");
+var res = await sdk.Playlists.DeleteAsync(playlistId: "<playlistId>");
 
 // handle response
 Console.WriteLine(
@@ -329,7 +329,7 @@ var sdk = new FastpixSDK(security: new Security() {
 });
 
 var res = await sdk.Playlists.ReorderMediaAsync(
-    playlistId: "<id>",
+    playlistId: "<playlistId>",
     body: new MediaIdsRequest() {
         MediaIds = new List<string>() {
             "<mediaId1>",
@@ -394,7 +394,7 @@ var sdk = new FastpixSDK(security: new Security() {
 });
 
 var res = await sdk.Playlists.DeleteMediaAsync(
-    playlistId: "<id>",
+    playlistId: "<playlistId>",
     body: new MediaIdsRequest() {
         MediaIds = new List<string>() {
             "<mediaId1>",
