@@ -1,6 +1,17 @@
 # FastPix C# SDK
 
+[![NuGet version](https://img.shields.io/nuget/v/Fastpix)](https://www.nuget.org/packages/Fastpix)
+[![NuGet downloads](https://img.shields.io/nuget/dt/Fastpix)](https://www.nuget.org/packages/Fastpix)
+[![license](https://img.shields.io/github/license/FastPix/fastpix-sdk-csharp)](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/LICENSE)
+[![.NET 8.0+](https://img.shields.io/badge/.NET-8.0%2B-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+
 A robust, type-safe C# SDK designed for seamless integration with the FastPix API platform.
+
+The FastPix C# SDK is a strongly-typed .NET client for the FastPix video API. From any .NET 8 app you can upload and manage videos, run live streams and simulcasts, create and secure playback IDs, manage playlists and signing keys, pull video analytics (views, metrics, dimensions, and errors), and drive in-video AI features such as subtitles, chapters, summaries, and content moderation.
+
+**Works with:** .NET 8.0+ · C# · NuGet package `Fastpix` · ASP.NET Core, console, and worker apps
+
+📖 **Docs:** https://fastpix.com/docs/language-sdks/csharp-sdk &nbsp;·&nbsp; 🚀 **Free account:** https://dashboard.fastpix.com
 
 ## Introduction
 
@@ -47,6 +58,8 @@ export FASTPIX_PASSWORD="your-secret-key"
   * [Error Handling](#error-handling)
   * [Server Selection](#server-selection)
   * [Custom HTTP Client](#custom-http-client)
+  * [FAQ](#faq)
+  * [Related FastPix tools](#related-fastpix-tools)
   * [Development](#development)
 
 ## Setup
@@ -634,7 +647,52 @@ The SDK also provides built-in hook support through the `SDKConfiguration.Hooks`
 
 <!-- Placeholder for Future Fastpix SDK Sections -->
 
-# Development
+## FAQ
+
+**How do I install the FastPix C# SDK?**
+Add the NuGet package with `dotnet add package Fastpix` (or `Install-Package Fastpix` in Visual Studio). See [Setup](#setup) and [Installation](#installation).
+
+**How do I authenticate the FastPix .NET SDK?**
+FastPix uses Basic Auth: pass your access token as `Username` and your secret key as `Password` when constructing `FastpixSDK`. See [Initialization](#initialization).
+
+**How do I upload a video from C#?**
+Create media from a URL or upload from a device through `sdk.InputVideo`, for example `await sdk.InputVideo.CreateMediaAsync(req)`. See [Example Usage](#example-usage) and [Available Resources and Operations](#available-resources-and-operations).
+
+**How do I start a live stream in .NET?**
+Use the Live API to create and manage streams, simulcasts, and live playback IDs. See [Available Resources and Operations](#available-resources-and-operations).
+
+**How do I create a secure playback ID?**
+Generate playback IDs and manage signing keys and DRM configurations through the Media API resources. See [Available Resources and Operations](#available-resources-and-operations).
+
+**How do I get video analytics and metrics in C#?**
+The Video Data API exposes metrics, views, dimensions, and errors for monitoring quality of experience. See [Available Resources and Operations](#available-resources-and-operations).
+
+**How do I handle API errors?**
+Catch `FastpixException` (the base class for all HTTP error responses); it exposes the request, response, status code, and body. See [Error Handling](#error-handling).
+
+**How do I configure automatic retries?**
+Pass a `RetryConfig` per call or when constructing the SDK to control the backoff strategy. See [Retries](#retries).
+
+**How do I use a custom HttpClient, proxy, or timeout?**
+Provide your own `IFastpixHttpClient` implementation (custom headers, handlers, timeouts, connection pooling) or use the built-in hooks. See [Custom HTTP Client](#custom-http-client).
+
+**Which .NET versions are supported?**
+The SDK targets .NET 8.0 and above. See [Prerequisites](#prerequisites).
+
+**Is the SDK strongly typed?**
+Yes - it is a strongly-typed client generated from the FastPix API specification, so requests and responses are fully typed. See [Development](#development).
+
+## Related FastPix tools
+
+The C# SDK manages media, live streams, and playback on the server. To upload and play that media in the browser, pair it with these FastPix client-side libraries:
+
+- [web-uploads-sdk](https://github.com/FastPix/web-uploads-sdk) - resumable, chunked file uploads from the browser (`@fastpix/resumable-uploads`)
+- [react-web-uploader](https://github.com/FastPix/react-web-uploader) - a drop-in React upload component (`@fastpix/fp-react-uploader`)
+- [web-player-component](https://github.com/FastPix/web-player-component) - the FastPix HLS video player web component (`@fastpix/fp-player`)
+
+Browse every SDK and tool in the [FastPix organization](https://github.com/orgs/FastPix/repositories).
+
+## Development
 
 This C# SDK is programmatically generated from our API specifications. Any manual modifications to internal files will be overwritten during subsequent generation cycles. 
 
