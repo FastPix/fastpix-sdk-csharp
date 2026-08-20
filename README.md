@@ -378,7 +378,7 @@ var res = await sdk.InputVideo.CreateMediaAsync(req);
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs) is the base exception class for all HTTP error responses. It has the following properties:
+[`FastpixException`](./src/Fastpix/Models/Errors/FastPixException.cs) is the base exception class for all HTTP error responses. It has the following properties:
 
 | Property      | Type                  | Description           |
 |---------------|-----------------------|-----------------------|
@@ -441,14 +441,14 @@ catch (System.Net.Http.HttpRequestException ex)
 ### Error Classes
 
 **Primary exception:**
-* [`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs): The base class for HTTP error responses.
+* [`FastpixException`](./src/Fastpix/Models/Errors/FastPixException.cs): The base class for HTTP error responses.
 
 <details><summary>Less common exceptions (2)</summary>
 
 * [`System.Net.Http.HttpRequestException`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httprequestexception): Network connectivity error. For more details about the underlying cause, inspect the `ex.InnerException`.
 
-* Inheriting from [`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs):
-  * [`ResponseValidationError`](./src/Fastpix/Models/Errors/ResponseValidationError.cs): Thrown when the response data could not be deserialized into the expected type.
+* Inheriting from [`FastpixException`](./src/Fastpix/Models/Errors/FastPixException.cs):
+  * [`ResponseValidationError`](./src/Fastpix/Models/Errors/ResponseValidationException.cs): Thrown when the response data could not be deserialized into the expected type.
 </details>
 <!-- End Error Handling [errors] -->
 
