@@ -8,6 +8,8 @@
     <RootNamespace>FastPix.Examples</RootNamespace>
     <!-- Examples are demonstration code, not part of the shipped package. -->
     <IsPackable>false</IsPackable>
+    <!-- Target net8.0 but run on a newer runtime too (e.g. only .NET 10 installed). -->
+    <RollForward>Major</RollForward>
   </PropertyGroup>
 
   <ItemGroup>
