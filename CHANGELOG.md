@@ -4,6 +4,11 @@
 All notable changes to this project will be documented in this file.
 
 ---
+## [1.1.6] 
+
+### Changed
+- Licence changed from MIT to Apache-2.0.
+
 ## [1.1.5]
 
 Synchronises the SDK with the current `fastpix-openai.yaml`. The four new
