@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FastPix.Examples</RootNamespace>
+    <!-- Examples are demonstration code, not part of the shipped package. -->
+    <IsPackable>false</IsPackable>
+    <!-- Target net8.0 but run on a newer runtime too (e.g. only .NET 10 installed). -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the SDK from source. When you copy an example into your own
+         project, replace this with: <PackageReference Include="Fastpix" /> -->
+    <ProjectReference Include="..\src\Fastpix\Fastpix.csproj" />
+  </ItemGroup>
+
+  <!-- The AspNetCore folder is its own web project; don't compile it into this console app. -->
+  <ItemGroup>
+    <Compile Remove="AspNetCore\**\*.cs" />
+  </ItemGroup>
+
+</Project>
