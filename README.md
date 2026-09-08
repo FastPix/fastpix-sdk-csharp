@@ -13,13 +13,51 @@ The FastPix C# SDK is a strongly-typed .NET client for the FastPix video API. Fr
 
 📖 **Docs:** https://fastpix.com/docs/language-sdks/csharp-sdk &nbsp;·&nbsp; 🚀 **Free account:** https://dashboard.fastpix.com
 
-## Introduction
+## Jump to
 
-The FastPix C# SDK simplifies integration with the FastPix platform. It provides a clean, strongly-typed interface for secure and efficient communication with the FastPix API, enabling easy management of media uploads, live streaming, on‑demand content, playlists, video analytics, and signing keys for secure access and token management. It is intended for use with .NET 8.0 and above.
+Skip straight to a section without scrolling:
 
-## Prerequisites
+| Get started | Reference | Help & more |
+|---|---|---|
+| [Start here](#start-here) | [Available resources & operations](#available-resources-and-operations) | [FAQ](#faq) |
+| [Before you begin](#before-you-begin) | [Error handling](#error-handling) | [Which SDK?](#which-fastpix-sdk-should-i-use) |
+| [Install the SDK](#3-install-the-fastpix-sdk) | [Server selection](#server-selection) | [Related tools](#related-fastpix-tools) |
+| [Make your first API request](#7-make-your-first-api-request) | [Custom HTTP client](#custom-http-client) | [Development](#development) |
+| [Media workflow](#understand-the-media-workflow) | [Retries](#retries) | [Examples](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/examples) |
 
-### Environment and Version Support
+<br />
+
+## Start here
+
+If you are using the FastPix C# SDK for the first time, follow these steps in order:
+
+1. [Check your .NET version](#1-check-your-net-version)
+2. [Create a .NET project](#2-create-a-net-project)
+3. [Install the FastPix SDK](#3-install-the-fastpix-sdk)
+4. [Verify the SDK installation](#4-verify-the-sdk-installation)
+5. [Configure authentication](#5-configure-authentication)
+6. [Initialize the FastPix client](#6-initialize-the-fastpix-client)
+7. [Make your first API request](#7-make-your-first-api-request)
+8. [Retrieve a media asset](#8-retrieve-a-media-asset)
+9. [Generate a playback ID](#9-generate-a-playback-id)
+
+**Do not skip the verification steps.** If the SDK does not install or the project does not build, resolve that issue before making an API request.
+
+---
+
+### Before you begin
+
+Make sure you have the following:
+
+- .NET 8.0 or later.
+- The .NET CLI.
+- Internet access.
+- A FastPix account.
+- A FastPix Access Token.
+- A FastPix Secret Key.
+- A publicly accessible video URL for the first media-creation example.
+
+#### Environment and Version Support
 
 | Requirement | Version | Description |
 |---|---:|---|
@@ -29,16 +67,16 @@ The FastPix C# SDK simplifies integration with the FastPix platform. It provides
 
 > Pro Tip: We recommend using .NET 8.0+ for optimal performance and the latest language features.
 
-### Getting Started with FastPix
+FastPix uses HTTP Basic Authentication.
 
-To get started with the FastPix C# SDK, ensure you have the following:
+| SDK property | FastPix credential |
+| --- | --- |
+| `Username` | Access Token |
+| `Password` | Secret Key |
 
-- The FastPix APIs are authenticated using a **Username** and a **Password**. You must generate these credentials to use the SDK.
-- Follow the steps in the [Authentication with Basic Auth](https://fastpix.com/docs/getting-started/activate-your-account) guide to obtain your credentials.
+Follow the steps in the [Authentication with Basic Auth](https://fastpix.com/docs/getting-started/activate-your-account) guide to obtain your credentials from the [FastPix Dashboard](https://dashboard.fastpix.com).
 
-### Environment Variables (Optional)
-
-Configure your FastPix credentials using environment variables for enhanced security and convenience:
+Optionally, store your credentials as environment variables:
 
 ```bash
 # Set your FastPix credentials
@@ -46,115 +84,367 @@ export FASTPIX_USERNAME="your-access-token"
 export FASTPIX_PASSWORD="your-secret-key"
 ```
 
-> Security Note: Never commit your credentials to version control. Use environment variables or secure credential management systems.
+> **Security:** Do not commit your Access Token or Secret Key to source control. Use environment variables or a secure secrets manager.
 
-## Table of Contents
+---
 
-* [FastPix C# SDK](#fastpix-c-sdk)
-  * [Setup](#setup)
-  * [Example Usage](#example-usage)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-  * [Custom HTTP Client](#custom-http-client)
-  * [FAQ](#faq)
-  * [Related FastPix tools](#related-fastpix-tools)
-  * [Development](#development)
+## 1. Check your .NET version
 
-## Setup
+Run:
 
-### Installation
+```bash
+dotnet --version
+```
 
-Install the FastPix C# SDK using your preferred package manager:
+The output must be **8.0 or later**.
 
-#### .NET CLI
+For example:
+
+```text
+8.0.414
+```
+
+You can also check the installed SDKs:
+
+```bash
+dotnet --list-sdks
+```
+
+If .NET 8 or later is not installed, install a supported .NET SDK before continuing.
+
+---
+
+## 2. Create a .NET project
+
+Create a new console application:
+
+```bash
+mkdir fastpix-csharp-demo
+cd fastpix-csharp-demo
+dotnet new console
+```
+
+This creates a new .NET console application containing files similar to:
+
+```text
+fastpix-csharp-demo/
+├── fastpix-csharp-demo.csproj
+├── Program.cs
+└── obj/
+```
+
+Verify that the project builds before installing the FastPix SDK:
+
+```bash
+dotnet build
+```
+
+You should see output similar to:
+
+```text
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+```
+
+If the build fails, resolve the .NET project issue before continuing.
+
+---
+
+## 3. Install the FastPix SDK
+
+Install the FastPix SDK from NuGet:
 
 ```bash
 dotnet add package Fastpix
 ```
 
-#### NuGet Package Manager
+The SDK is added to your project as a NuGet dependency.
 
-In Visual Studio, open the Package Manager Console and run:
-
-```bash
-Install-Package Fastpix
-```
-
-#### Local Reference
-
-To add a reference to a local instance of the SDK in a .NET project:
+Verify the package:
 
 ```bash
-dotnet add reference src/Fastpix/Fastpix.csproj
+dotnet list package
 ```
 
-### Imports
+You should see an entry similar to:
 
-The SDK uses standard C# namespaces. Import the necessary namespaces at the top of your files:
+```text
+Fastpix    1.1.6
+```
+
+The exact version may be different if a newer version has been published.
+
+---
+
+## 4. Verify the SDK installation
+
+Before making an API request, verify that your application can import and initialize the FastPix SDK.
+
+Replace the contents of `Program.cs` with:
 
 ```csharp
 using Fastpix;
 using Fastpix.Models.Components;
-using Fastpix.Models.Requests;
+
+var sdk = new FastpixSDK(
+    security: new Security
+    {
+        Username = "test",
+        Password = "test"
+    }
+);
+
+Console.WriteLine("FastPix SDK initialized successfully");
+```
+
+Run:
+
+```bash
+dotnet run
+```
+
+Expected output:
+
+```text
+FastPix SDK initialized successfully
+```
+
+At this point you have verified that:
+
+- .NET is installed.
+- The project builds.
+- The `Fastpix` package is installed.
+- The required namespaces are available.
+- The `FastpixSDK` client can be initialized.
+
+The example uses placeholder credentials, so it does **not** make an API request.
+
+---
+
+## 5. Configure authentication
+
+Do not put your FastPix credentials directly in `Program.cs`.
+
+Set the credentials as environment variables instead.
+
+### macOS and Linux
+
+```bash
+export FASTPIX_USERNAME="your-access-token"
+export FASTPIX_PASSWORD="your-secret-key"
+```
+
+Verify that the variables are set without printing the actual credentials:
+
+```bash
+test -n "$FASTPIX_USERNAME" && echo "FASTPIX_USERNAME is set"
+test -n "$FASTPIX_PASSWORD" && echo "FASTPIX_PASSWORD is set"
+```
+
+Expected output:
+
+```text
+FASTPIX_USERNAME is set
+FASTPIX_PASSWORD is set
+```
+
+### Windows PowerShell
+
+```powershell
+$env:FASTPIX_USERNAME="your-access-token"
+$env:FASTPIX_PASSWORD="your-secret-key"
+```
+
+Verify:
+
+```powershell
+if ($env:FASTPIX_USERNAME) { "FASTPIX_USERNAME is set" }
+if ($env:FASTPIX_PASSWORD) { "FASTPIX_PASSWORD is set" }
+```
+
+Do not print the values of the credentials themselves.
+
+---
+
+## 6. Initialize the FastPix client
+
+Update `Program.cs`:
+
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+
+var username = Environment.GetEnvironmentVariable("FASTPIX_USERNAME");
+var password = Environment.GetEnvironmentVariable("FASTPIX_PASSWORD");
+
+if (string.IsNullOrWhiteSpace(username))
+{
+    throw new InvalidOperationException(
+        "FASTPIX_USERNAME environment variable is not set."
+    );
+}
+
+if (string.IsNullOrWhiteSpace(password))
+{
+    throw new InvalidOperationException(
+        "FASTPIX_PASSWORD environment variable is not set."
+    );
+}
+
+var sdk = new FastpixSDK(
+    security: new Security
+    {
+        Username = username,
+        Password = password
+    }
+);
+
+Console.WriteLine("FastPix client initialized successfully");
+```
+
+Run:
+
+```bash
+dotnet run
+```
+
+Expected output:
+
+```text
+FastPix client initialized successfully
+```
+
+Initializing the SDK does not make an API request. The SDK contacts the FastPix API when you call an operation such as `CreateMediaAsync`.
+
+---
+
+## 7. Make your first API request
+
+The simplest way to verify the complete integration is to create a media asset from a publicly accessible video URL.
+
+Replace `Program.cs` with:
+
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
 using System.Collections.Generic;
-```
+using System.Text.Json;
 
-### Initialization
+var username = Environment.GetEnvironmentVariable("FASTPIX_USERNAME");
+var password = Environment.GetEnvironmentVariable("FASTPIX_PASSWORD");
 
-Initialize the FastPix SDK with your credentials:
+if (string.IsNullOrWhiteSpace(username))
+{
+    throw new InvalidOperationException(
+        "FASTPIX_USERNAME environment variable is not set."
+    );
+}
 
-```csharp
-using Fastpix;
-using Fastpix.Models.Components;
+if (string.IsNullOrWhiteSpace(password))
+{
+    throw new InvalidOperationException(
+        "FASTPIX_PASSWORD environment variable is not set."
+    );
+}
 
-var sdk = new FastpixSDK(security: new Security() {
-    Username = "your-access-token",
-    Password = "your-secret-key",
-});
-```
+var sdk = new FastpixSDK(
+    security: new Security()
+    {
+        Username = username,
+        Password = password,
+    }
+);
 
-Or using environment variables:
-
-```csharp
-using Fastpix;
-using Fastpix.Models.Components;
-using System;
-
-var sdk = new FastpixSDK(security: new Security() {
-    Username = Environment.GetEnvironmentVariable("FASTPIX_USERNAME"), // Your Access Token
-    Password = Environment.GetEnvironmentVariable("FASTPIX_PASSWORD"), // Your Secret Key
-});
-```
-
-## Example Usage
-
-```csharp
-using Fastpix;
-using Fastpix.Models.Components;
-using System.Collections.Generic;
-
-var sdk = new FastpixSDK(security: new Security() {
-    Username = "your-access-token",
-    Password = "your-secret-key",
-});
-
-var req = new CreateMediaRequest() {
-    Inputs = new List<Fastpix.Models.Components.Input>() {
+var request = new CreateMediaRequest()
+{
+    Inputs = new List<Fastpix.Models.Components.Input>()
+    {
         Fastpix.Models.Components.Input.CreatePullVideoInput(
-            new PullVideoInput() {}
-        ),
+            new PullVideoInput()
+            {
+                Url = "https://static.fastpix.com/fp-sample-video.mp4"
+            }
+        )
     },
-    Metadata = new Dictionary<string, string>() {
-        { "<key>", "<value>" },
-    },
+
+    Metadata = new Dictionary<string, string>()
+    {
+        { "title", "My first FastPix video" },
+        { "source", "csharp-demo" }
+    }
 };
 
-var res = await sdk.InputVideo.CreateMediaAsync(req);
+try
+{
+    var response = await sdk.InputVideo.CreateMediaAsync(request);
 
-// handle response
+    Console.WriteLine("Media creation request succeeded.");
+    Console.WriteLine();
+    Console.WriteLine("Response type:");
+    Console.WriteLine(response.GetType().FullName);
+    Console.WriteLine();
+    Console.WriteLine("Response:");
+    Console.WriteLine(
+        JsonSerializer.Serialize(
+            response,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true
+            }
+        )
+    );
+}
+catch (Exception ex)
+{
+    Console.Error.WriteLine("FastPix API request failed.");
+    Console.Error.WriteLine(ex.Message);
+}
 ```
+
+Run:
+
+```bash
+dotnet run
+```
+
+If the request succeeds, FastPix returns the response from the media creation API.
+
+> **Note:** The example URL above is a placeholder. You must replace it with a URL that points directly to a video file that FastPix can access.
+
+---
+
+## 8. Retrieve a media asset
+
+After creating media, use the returned media ID to retrieve the media details.
+
+The media ID returned by the create operation can be passed to the corresponding media retrieval operation.
+
+For a media asset to become playable, wait until its processing status indicates that it is ready.
+
+---
+
+## 9. Generate a playback ID
+
+Once your media is ready, you can create a playback ID for video playback.
+
+Playback IDs can be used with FastPix playback clients such as the FastPix Web Player.
+
+For secure content, use signed playback and the appropriate signing configuration.
+
+See the [FastPix playback documentation](https://fastpix.com/docs) for details.
+
+---
+
+## Understand the media workflow
+
+Creating media is usually the first operation in an on-demand video workflow. You carry the media ID from one call to the next, from upload through to playback.
+
+<Image alt="FastPix C# media workflow: create media returns a media ID, get the media details, wait until the status is ready, create a playback ID, then play the video." border={false} src="https://static.fastpix.com/csharp-media-workflow.png" />
+
+A playback ID is created separately, only when you need playback access.
+
+> **More examples:** For runnable, end-to-end flows (media creation, live streaming, playlists, analytics, and more), see the [`examples/`](https://github.com/FastPix/fastpix-sdk-csharp/tree/main/examples) directory in the repo.
 
 ## Available Resources and Operations
 
@@ -276,26 +566,21 @@ Enhance video content with AI-powered features including moderation, summarizati
 - [Enable Moderation](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/moderations/README.md#update) - Activate content moderation and safety checks
 
 #### Media Clips
-
 - [List Live Clips](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/videos/README.md#listliveclips) - Get all clips of a live stream
 - [List Media Clips](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#listclips) - Retrieve all clips associated with a source media
 
 #### Subtitles
-
 - [Generate Subtitles](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#generatesubtitles) - Create automatic subtitles for media
 
 #### Media Tracks
-
 - [Add Track](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#addmediatrack) - Add audio or subtitle tracks to media
 - [Update Track](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/videos/README.md#updatetrack) - Modify existing audio or subtitle tracks
 - [Delete Track](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/tracks/README.md#delete) - Remove audio or subtitle tracks
 
 #### Access Control
-
 - [Update Source Access](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#updatesourceaccess) - Control access permissions for media source
 
 #### Format Support
-
 - [Update MP4 Support](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/managevideos/README.md#updatemp4support) - Configure MP4 download capabilities
 
 <!-- End Available Resources and Operations [operations] -->
@@ -427,7 +712,6 @@ try
     };
 
     var res = await sdk.InputVideo.CreateMediaAsync(req);
-
     // handle response
 }
 catch (FastpixException ex)  // all SDK exceptions inherit from FastpixException
@@ -459,9 +743,9 @@ catch (System.Net.Http.HttpRequestException ex)
 <details><summary>Less common exceptions (2)</summary>
 
 * [`System.Net.Http.HttpRequestException`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httprequestexception): Network connectivity error. For more details about the underlying cause, inspect the `ex.InnerException`.
-
 * Inheriting from [`FastpixException`](./src/Fastpix/Models/Errors/FastpixException.cs):
   * [`ResponseValidationError`](./src/Fastpix/Models/Errors/ResponseValidationError.cs): Thrown when the response data could not be deserialized into the expected type.
+
 </details>
 <!-- End Error Handling [errors] -->
 
@@ -650,13 +934,13 @@ The SDK also provides built-in hook support through the `SDKConfiguration.Hooks`
 ## FAQ
 
 **How do I install the FastPix C# SDK?**
-Add the NuGet package with `dotnet add package Fastpix` (or `Install-Package Fastpix` in Visual Studio). See [Setup](#setup) and [Installation](#installation).
+Add the NuGet package with `dotnet add package Fastpix` (or `Install-Package Fastpix` in Visual Studio). See [Install the FastPix SDK](#3-install-the-fastpix-sdk).
 
 **How do I authenticate the FastPix .NET SDK?**
-FastPix uses Basic Auth: pass your access token as `Username` and your secret key as `Password` when constructing `FastpixSDK`. See [Initialization](#initialization).
+FastPix uses Basic Auth: pass your access token as `Username` and your secret key as `Password` when constructing `FastpixSDK`. See [Initialize the FastPix client](#6-initialize-the-fastpix-client).
 
 **How do I upload a video from C#?**
-Create media from a URL or upload from a device through `sdk.InputVideo`, for example `await sdk.InputVideo.CreateMediaAsync(req)`. See [Example Usage](#example-usage) and [Available Resources and Operations](#available-resources-and-operations).
+Create media from a URL or upload from a device through `sdk.InputVideo`, for example `await sdk.InputVideo.CreateMediaAsync(req)`. See [Make your first API request](#7-make-your-first-api-request) and [Available Resources and Operations](#available-resources-and-operations).
 
 **How do I start a live stream in .NET?**
 Use the Live API to create and manage streams, simulcasts, and live playback IDs. See [Available Resources and Operations](#available-resources-and-operations).
@@ -677,10 +961,24 @@ Pass a `RetryConfig` per call or when constructing the SDK to control the backof
 Provide your own `IFastpixHttpClient` implementation (custom headers, handlers, timeouts, connection pooling) or use the built-in hooks. See [Custom HTTP Client](#custom-http-client).
 
 **Which .NET versions are supported?**
-The SDK targets .NET 8.0 and above. See [Prerequisites](#prerequisites).
+The SDK targets .NET 8.0 and above. See [Before you begin](#before-you-begin).
 
 **Is the SDK strongly typed?**
 Yes - it is a strongly-typed client generated from the FastPix API specification, so requests and responses are fully typed. See [Development](#development).
+
+## Which FastPix SDK should I use?
+
+FastPix publishes a server SDK for every major backend language, each generated from the same API specification:
+
+| Language | Repo | Install |
+|---|---|---|
+| **C# / .NET** (this repo) | [fastpix-sdk-csharp](https://github.com/FastPix/fastpix-sdk-csharp) | `dotnet add package Fastpix` |
+| Node.js / TypeScript | [node-sdk](https://github.com/FastPix/node-sdk) | `npm install @fastpix/fastpix-node` |
+| Python | [fastpix-python](https://github.com/FastPix/fastpix-python) | `pip install fastpix-python` |
+| Go | [fastpix-go](https://github.com/FastPix/fastpix-go) | `go get github.com/FastPix/fastpix-go` |
+| PHP | [fastpix-php](https://github.com/FastPix/fastpix-php) | `composer require fastpix/sdk` |
+| Java | [fastpix-java](https://github.com/FastPix/fastpix-java) | `io.fastpix:sdk` (Maven/Gradle) |
+| Ruby | [fastpix-ruby](https://github.com/FastPix/fastpix-ruby) | `gem install fastpixapi` |
 
 ## Related FastPix tools
 
