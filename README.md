@@ -218,6 +218,8 @@ For detailed documentation, see [FastPix Live Stream Overview](https://fastpix.c
 - [Create Playback ID](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/liveplayback/README.md#create) - Generate secure live playback access
 - [Delete Playback ID](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/liveplayback/README.md#deleteplaybackid) - Revoke live playback access
 - [Get Playback ID](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/liveplayback/README.md#getplaybackdetails) - Retrieve live playback configuration
+- [Update Domain Restrictions](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/liveplayback/README.md#updatedomainrestrictions) - Update domain restrictions for a live playback ID
+- [Update User-Agent Restrictions](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/liveplayback/README.md#updateuseragentrestrictions) - Update user-agent restrictions for a live playback ID
 
 #### Simulcast Stream
 - [Create Simulcast](https://github.com/FastPix/fastpix-sdk-csharp/blob/main/docs/sdks/simulcasts/README.md#create) - Set up multi-platform streaming

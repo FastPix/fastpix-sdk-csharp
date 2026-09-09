@@ -26,10 +26,10 @@ namespace Fastpix.Models.Components
         public string? CreatorId { get; set; } = null;
 
         /// <summary>
-        /// Duration of the media in hh:mm:ss format.
+        /// Duration of the media in seconds.
         /// </summary>
         [JsonProperty("duration")]
-        public string? Duration { get; set; }
+        public double? Duration { get; set; }
 
         /// <summary>
         /// unique id of the particular media.

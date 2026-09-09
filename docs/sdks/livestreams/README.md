@@ -56,6 +56,7 @@ CreateLiveStreamRequest req = new CreateLiveStreamRequest() {
         Metadata = new Dictionary<string, string>() {
             { "livestream_name", "fastpix_livestream" },
         },
+        EnableRecording = true,
     },
 };
 
