@@ -401,6 +401,7 @@ FodyWeavers.xsd
 # Environment files / local secrets
 .env
 .env.*
+!.env.example
 appsettings.Development.json
 appsettings.Local.json
 secrets.json
@@ -414,10 +415,9 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Local OpenAPI spec used by the validation harness — not part of the published SDK
-fixed 7.yaml
-*.local.yaml
-/fastpix-openai.yaml
+# Local OpenAPI spec snapshot and spec-sync check script — not part of the published SDK
+/openapi.yaml
+/spec_sync_check*
 
 # Endpoint validation harness (tests/) — build output and generated artifacts
 tests/bin/

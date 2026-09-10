@@ -21,5 +21,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("accessPolicy")]
         public BasicAccessPolicy? AccessPolicy { get; set; } = Fastpix.Models.Components.BasicAccessPolicy.Public;
+
+        /// <summary>
+        /// Domain and user-agent allow/deny policies applied to this playback ID.
+        /// </summary>
+        [JsonProperty("accessRestrictions")]
+        public PlaybackIdAccessRestrictions? AccessRestrictions { get; set; }
     }
 }

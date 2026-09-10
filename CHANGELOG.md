@@ -4,7 +4,36 @@
 All notable changes to this project will be documented in this file.
 
 ---
-## [1.1.6] 
+## [1.2.0]
+
+### Breaking
+- Media `duration` is now a `double?` (seconds) instead of an `"HH:MM:SS"` string,
+  matching the updated API. Affects `ManageVideos.GetByIdAsync`, `ListAsync`,
+  `UpdateSourceAccessAsync`, `UpdateMp4SupportAsync`, `ListClipsAsync`,
+  `Videos.UpdateAsync`, `ListLiveClipsAsync`, `Playlist.CreateAsync`, and
+  `Playlists.GetAsync`, `UpdateAsync`, `AddMediaAsync`, `ReorderMediaAsync`,
+  `DeleteMediaAsync` (every model carrying `duration`: `GetMediaDetailResponse`,
+  `GetAllMediaResponse`, `UpdateMedia`, `SourceAccessMedia`, `Media`,
+  `LiveMediaClips`, `MediaClipResponseData`, `PlaylistByIdResponseMediaListItem`).
+
+### Added
+- `InputMediaSettings.EnableRecording` on live stream creation (defaults to `true`;
+  set `false` to skip the Live-to-VOD recording).
+- `AccessRestrictions` (domain and user-agent allow/deny policies) on
+  `PlaybackIdRequest`, `PlaybackIdSuccessResponseData`, `PlaybackSettings` and
+  `PlaybackIdResponse`, so live playback IDs can be restricted on create and read
+  back on get.
+- `LivePlayback.UpdateDomainRestrictionsAsync` for
+  `PATCH /live/streams/{streamId}/playback-ids/{playbackId}/domains`.
+- `LivePlayback.UpdateUserAgentRestrictionsAsync` for
+  `PATCH /live/streams/{streamId}/playback-ids/{playbackId}/user-agents`.
+- Offline unit tests: model contracts, a fake-transport test for the new
+  endpoints, and a response-contract scan over every resource method.
+
+### Changed
+- The validation harness looks for the OpenAPI snapshot as `openapi.yaml` only.
+
+## [1.1.6]
 
 ### Changed
 - Licence changed from MIT to Apache-2.0.
