@@ -4,6 +4,25 @@
 All notable changes to this project will be documented in this file.
 
 ---
+## [1.2.1]
+
+### Changed
+- Enum fields the API returns are now open enums (classes) instead of C# `enum`s, so
+  a value newer than the SDK no longer fails the whole response — it is kept as a raw
+  string. Affects every response-side enum, including `MediaStatus`,
+  `MediaSourceResolution`, `MediaMaxResolution`, `MediaMediaQuality`, the
+  `GetAllMediaResponse*` / `GetMediaDetailResponse*` / `SourceAccessMedia*` /
+  `LiveMediaClips*` / `UpdateMedia*` / `CreateMediaResponse*` variants, `Mp4Support*`,
+  playlist and track response types, and the shared `AccessPolicy`, `PolicyAction`
+  and `PlaylistOrder`.
+  - Backward compatible for the common cases: known values still resolve to the same
+    members and `==` still works (`media.Status == MediaStatus.Ready`). The one thing
+    to update is a `switch` on these values — you can no longer use a member as a
+    `case` label; switch on `.Value` or use `if`/`==`. An unrecognised value has
+    `IsKnown == false` with the raw text in `.Value`.
+  - Request-side enums are unchanged. The 3 shared enums also drop the throw from
+    `Of("unknown")`; request values come from members, so this has no practical effect.
+
 ## [1.2.0]
 
 ### Breaking
