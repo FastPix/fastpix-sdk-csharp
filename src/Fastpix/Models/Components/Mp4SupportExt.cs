@@ -9,49 +9,49 @@ namespace Fastpix.Models.Components
     using Fastpix.Utils;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// File extension of the downloadable rendition.
     /// </summary>
-    public enum Mp4SupportExt
+    // Open enum: unknown server values are preserved as the raw string instead of throwing.
+    [JsonConverter(typeof(OpenEnumConverter))]
+    public sealed class Mp4SupportExt : IEquatable<Mp4SupportExt>
     {
-        [JsonProperty("mp4")]
-        Mp4,
-        [JsonProperty("m4a")]
-        M4a,
-    }
-
-    public static class Mp4SupportExtExtension
-    {
-        public static string Value(this Mp4SupportExt value)
+        public static readonly Mp4SupportExt Mp4 = new("mp4");
+        public static readonly Mp4SupportExt M4a = new("m4a");
+        private static readonly Dictionary<string, Mp4SupportExt> Known = new()
         {
-            return ((JsonPropertyAttribute)value.GetType().GetMember(value.ToString())[0].GetCustomAttributes(typeof(JsonPropertyAttribute), false)[0]).PropertyName ?? value.ToString();
+            ["mp4"] = Mp4,
+            ["m4a"] = M4a,
+        };
+
+        private Mp4SupportExt(string value)
+        {
+            Value = value;
         }
 
-        public static Mp4SupportExt ToEnum(this string value)
+        public string Value { get; }
+
+        // Returns the shared instance for a known value, otherwise a wrapper carrying the raw string.
+        public static Mp4SupportExt Of(string value)
         {
-            foreach(var field in typeof(Mp4SupportExt).GetFields())
-            {
-                var attributes = field.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    continue;
-                }
-
-                var attribute = attributes[0] as JsonPropertyAttribute;
-                if (attribute != null && attribute.PropertyName == value)
-                {
-                    var enumVal = field.GetValue(null);
-
-                    if (enumVal is Mp4SupportExt mp4SupportExt)
-                    {
-                        return mp4SupportExt;
-                    }
-                }
-            }
-
-            throw new ArgumentException($"Unknown value {value} for enum Mp4SupportExt", nameof(value));
+            return Known.TryGetValue(value, out var known) ? known : new Mp4SupportExt(value);
         }
-    }
 
+        // False when the server sent a value this SDK version does not recognise.
+        public bool IsKnown => Known.ContainsKey(Value);
+
+        public override string ToString() => Value;
+
+        public override bool Equals(object? obj) => obj is Mp4SupportExt other && other.Value == Value;
+
+        public bool Equals(Mp4SupportExt? other) => other is not null && other.Value == Value;
+
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public static bool operator ==(Mp4SupportExt? left, Mp4SupportExt? right) => Equals(left, right);
+
+        public static bool operator !=(Mp4SupportExt? left, Mp4SupportExt? right) => !Equals(left, right);
+    }
 }
