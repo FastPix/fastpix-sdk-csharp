@@ -9,49 +9,49 @@ namespace Fastpix.Models.Components
     using Fastpix.Utils;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The MP4 rendition type. `capped_4k` is a downloadable MP4 video capped at 4K resolution, `audioOnly` is a downloadable m4a audio-only file.
     /// </summary>
-    public enum Mp4SupportType
+    // Open enum: unknown server values are preserved as the raw string instead of throwing.
+    [JsonConverter(typeof(OpenEnumConverter))]
+    public sealed class Mp4SupportType : IEquatable<Mp4SupportType>
     {
-        [JsonProperty("capped_4k")]
-        Capped4k,
-        [JsonProperty("audioOnly")]
-        AudioOnly,
-    }
-
-    public static class Mp4SupportTypeExtension
-    {
-        public static string Value(this Mp4SupportType value)
+        public static readonly Mp4SupportType Capped4k = new("capped_4k");
+        public static readonly Mp4SupportType AudioOnly = new("audioOnly");
+        private static readonly Dictionary<string, Mp4SupportType> Known = new()
         {
-            return ((JsonPropertyAttribute)value.GetType().GetMember(value.ToString())[0].GetCustomAttributes(typeof(JsonPropertyAttribute), false)[0]).PropertyName ?? value.ToString();
+            ["capped_4k"] = Capped4k,
+            ["audioOnly"] = AudioOnly,
+        };
+
+        private Mp4SupportType(string value)
+        {
+            Value = value;
         }
 
-        public static Mp4SupportType ToEnum(this string value)
+        public string Value { get; }
+
+        // Returns the shared instance for a known value, otherwise a wrapper carrying the raw string.
+        public static Mp4SupportType Of(string value)
         {
-            foreach(var field in typeof(Mp4SupportType).GetFields())
-            {
-                var attributes = field.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    continue;
-                }
-
-                var attribute = attributes[0] as JsonPropertyAttribute;
-                if (attribute != null && attribute.PropertyName == value)
-                {
-                    var enumVal = field.GetValue(null);
-
-                    if (enumVal is Mp4SupportType mp4SupportType)
-                    {
-                        return mp4SupportType;
-                    }
-                }
-            }
-
-            throw new ArgumentException($"Unknown value {value} for enum Mp4SupportType", nameof(value));
+            return Known.TryGetValue(value, out var known) ? known : new Mp4SupportType(value);
         }
-    }
 
+        // False when the server sent a value this SDK version does not recognise.
+        public bool IsKnown => Known.ContainsKey(Value);
+
+        public override string ToString() => Value;
+
+        public override bool Equals(object? obj) => obj is Mp4SupportType other && other.Value == Value;
+
+        public bool Equals(Mp4SupportType? other) => other is not null && other.Value == Value;
+
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public static bool operator ==(Mp4SupportType? left, Mp4SupportType? right) => Equals(left, right);
+
+        public static bool operator !=(Mp4SupportType? left, Mp4SupportType? right) => !Equals(left, right);
+    }
 }

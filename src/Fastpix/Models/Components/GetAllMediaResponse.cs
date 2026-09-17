@@ -164,10 +164,10 @@ namespace Fastpix.Models.Components
         public bool? SubtitleAvailable { get; set; } = null;
 
         /// <summary>
-        /// The length of the media in seconds, with a maximum allowed duration of 12 hours per individual media.
+        /// Duration of the media in seconds, with a maximum allowed duration of 12 hours per individual media.
         /// </summary>
         [JsonProperty("duration")]
-        public string? Duration { get; set; }
+        public double? Duration { get; set; }
 
         /// <summary>
         /// Frame rate quantifies the speed at which frames are displayed per second. It represents the range of frames available for a specific track. The indeterminable frame rate of the input file is indicated by a value of -1.

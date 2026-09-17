@@ -69,7 +69,7 @@ namespace Fastpix.Models.Components
         public static PlaylistCreatedSchema CreateManual(PlaylistByIdResponseDataManual manual)
         {
             PlaylistCreatedSchemaType typ = PlaylistCreatedSchemaType.Manual;
-            manual.Type = PlaylistByIdResponseDataManualTypeExtension.ToEnum(PlaylistCreatedSchemaType.Manual.ToString());
+            manual.Type = PlaylistByIdResponseDataManualType.Of(PlaylistCreatedSchemaType.Manual.ToString());
             PlaylistCreatedSchema res = new PlaylistCreatedSchema(typ);
             res.PlaylistByIdResponseDataManual = manual;
             return res;
@@ -78,7 +78,7 @@ namespace Fastpix.Models.Components
         public static PlaylistCreatedSchema CreateSmart(PlaylistByIdResponseDataSmart smart)
         {
             PlaylistCreatedSchemaType typ = PlaylistCreatedSchemaType.Smart;
-            smart.Type = PlaylistByIdResponseDataSmartTypeExtension.ToEnum(PlaylistCreatedSchemaType.Smart.ToString());
+            smart.Type = PlaylistByIdResponseDataSmartType.Of(PlaylistCreatedSchemaType.Smart.ToString());
             PlaylistCreatedSchema res = new PlaylistCreatedSchema(typ);
             res.PlaylistByIdResponseDataSmart = smart;
             return res;

@@ -118,10 +118,10 @@ namespace Fastpix.Models.Components
         public bool? SubtitleAvailable { get; set; } = null;
 
         /// <summary>
-        /// The length of the media in seconds, with a maximum allowed duration of 12 hours per individual media.
+        /// Duration of the media in seconds, with a maximum allowed duration of 12 hours per individual media.
         /// </summary>
         [JsonProperty("duration")]
-        public string? Duration { get; set; }
+        public double? Duration { get; set; }
 
         /// <summary>
         /// The aspect ratio of a video is a value that describes the relative shape of a video based on its width and height.

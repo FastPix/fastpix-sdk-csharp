@@ -61,6 +61,44 @@ namespace Fastpix
         /// </remarks>
         /// </summary>
         Task<GetLiveStreamPlaybackIdResponse> GetPlaybackDetailsAsync(string streamId, string playbackId, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
+
+        /// <summary>
+        /// Update domain restrictions for a playback ID
+        /// 
+        /// <remarks>
+        /// This endpoint updates domain-level restrictions for a specific playback ID associated with a live stream.<br/>
+        /// It allows you to restrict playback to specific domains or block known unauthorized domains.<br/>
+        /// <br/>
+        /// **How it works:**<br/>
+        /// 1. Make a `PATCH` request to this endpoint with your desired domain access configuration.<br/>
+        /// 2. Set a default policy (`allow` or `deny`) and specify domain names in the `allow` or `deny` lists.<br/>
+        /// 3. This is commonly used to restrict live playback to your website or approved client domains.<br/>
+        /// <br/>
+        /// **Example:**<br/>
+        /// A streaming service can allow playback only from `example.com` and deny all others by setting: `&quot;defaultPolicy&quot;: &quot;deny&quot;` and `&quot;allow&quot;: [&quot;example.com&quot;]`.<br/>
+        /// 
+        /// </remarks>
+        /// </summary>
+        Task<UpdateLiveStreamDomainRestrictionsResponse> UpdateDomainRestrictionsAsync(string streamId, string playbackId, UpdateLiveStreamDomainRestrictionsRequestBody body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
+
+        /// <summary>
+        /// Update user-agent restrictions for a playback ID
+        /// 
+        /// <remarks>
+        /// This endpoint allows updating user-agent restrictions for a specific playback ID associated with a live stream. <br/>
+        /// It can be used to allow or deny specific user-agents during playback request evaluation.<br/>
+        /// <br/>
+        /// **How it works:**<br/>
+        /// 1. Make a `PATCH` request to this endpoint with your desired user-agent access configuration.<br/>
+        /// 2. Specify a default policy (`allow` or `deny`) and provide specific `allow` or `deny` lists.<br/>
+        /// 3. Use this to restrict access to specific browsers, devices, or bots.<br/>
+        /// <br/>
+        /// **Example:**<br/>
+        /// A developer may configure a playback ID to deny access from known scraping user-agents while allowing all others by default.<br/>
+        /// 
+        /// </remarks>
+        /// </summary>
+        Task<UpdateLiveStreamUserAgentRestrictionsResponse> UpdateUserAgentRestrictionsAsync(string streamId, string playbackId, UpdateLiveStreamUserAgentRestrictionsRequestBody body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null);
     }
 
     public class LivePlayback: ILivePlayback
@@ -404,6 +442,204 @@ namespace Fastpix
             }
 
             throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+        }
+
+        public async Task<UpdateLiveStreamDomainRestrictionsResponse> UpdateDomainRestrictionsAsync(string streamId, string playbackId, UpdateLiveStreamDomainRestrictionsRequestBody body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
+        {
+            var request = new UpdateLiveStreamDomainRestrictionsRequest()
+            {
+                StreamId = streamId,
+                PlaybackId = playbackId,
+                Body = body,
+            };
+            string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
+            var urlString = UrlBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids/{playbackId}/domains", request, null);
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Patch, urlString);
+            httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
+
+            var serializedBody = RequestBodySerializer.Serialize(request, "Body", "json", false, false);
+            if (serializedBody != null)
+            {
+                httpRequest.Content = serializedBody;
+            }
+
+            if (SDKConfiguration.SecuritySource != null)
+            {
+                httpRequest = new SecurityMetadata(SDKConfiguration.SecuritySource).Apply(httpRequest);
+            }
+
+            var hookCtx = new HookContext(SDKConfiguration, baseUrl, "update-live-stream-domain-restrictions", null, SDKConfiguration.SecuritySource, cancellationToken);
+
+            httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
+            retryConfig ??= this.SDKConfiguration.RetryConfig ?? BuildDefaultRetryConfig();
+
+            List<string> statusCodes = new List<string>
+            {
+                "408",
+                "429",
+                "500",
+                "502",
+                "503",
+                "504",
+            };
+
+            Func<Task<HttpResponseMessage>> retrySend = async () =>
+            {
+                var _httpRequest = await SDKConfiguration.Client.CloneAsync(httpRequest);
+                return await SDKConfiguration.Client.SendAsync(_httpRequest, cancellationToken);
+            };
+            var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, statusCodes);
+
+            HttpResponseMessage httpResponse = await SendWithHooksAsync(retries, hookCtx);
+
+            var contentType = httpResponse.Content.Headers.ContentType?.MediaType;
+            int responseStatusCode = (int)httpResponse.StatusCode;
+            if(responseStatusCode == 200)
+            {
+                if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
+                {
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
+                    var obj = DeserializeOrThrow<UpdateLiveStreamDomainRestrictionsResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "UpdateLiveStreamDomainRestrictionsResponseBody");
+
+                    var response = new UpdateLiveStreamDomainRestrictionsResponse()
+                    {
+                        HttpMeta = new Models.Components.HttpMetadata()
+                        {
+                            Response = httpResponse,
+                            Request = httpRequest
+                        }
+                    };
+                    response.Object = obj;
+                    return response;
+                }
+
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+            }
+            else if(responseStatusCode >= 400 && responseStatusCode < 600)
+            {
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+            }
+            else
+            {
+                if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
+                {
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
+                    var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, nameof(DefaultError));
+
+                    var response = new UpdateLiveStreamDomainRestrictionsResponse()
+                    {
+                        HttpMeta = new Models.Components.HttpMetadata()
+                        {
+                            Response = httpResponse,
+                            Request = httpRequest
+                        }
+                    };
+                    response.DefaultError = obj;
+                    return response;
+                }
+
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+            }
+        }
+
+        public async Task<UpdateLiveStreamUserAgentRestrictionsResponse> UpdateUserAgentRestrictionsAsync(string streamId, string playbackId, UpdateLiveStreamUserAgentRestrictionsRequestBody body, RetryConfig? retryConfig = null, CancellationToken? cancellationToken = null)
+        {
+            var request = new UpdateLiveStreamUserAgentRestrictionsRequest()
+            {
+                StreamId = streamId,
+                PlaybackId = playbackId,
+                Body = body,
+            };
+            string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
+            var urlString = UrlBuilder.Build(baseUrl, "/live/streams/{streamId}/playback-ids/{playbackId}/user-agents", request, null);
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Patch, urlString);
+            httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
+
+            var serializedBody = RequestBodySerializer.Serialize(request, "Body", "json", false, false);
+            if (serializedBody != null)
+            {
+                httpRequest.Content = serializedBody;
+            }
+
+            if (SDKConfiguration.SecuritySource != null)
+            {
+                httpRequest = new SecurityMetadata(SDKConfiguration.SecuritySource).Apply(httpRequest);
+            }
+
+            var hookCtx = new HookContext(SDKConfiguration, baseUrl, "update-live-stream-user-agent-restrictions", null, SDKConfiguration.SecuritySource, cancellationToken);
+
+            httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
+            retryConfig ??= this.SDKConfiguration.RetryConfig ?? BuildDefaultRetryConfig();
+
+            List<string> statusCodes = new List<string>
+            {
+                "408",
+                "429",
+                "500",
+                "502",
+                "503",
+                "504",
+            };
+
+            Func<Task<HttpResponseMessage>> retrySend = async () =>
+            {
+                var _httpRequest = await SDKConfiguration.Client.CloneAsync(httpRequest);
+                return await SDKConfiguration.Client.SendAsync(_httpRequest, cancellationToken);
+            };
+            var retries = new Fastpix.Utils.Retries.Retries(retrySend, retryConfig, statusCodes);
+
+            HttpResponseMessage httpResponse = await SendWithHooksAsync(retries, hookCtx);
+
+            var contentType = httpResponse.Content.Headers.ContentType?.MediaType;
+            int responseStatusCode = (int)httpResponse.StatusCode;
+            if(responseStatusCode == 200)
+            {
+                if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
+                {
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
+                    var obj = DeserializeOrThrow<UpdateLiveStreamUserAgentRestrictionsResponseBody>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, "UpdateLiveStreamUserAgentRestrictionsResponseBody");
+
+                    var response = new UpdateLiveStreamUserAgentRestrictionsResponse()
+                    {
+                        HttpMeta = new Models.Components.HttpMetadata()
+                        {
+                            Response = httpResponse,
+                            Request = httpRequest
+                        }
+                    };
+                    response.Object = obj;
+                    return response;
+                }
+
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+            }
+            else if(responseStatusCode >= 400 && responseStatusCode < 600)
+            {
+                throw new Models.Errors.ApiException(ApiErrorMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+            }
+            else
+            {
+                if(Utilities.IsContentTypeMatch(ContentTypeJson, contentType))
+                {
+                    var httpResponseBody = await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
+                    var obj = DeserializeOrThrow<DefaultError>(httpResponseBody, httpRequest, httpResponse, NullValueHandling.Ignore, nameof(DefaultError));
+
+                    var response = new UpdateLiveStreamUserAgentRestrictionsResponse()
+                    {
+                        HttpMeta = new Models.Components.HttpMetadata()
+                        {
+                            Response = httpResponse,
+                            Request = httpRequest
+                        }
+                    };
+                    response.DefaultError = obj;
+                    return response;
+                }
+
+                throw new Models.Errors.ApiException(UnknownContentTypeMessage, httpRequest, httpResponse, await httpResponse.Content.ReadAsStringAsync(cancellationToken ?? CancellationToken.None));
+            }
         }
     }
 }

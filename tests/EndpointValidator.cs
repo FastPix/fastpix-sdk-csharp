@@ -517,7 +517,7 @@ internal static class EndpointValidator
         var env = Environment.GetEnvironmentVariable("FASTPIX_SPEC");
         if (!string.IsNullOrEmpty(env) && File.Exists(env)) return env;
 
-        var names = new[] { "fixed 7.yaml", "fastpix.yaml", "fixed.yaml", "openapi.yaml", "fastpix-openapi.yaml" };
+        var names = new[] { "openapi.yaml" };
         var dir = new DirectoryInfo(startDir);
         while (dir != null)
         {
@@ -529,6 +529,6 @@ internal static class EndpointValidator
             // also match any *.yaml at this level as a last resort within the dir
             dir = dir.Parent;
         }
-        throw new FileNotFoundException("OpenAPI spec not found. Set FASTPIX_SPEC or place the spec (e.g. 'fixed 7.yaml') at the repo root.");
+        throw new FileNotFoundException("OpenAPI spec not found. Set FASTPIX_SPEC or place openapi.yaml at the repo root.");
     }
 }

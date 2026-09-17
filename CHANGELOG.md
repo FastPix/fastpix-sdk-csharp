@@ -4,6 +4,59 @@
 All notable changes to this project will be documented in this file.
 
 ---
+## [1.2.1]
+
+### Changed
+- Enum fields the API returns are now open enums (classes) instead of C# `enum`s, so
+  a value newer than the SDK no longer fails the whole response — it is kept as a raw
+  string. Affects every response-side enum, including `MediaStatus`,
+  `MediaSourceResolution`, `MediaMaxResolution`, `MediaMediaQuality`, the
+  `GetAllMediaResponse*` / `GetMediaDetailResponse*` / `SourceAccessMedia*` /
+  `LiveMediaClips*` / `UpdateMedia*` / `CreateMediaResponse*` variants, `Mp4Support*`,
+  playlist and track response types, and the shared `AccessPolicy`, `PolicyAction`
+  and `PlaylistOrder`.
+  - Backward compatible for the common cases: known values still resolve to the same
+    members and `==` still works (`media.Status == MediaStatus.Ready`). The one thing
+    to update is a `switch` on these values — you can no longer use a member as a
+    `case` label; switch on `.Value` or use `if`/`==`. An unrecognised value has
+    `IsKnown == false` with the raw text in `.Value`.
+  - Request-side enums are unchanged. The 3 shared enums also drop the throw from
+    `Of("unknown")`; request values come from members, so this has no practical effect.
+
+## [1.2.0]
+
+### Breaking
+- Media `duration` is now a `double?` (seconds) instead of an `"HH:MM:SS"` string,
+  matching the updated API. Affects `ManageVideos.GetByIdAsync`, `ListAsync`,
+  `UpdateSourceAccessAsync`, `UpdateMp4SupportAsync`, `ListClipsAsync`,
+  `Videos.UpdateAsync`, `ListLiveClipsAsync`, `Playlist.CreateAsync`, and
+  `Playlists.GetAsync`, `UpdateAsync`, `AddMediaAsync`, `ReorderMediaAsync`,
+  `DeleteMediaAsync` (every model carrying `duration`: `GetMediaDetailResponse`,
+  `GetAllMediaResponse`, `UpdateMedia`, `SourceAccessMedia`, `Media`,
+  `LiveMediaClips`, `MediaClipResponseData`, `PlaylistByIdResponseMediaListItem`).
+
+### Added
+- `InputMediaSettings.EnableRecording` on live stream creation (defaults to `true`;
+  set `false` to skip the Live-to-VOD recording).
+- `AccessRestrictions` (domain and user-agent allow/deny policies) on
+  `PlaybackIdRequest`, `PlaybackIdSuccessResponseData`, `PlaybackSettings` and
+  `PlaybackIdResponse`, so live playback IDs can be restricted on create and read
+  back on get.
+- `LivePlayback.UpdateDomainRestrictionsAsync` for
+  `PATCH /live/streams/{streamId}/playback-ids/{playbackId}/domains`.
+- `LivePlayback.UpdateUserAgentRestrictionsAsync` for
+  `PATCH /live/streams/{streamId}/playback-ids/{playbackId}/user-agents`.
+- Offline unit tests: model contracts, a fake-transport test for the new
+  endpoints, and a response-contract scan over every resource method.
+
+### Changed
+- The validation harness looks for the OpenAPI snapshot as `openapi.yaml` only.
+
+## [1.1.6]
+
+### Changed
+- Licence changed from MIT to Apache-2.0.
+
 ## [1.1.5]
 
 Synchronises the SDK with the current `fastpix-openai.yaml`. The four new

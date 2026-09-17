@@ -7,6 +7,8 @@
 * [Create](#create) - Create a playbackId
 * [DeletePlaybackId](#deleteplaybackid) - Delete a playbackId
 * [GetPlaybackDetails](#getplaybackdetails) - Get playbackId details
+* [UpdateDomainRestrictions](#updatedomainrestrictions) - Update domain restrictions for a live playback ID
+* [UpdateUserAgentRestrictions](#updateuseragentrestrictions) - Update user-agent restrictions for a live playback ID
 
 ## Create
 
@@ -27,6 +29,7 @@ using Fastpix.Models.Components;
 using Fastpix.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 var sdk = new FastpixSDK(security: new Security() {
     Username = "your-access-token",
@@ -35,7 +38,15 @@ var sdk = new FastpixSDK(security: new Security() {
 
 var res = await sdk.LivePlayback.CreateAsync(
     streamId: "<streamId>",
-    body: new PlaybackIdRequest() {}
+    body: new PlaybackIdRequest() {
+        AccessPolicy = BasicAccessPolicy.Public,
+        AccessRestrictions = new PlaybackIdAccessRestrictions() {
+            Domains = new PlaybackIdDomains() {
+                DefaultPolicy = PolicyAction.Deny,
+                Allow = new List<string>() { "example.com" },
+            },
+        },
+    }
 );
 
 // handle response
@@ -169,6 +180,153 @@ Console.WriteLine(
 ### Response
 
 **[GetLiveStreamPlaybackIdResponse](../../Models/Requests/GetLiveStreamPlaybackIdResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## UpdateDomainRestrictions
+
+This endpoint updates domain-level restrictions for a specific playback ID associated with a live stream.
+It allows you to restrict playback to specific domains or block known unauthorized domains.
+
+**How it works:**
+1. Make a `PATCH` request to this endpoint with your desired domain access configuration.
+2. Set a default policy (`allow` or `deny`) and specify domain names in the `allow` or `deny` lists.
+3. This is commonly used to restrict live playback to your website or approved client domains.
+
+**Example:**
+A streaming service can allow playback only from `example.com` and deny all others by setting: `"defaultPolicy": "deny"` and `"allow": ["example.com"]`.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="update-live-stream-domain-restrictions" method="patch" path="/live/streams/{streamId}/playback-ids/{playbackId}/domains" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.LivePlayback.UpdateDomainRestrictionsAsync(
+    streamId: "<streamId>",
+    playbackId: "<playbackId>",
+    body: new UpdateLiveStreamDomainRestrictionsRequestBody() {
+        Allow = new List<string>() {
+            "yourdomain.com",
+            "sampledomain.com",
+        },
+        Deny = new List<string>() {
+            "yourworkdomain.com",
+        },
+    }
+);
+
+// handle response
+Console.WriteLine(
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
+);
+```
+
+### Parameters
+
+| Parameter                                                                                           | Type                                                                                                | Required                                                                                            | Description                                                                                         | Example                                                                                             |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `StreamId`                                                                                          | *string*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 | <streamId>                                                                |
+| `PlaybackId`                                                                                        | *string*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 | <playbackId>                                                                |
+| `Body`                                                                                              | [UpdateLiveStreamDomainRestrictionsRequestBody](../../Models/Requests/UpdateLiveStreamDomainRestrictionsRequestBody.md) | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+
+### Response
+
+**[UpdateLiveStreamDomainRestrictionsResponse](../../Models/Requests/UpdateLiveStreamDomainRestrictionsResponse.md)**
+
+### Errors
+
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| Fastpix.Models.Errors.APIException | 4XX, 5XX                           | \*/\*                              |
+
+## UpdateUserAgentRestrictions
+
+This endpoint allows updating user-agent restrictions for a specific playback ID associated with a live stream. 
+It can be used to allow or deny specific user-agents during playback request evaluation.
+
+**How it works:**
+1. Make a `PATCH` request to this endpoint with your desired user-agent access configuration.
+2. Specify a default policy (`allow` or `deny`) and provide specific `allow` or `deny` lists.
+3. Use this to restrict access to specific browsers, devices, or bots.
+
+**Example:**
+A developer may configure a playback ID to deny access from known scraping user-agents while allowing all others by default.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="update-live-stream-user-agent-restrictions" method="patch" path="/live/streams/{streamId}/playback-ids/{playbackId}/user-agents" -->
+```csharp
+using Fastpix;
+using Fastpix.Models.Components;
+using Fastpix.Models.Requests;
+using Fastpix.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+
+var sdk = new FastpixSDK(security: new Security() {
+    Username = "your-access-token",
+    Password = "your-secret-key",
+});
+
+var res = await sdk.LivePlayback.UpdateUserAgentRestrictionsAsync(
+    streamId: "<streamId>",
+    playbackId: "<playbackId>",
+    body: new UpdateLiveStreamUserAgentRestrictionsRequestBody() {
+        Allow = new List<string>() {
+            "Mozilla/55.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+        },
+        Deny = new List<string>() {
+            "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/53745.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+        },
+    }
+);
+
+// handle response
+Console.WriteLine(
+    JToken.Parse(
+        JsonConvert.SerializeObject(
+            res.Object,
+            Utilities.GetDefaultJsonSerializerSettings()
+        )
+    ).ToString(Formatting.Indented)
+);
+```
+
+### Parameters
+
+| Parameter                                                                                                 | Type                                                                                                      | Required                                                                                                  | Description                                                                                               | Example                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `StreamId`                                                                                                | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       | <streamId>                                                                      |
+| `PlaybackId`                                                                                              | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       | <playbackId>                                                                      |
+| `Body`                                                                                                    | [UpdateLiveStreamUserAgentRestrictionsRequestBody](../../Models/Requests/UpdateLiveStreamUserAgentRestrictionsRequestBody.md) | :heavy_check_mark:                                                                                        | N/A                                                                                                       |                                                                                                           |
+
+### Response
+
+**[UpdateLiveStreamUserAgentRestrictionsResponse](../../Models/Requests/UpdateLiveStreamUserAgentRestrictionsResponse.md)**
 
 ### Errors
 

@@ -9,51 +9,51 @@ namespace Fastpix.Models.Components
     using Fastpix.Utils;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Generation status of this MP4 rendition.
     /// </summary>
-    public enum Mp4SupportStatus
+    // Open enum: unknown server values are preserved as the raw string instead of throwing.
+    [JsonConverter(typeof(OpenEnumConverter))]
+    public sealed class Mp4SupportStatus : IEquatable<Mp4SupportStatus>
     {
-        [JsonProperty("preparing")]
-        Preparing,
-        [JsonProperty("ready")]
-        Ready,
-        [JsonProperty("failed")]
-        Failed,
-    }
-
-    public static class Mp4SupportStatusExtension
-    {
-        public static string Value(this Mp4SupportStatus value)
+        public static readonly Mp4SupportStatus Preparing = new("preparing");
+        public static readonly Mp4SupportStatus Ready = new("ready");
+        public static readonly Mp4SupportStatus Failed = new("failed");
+        private static readonly Dictionary<string, Mp4SupportStatus> Known = new()
         {
-            return ((JsonPropertyAttribute)value.GetType().GetMember(value.ToString())[0].GetCustomAttributes(typeof(JsonPropertyAttribute), false)[0]).PropertyName ?? value.ToString();
+            ["preparing"] = Preparing,
+            ["ready"] = Ready,
+            ["failed"] = Failed,
+        };
+
+        private Mp4SupportStatus(string value)
+        {
+            Value = value;
         }
 
-        public static Mp4SupportStatus ToEnum(this string value)
+        public string Value { get; }
+
+        // Returns the shared instance for a known value, otherwise a wrapper carrying the raw string.
+        public static Mp4SupportStatus Of(string value)
         {
-            foreach(var field in typeof(Mp4SupportStatus).GetFields())
-            {
-                var attributes = field.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    continue;
-                }
-
-                var attribute = attributes[0] as JsonPropertyAttribute;
-                if (attribute != null && attribute.PropertyName == value)
-                {
-                    var enumVal = field.GetValue(null);
-
-                    if (enumVal is Mp4SupportStatus mp4SupportStatus)
-                    {
-                        return mp4SupportStatus;
-                    }
-                }
-            }
-
-            throw new ArgumentException($"Unknown value {value} for enum Mp4SupportStatus", nameof(value));
+            return Known.TryGetValue(value, out var known) ? known : new Mp4SupportStatus(value);
         }
-    }
 
+        // False when the server sent a value this SDK version does not recognise.
+        public bool IsKnown => Known.ContainsKey(Value);
+
+        public override string ToString() => Value;
+
+        public override bool Equals(object? obj) => obj is Mp4SupportStatus other && other.Value == Value;
+
+        public bool Equals(Mp4SupportStatus? other) => other is not null && other.Value == Value;
+
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public static bool operator ==(Mp4SupportStatus? left, Mp4SupportStatus? right) => Equals(left, right);
+
+        public static bool operator !=(Mp4SupportStatus? left, Mp4SupportStatus? right) => !Equals(left, right);
+    }
 }

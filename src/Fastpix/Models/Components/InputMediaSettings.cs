@@ -63,5 +63,11 @@ namespace Fastpix.Models.Components
         /// </summary>
         [JsonProperty("enableDvrMode")]
         public bool? EnableDvrMode { get; set; }
+
+        /// <summary>
+        /// Controls whether the livestream is recorded to a VOD asset (Live-to-VOD). When true (default), FastPix records and stores the livestream for on-demand viewing. When false, the livestream is not recorded.
+        /// </summary>
+        [JsonProperty("enableRecording")]
+        public bool? EnableRecording { get; set; } = true;
     }
 }

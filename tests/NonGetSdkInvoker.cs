@@ -63,8 +63,14 @@ internal static class NonGetSdkInvoker
                 case "create-new-stream":
                     res = await sdk.LiveStreams.CreateAsync(new Components.CreateLiveStreamRequest
                     {
-                        PlaybackSettings = new Components.PlaybackSettings(),
-                        InputMediaSettings = new Components.InputMediaSettings { Metadata = new() { ["name"] = "sdk-validate" } },
+                        PlaybackSettings = new Components.PlaybackSettings
+                        {
+                            AccessRestrictions = new Components.PlaybackIdAccessRestrictions
+                            {
+                                Domains = new Components.PlaybackIdDomains { DefaultPolicy = Components.PolicyAction.Deny, Allow = new() { "example.com" } },
+                            },
+                        },
+                        InputMediaSettings = new Components.InputMediaSettings { Metadata = new() { ["name"] = "sdk-validate" }, EnableRecording = false },
                     });
                     break;
                 case "create-media-playback-id":
@@ -77,7 +83,14 @@ internal static class NonGetSdkInvoker
                     res = await sdk.ManageVideos.GenerateSubtitlesAsync(G("mediaId")!, G("trackId")!, new Components.TrackSubtitlesGenerateRequest());
                     break;
                 case "create-playbackId-of-stream":
-                    res = await sdk.LivePlayback.CreateAsync(G("streamId")!, new Components.PlaybackIdRequest());
+                    res = await sdk.LivePlayback.CreateAsync(G("streamId")!, new Components.PlaybackIdRequest
+                    {
+                        AccessRestrictions = new Components.PlaybackIdAccessRestrictions
+                        {
+                            Domains = new Components.PlaybackIdDomains { DefaultPolicy = Components.PolicyAction.Deny, Allow = new() { "example.com" } },
+                            UserAgents = new Components.PlaybackIdUserAgents { DefaultPolicy = Components.PolicyAction.Allow, Deny = new() { "PostmanRuntime" } },
+                        },
+                    });
                     break;
                 case "create-simulcast-of-stream":
                     res = await sdk.Simulcasts.CreateAsync(G("streamId")!, new Components.SimulcastRequest { Url = "rtmp://example.com/live", StreamKey = "sk-" + Guid.NewGuid().ToString("N") });
@@ -119,6 +132,12 @@ internal static class NonGetSdkInvoker
                     break;
                 case "update-user-agent-restrictions":
                     res = await sdk.Playback.UpdateUserAgentRestrictionsAsync(G("mediaId")!, G("playbackId")!, new Requests.UpdateUserAgentRestrictionsRequestBody { Allow = new() { "Mozilla" } });
+                    break;
+                case "update-live-stream-domain-restrictions":
+                    res = await sdk.LivePlayback.UpdateDomainRestrictionsAsync(G("streamId")!, G("playbackId")!, new Requests.UpdateLiveStreamDomainRestrictionsRequestBody { Allow = new() { "example.com" } });
+                    break;
+                case "update-live-stream-user-agent-restrictions":
+                    res = await sdk.LivePlayback.UpdateUserAgentRestrictionsAsync(G("streamId")!, G("playbackId")!, new Requests.UpdateLiveStreamUserAgentRestrictionsRequestBody { Allow = new() { "Mozilla" } });
                     break;
                 case "update-a-playlist":
                     res = await sdk.Playlists.UpdateAsync(G("playlistId")!, new Components.UpdatePlaylistRequest { Name = "SDK Validate Updated", Description = "updated by validator" });

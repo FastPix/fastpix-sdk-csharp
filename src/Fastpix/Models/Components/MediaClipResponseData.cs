@@ -22,10 +22,10 @@ namespace Fastpix.Models.Components
         public string? Id { get; set; }
 
         /// <summary>
-        /// Duration of the media in HH:MM:SS format.
+        /// Duration of the media in seconds.
         /// </summary>
         [JsonProperty("duration")]
-        public string? Duration { get; set; }
+        public double? Duration { get; set; }
 
         /// <summary>
         /// The current processing status of the media.

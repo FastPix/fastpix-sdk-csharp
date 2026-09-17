@@ -1,9 +1,0 @@
-# Summary
-
-
-## Fields
-
-| Field                                                                                                              | Type                                                                                                               | Required                                                                                                           | Description                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| `Generate`                                                                                                         | *bool*                                                                                                             | :heavy_minus_sign:                                                                                                 | Enable or disable the summary feature for the media. <br/>Set to true to enable summary or false to disable.<br/>  |
-| `SummaryLength`                                                                                                    | *long*                                                                                                             | :heavy_minus_sign:                                                                                                 | Specifies the desired word count for the generated summary.<br/>- The value must be between **30** and **250** words.<br/> |
